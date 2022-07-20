@@ -1,0 +1,100 @@
+; Code by Justin Lane (atari2600@jigglesoft.co.uk)
+;
+; Divide by 15 with modulo (remainder).
+;
+; RAM	 3 Bytes
+; DATA	11 Bytes
+; CODE  25 Bytes
+;
+; CPU	47 Cycles
+;
+
+	PROCESSOR	6502
+        
+        
+        INCLUDE	"vcs.h"
+        INCLUDE "macro.h"
+        INCLUDE "xmacro.h"
+
+
+        SEG.U	Vars
+	ORG	$80
+        
+value	DS.B	1	; Input value
+div15	DS.B	1	; Output divide by 15
+mod15	DS.B	1	; Output modulo 15
+
+
+	SEG	Code
+        ORG	$F000
+
+Start
+	CLEAN_START
+
+VSync
+	VERTICAL_SYNC
+VBlank
+	TIMER_SETUP 37
+        LDA	#$44
+        STA	COLUBK
+        TIMER_WAIT
+        LDY	#192
+Visible
+	STA	WSYNC
+        
+        JSR	divby15
+        INC	value
+
+        DEY 
+        BNE	Visible
+Overscan
+	TIMER_SETUP 28
+        TIMER_WAIT
+        JMP	VSync
+
+
+; Note: possible remove div15 and mod15 STA as result is returned X=div15 and A=mod15.
+divby15	LDA	value		; ZP RAM		2	3		2	3
+	LSR			; 			1	2		3	5
+	LSR			; 			1	2		4	7
+	LSR			; 			1	2		5	9
+	LSR			; 			1	2		6	11
+	SEC			; 			1	2		7	13
+	ADC	value		; ZP RAM		2	3		9	16
+	LSR			; 			1	2		10	18
+	LSR			; 			1	2		11	20
+	LSR			; 			1	2		12	22
+	LSR			; 			1	2		13	24
+	STA	div15		; ZP RAM		2	3		15	27
+	TAX			; 			1	2		16	29
+	LDA	value		; ZP RAM		2	3		18	32
+	SEC			; 			1	2		19	34
+	SBC	mul15table,X	; 16-bit ROM addr	3	4	*	22	38
+	STA	mod15		; ZP RAM		2	3		24	41
+	RTS			; 			1	6		25	47
+
+
+
+	SEG	Data
+        ORG	$F100
+
+mul15table
+	DC.B	0	; 15 *  0
+	DC.B	15	; 15 *  1
+	DC.B	30	; 15 *  2
+	DC.B	45	; 15 *  3
+	DC.B	60	; 15 *  4
+	DC.B	75	; 15 *  5
+	DC.B	90	; 15 *  6
+	DC.B	105	; 15 *  7
+	DC.B	120	; 15 *  8
+	DC.B	135	; 15 *  9
+	DC.B	150	; 15 * 10
+
+
+; CPU Reset / Interrupt Vectors
+	ORG	$FFFA
+        .WORD	Start
+        .WORD	Start
+        .WORD	Start
+
