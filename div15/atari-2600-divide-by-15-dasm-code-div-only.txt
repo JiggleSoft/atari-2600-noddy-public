@@ -1,0 +1,36 @@
+; Code by Justin Lane (atari2600@jigglesoft.co.uk)
+;
+; Divide by 15 passed in A return in A.
+;
+; RAM	 1 Bytes
+; CODE  13 Bytes
+;
+; CPU	24 Cycles
+;
+
+	PROCESSOR	6502
+ 
+ 
+        SEG.U	Vars
+	ORG	$80
+
+value	DS.B	1	; Temp value
+
+
+	SEG	Code
+        ORG	$F000
+
+divby15	STA	value		; ZP RAM		2	3		2	3
+	LSR			; 			1	2		3	5
+	LSR			; 			1	2		4	7
+	LSR			; 			1	2		5	9
+	LSR			; 			1	2		6	11
+	SEC			; 			1	2		7	13
+	ADC	value		; ZP RAM		2	3		9	16
+	ROR			; 			1	2		10	18
+	LSR			; 			1	2		11	20
+	LSR			; 			1	2		12	22
+	LSR			; 			1	2		13	24
+
+	RTS
+

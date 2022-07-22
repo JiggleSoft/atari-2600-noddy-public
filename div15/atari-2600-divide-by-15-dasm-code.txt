@@ -10,8 +10,8 @@
 ;
 
 	PROCESSOR	6502
-        
-        
+ 
+ 
         INCLUDE	"vcs.h"
         INCLUDE "macro.h"
         INCLUDE "xmacro.h"
@@ -19,7 +19,7 @@
 
         SEG.U	Vars
 	ORG	$80
-        
+ 
 value	DS.B	1	; Input value
 div15	DS.B	1	; Output divide by 15
 mod15	DS.B	1	; Output modulo 15
@@ -54,6 +54,7 @@ Overscan
 
 
 ; Note: possible remove div15 and mod15 STA as result is returned X=div15 and A=mod15.
+;       Also if LDA value change to STA value then can pass in value in A reg.
 divby15	LDA	value		; ZP RAM		2	3		2	3
 	LSR			; 			1	2		3	5
 	LSR			; 			1	2		4	7
@@ -61,7 +62,7 @@ divby15	LDA	value		; ZP RAM		2	3		2	3
 	LSR			; 			1	2		6	11
 	SEC			; 			1	2		7	13
 	ADC	value		; ZP RAM		2	3		9	16
-	LSR			; 			1	2		10	18
+	ROR			; 			1	2		10	18
 	LSR			; 			1	2		11	20
 	LSR			; 			1	2		12	22
 	LSR			; 			1	2		13	24
