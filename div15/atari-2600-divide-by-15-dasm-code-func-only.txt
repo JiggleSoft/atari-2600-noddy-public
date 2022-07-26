@@ -1,9 +1,9 @@
 ; Code by Justin Lane (atari2600@jigglesoft.co.uk)
 ;
-; Divide by 15 with modulo (remainder).
+; Divide (0-254) by 15 with modulo (remainder).
 ;
 ; RAM	 3 Bytes
-; DATA	11 Bytes (+ 5 extra bytes if full range required)
+; DATA	11 Bytes (+ 5 extra bytes if 0-254 range required)
 ; CODE  25 Bytes
 ;
 ; CPU	47 Cycles
@@ -15,7 +15,7 @@
         SEG.U	Vars
 	ORG	$80
  
-value	DS.B	1	; Input value
+value	DS.B	1	; Input value (0-254)
 div15	DS.B	1	; Output divide by 15
 mod15	DS.B	1	; Output modulo 15
 

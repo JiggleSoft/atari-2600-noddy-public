@@ -1,6 +1,6 @@
 ; Code by Justin Lane (atari2600@jigglesoft.co.uk)
 ;
-; Divide by 15 passed in A return in A.
+; Divide (0-254) by 15 passed in A return in A.
 ;
 ; RAM	 1 Bytes
 ; CODE  13 Bytes

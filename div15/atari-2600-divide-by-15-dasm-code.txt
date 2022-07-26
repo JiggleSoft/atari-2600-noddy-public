@@ -1,6 +1,6 @@
 ; Code by Justin Lane (atari2600@jigglesoft.co.uk)
 ;
-; Divide by 15 with modulo (remainder).
+; Divide value (0-254) by 15 with modulo (remainder).
 ;
 ; RAM	 3 Bytes
 ; DATA	11 Bytes
