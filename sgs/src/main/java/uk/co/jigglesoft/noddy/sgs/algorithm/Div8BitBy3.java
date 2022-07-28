@@ -1,6 +1,6 @@
 package uk.co.jigglesoft.noddy.sgs.algorithm;
 
-public class Div8BitBy15 extends AbstractAlgorithm
+public class Div8BitBy3 extends AbstractAlgorithm
 {
     public boolean doChecks()
     {

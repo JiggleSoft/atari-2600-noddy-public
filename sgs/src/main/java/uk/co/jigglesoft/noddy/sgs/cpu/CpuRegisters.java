@@ -111,4 +111,11 @@ public final class CpuRegisters
                 ", SR=" + SR +
                 '}';
     }
+
+    public CpuFlags getFlags() {
+        return null;
+    }
+
+    public void update(int y, CpuFlag ... flags) {
+    }
 }

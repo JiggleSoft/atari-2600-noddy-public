@@ -75,4 +75,7 @@ public class CpuFlags
                 "value=" + value +
                 '}';
     }
+
+    public void update(int y, CpuFlag ... flags) {
+    }
 }

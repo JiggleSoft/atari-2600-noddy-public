@@ -1,9 +1,13 @@
 package uk.co.jigglesoft.noddy.sgs.cpu;
 
 
+import java.util.List;
 
 public class CpuState
 {
+
+    public CpuMemory getMemory() {
+    }
 
     public static final class CpuMemory
     {
@@ -16,6 +20,10 @@ public class CpuState
 
     }
 
+    public CpuRegisters getRegisters()
+    {
+        return null;
+    }
 
 //    int getA();
 //    int setA();
