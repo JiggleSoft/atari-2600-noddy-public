@@ -1,21 +1,23 @@
 package uk.co.jigglesoft.noddy.sgs.cpu.ops;
 
+import uk.co.jigglesoft.noddy.sgs.cpu.CpuContext;
+
 public interface Operation
 {
+    int getOpCode();
+    AddressMode getAddressMode();
+    int getOpCodeByteSize();
+    int getOperand();
+    void setOperand(final int operand);
+    int getOperandMin();
+    int getOperandMax();
+    int getOperandByteSize();
+    byte[] getMachineCode();
+    String getAssemblyCode();
     int getByteLength();
     int getClockCount();
+    int getClockCountMin();
     int getClockCountMax();
-    boolean isAffectStatus();
-    boolean isAffectConditionFlags();
-    boolean isAffectCpuStatus();
-    boolean isAffectStack();
-    boolean isAffectMemory();
-    boolean isAffectMemoryZp();
-    boolean isAffectMemoryStack();
-    boolean isAffectMemoryOther();
-    boolean isAffectRegister();
-    boolean isAffectRegiseterA();
-    boolean isAffectRegiseterX();
-    boolean isAffectRegiseterY();
-    void execute();
+    OperationAffect getOperationAffect();
+    void execute(final CpuContext machineContext);
 }

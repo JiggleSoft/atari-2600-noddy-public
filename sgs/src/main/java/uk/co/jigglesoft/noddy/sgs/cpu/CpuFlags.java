@@ -69,6 +69,45 @@ public class CpuFlags
         setValue(value);
     }
 
+    private boolean getFlagBool(final CpuFlag cpuFlags)
+    {
+        return (getValue() & cpuFlags.getBitMask()) != 0;
+    }
+
+    private void setFlagBool(final CpuFlag cpuFlags, final boolean value)
+    {
+        setValue((getValue() & cpuFlags.getBitMaskInv()) | (value ? cpuFlags.getBitMask() : 0));
+    }
+
+    public boolean getC() { return getFlagBool(CpuFlag.C); }
+
+    public void setC(final boolean value) { setFlagBool(CpuFlag.C, value); }
+
+    public boolean getZ() { return getFlagBool(CpuFlag.Z); }
+
+    public void setZ(final boolean value) { setFlagBool(CpuFlag.Z, value); }
+
+    public boolean getI() { return getFlagBool(CpuFlag.I); }
+
+    public void setI(final boolean value) { setFlagBool(CpuFlag.I, value); }
+
+    public boolean getD() { return getFlagBool(CpuFlag.D); }
+
+    public void setD(final boolean value) { setFlagBool(CpuFlag.D, value); }
+
+    public boolean getB() { return getFlagBool(CpuFlag.B); }
+
+    public void setB(final boolean value) { setFlagBool(CpuFlag.B, value); }
+
+    public boolean getV() { return getFlagBool(CpuFlag.V); }
+
+    public void setV(final boolean value) { setFlagBool(CpuFlag.V, value); }
+
+    public boolean getN() { return getFlagBool(CpuFlag.N); }
+
+    public void setN(final boolean value) { setFlagBool(CpuFlag.N, value); }
+
+
     @Override
     public String toString() {
         return "CpuFlags{" +

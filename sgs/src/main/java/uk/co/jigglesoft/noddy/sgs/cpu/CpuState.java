@@ -7,6 +7,7 @@ public class CpuState
 {
 
     public CpuMemory getMemory() {
+        return null;
     }
 
     public static final class CpuMemory
