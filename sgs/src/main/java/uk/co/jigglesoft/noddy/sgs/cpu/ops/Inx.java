@@ -8,7 +8,7 @@ public class Inx extends AbstractOperation
     @Override
     public void onExec(final CpuContext cpuContext)
     {
-        final int x = (cpuContext.getMachineState().getRegisters().getX() + 1) & VALID_BYTE_MASK;
+        final int x = (cpuContext.getMachineState().getRegisters().getX() + 1) & VALID_INT8_MASK;
         cpuContext.getMachineState().getRegisters().setX(x);
         cpuContext.getMachineState().getRegisters().getFlags().update(x, CpuFlag.N, CpuFlag.Z);
     }

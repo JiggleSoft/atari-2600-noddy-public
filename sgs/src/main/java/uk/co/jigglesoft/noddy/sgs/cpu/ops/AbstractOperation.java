@@ -13,6 +13,12 @@ public abstract class AbstractOperation implements Operation
 
     int operand;
 
+    public AbstractOperation()
+    {
+        this.opcode = 666;
+        this.addressMode = AddressMode.INVALID_OPCODE;
+    }
+
     public AbstractOperation(final int opcode, final AddressMode addressMode)
     {
         this.opcode = opcode;

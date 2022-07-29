@@ -8,8 +8,9 @@ public class DecZp extends AbstractOperation
     @Override
     public void onExec(final CpuContext cpuContext)
     {
-        final int zp = (cpuContext.getMachineState().getMemory().get(getOperand()).get() - 1) & VALID_BYTE_MASK;
-        cpuContext.getMachineState().getMemory().get(getOperand()).set(zp);
-        cpuContext.getMachineState().getRegisters().getFlags().update(zp, CpuFlag.N, CpuFlag.Z);
+        //FIXME: !!!
+//        final int zp = (cpuContext.getMachineState().getMemory().get(getOperand()).get() - 1) & VALID_INT8_MASK;
+//        cpuContext.getMachineState().getMemory().get(getOperand()).set(zp);
+//        cpuContext.getMachineState().getRegisters().getFlags().update(zp, CpuFlag.N, CpuFlag.Z);
     }
 }

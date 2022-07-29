@@ -14,11 +14,13 @@ public class Program
         final StringBuffer sb = new StringBuffer();
         for (final Operation op : getOperations())
         {
-            sb.appen
-        d()
+            //sb.appen
+        //d()
         }
+        return sb.toString();
     }
 
     private Operation[] getOperations() {
+        return null;
     }
 }
