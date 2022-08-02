@@ -25,3 +25,17 @@ application {
 test {
     useJUnitPlatform()
 }
+sourceSets {
+    main {
+        java {
+            //needed until we integrate these classes
+            exclude 'uk/co/jigglesoft/noddy/sgs/cpu/**'
+        }
+    }
+    test {
+        java {
+            //needed until we integrate these classes
+            exclude 'uk/co/jigglesoft/noddy/sgs/cpu/**'
+        }
+    }
+}
