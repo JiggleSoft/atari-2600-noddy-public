@@ -1,11 +1,12 @@
 package uk.co.jigglesoft.noddy.sgs.cpu.ops;
 
+import uk.co.jigglesoft.noddy.sgs.common.cpu6502.AddressMode6502;
 import uk.co.jigglesoft.noddy.sgs.cpu.CpuContext;
 
 public interface Operation
 {
     int getOpCode();
-    AddressMode getAddressMode();
+    AddressMode6502 getAddressMode();
     int getOpCodeByteSize();
     int getOperand();
     void setOperand(final int operand);

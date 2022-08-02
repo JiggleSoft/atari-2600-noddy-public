@@ -1,5 +1,6 @@
 package uk.co.jigglesoft.noddy.sgs.cpu.ops;
 
+import uk.co.jigglesoft.noddy.sgs.common.cpu6502.AddressMode6502;
 import uk.co.jigglesoft.noddy.sgs.cpu.CpuContext;
 import uk.co.jigglesoft.noddy.sgs.cpu.DisassemblyUtil;
 
@@ -9,17 +10,17 @@ public abstract class AbstractOperation implements Operation
     public static final int VALID_INT16_MASK = 0xFFFF;
 
     private final int opcode;
-    private final AddressMode addressMode;
+    private final AddressMode6502 addressMode;
 
     int operand;
 
     public AbstractOperation()
     {
         this.opcode = 666;
-        this.addressMode = AddressMode.INVALID_OPCODE;
+        this.addressMode = AddressMode6502.INVALID_OPCODE;
     }
 
-    public AbstractOperation(final int opcode, final AddressMode addressMode)
+    public AbstractOperation(final int opcode, final AddressMode6502 addressMode)
     {
         this.opcode = opcode;
         this.addressMode = addressMode;
@@ -32,7 +33,7 @@ public abstract class AbstractOperation implements Operation
     }
 
     @Override
-    public AddressMode getAddressMode()
+    public AddressMode6502 getAddressMode()
     {
         return addressMode;
     }
