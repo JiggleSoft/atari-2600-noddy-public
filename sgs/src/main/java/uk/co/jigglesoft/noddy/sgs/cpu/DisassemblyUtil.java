@@ -16,16 +16,16 @@ public class DisassemblyUtil
 
     public String getMnemonic(final int opcode)
     {
-
+return null;
     }
 
     public AddressMode6502 getAddressMode(final int opcode)
     {
-
+        return null;
     }
 
     public int getOpCode(final String mnemonic, final AddressMode6502 addressMode)
     {
-
+return 666;
     }
 }

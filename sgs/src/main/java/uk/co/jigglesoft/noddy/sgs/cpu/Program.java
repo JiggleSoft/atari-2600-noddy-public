@@ -1,26 +1,26 @@
 package uk.co.jigglesoft.noddy.sgs.cpu;
 
-import uk.co.jigglesoft.noddy.sgs.cpu.ops.Operation;
+//import uk.co.jigglesoft.noddy.sgs.cpu.ops.Operation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Program
 {
-    final List<Operation> operations = new ArrayList<>();
-
-    public String toString()
-    {
-        final StringBuffer sb = new StringBuffer();
-        for (final Operation op : getOperations())
-        {
-            //sb.appen
-        //d()
-        }
-        return sb.toString();
-    }
-
-    private Operation[] getOperations() {
-        return null;
-    }
+//    final List<Operation> operations = new ArrayList<>();
+//
+//    public String toString()
+//    {
+//        final StringBuffer sb = new StringBuffer();
+//        for (final Operation op : getOperations())
+//        {
+//            //sb.appen
+//        //d()
+//        }
+//        return sb.toString();
+//    }
+//
+//    private Operation[] getOperations() {
+//        return null;
+//    }
 }

@@ -29,13 +29,13 @@ sourceSets {
     main {
         java {
             //needed until we integrate these classes
-            exclude 'uk/co/jigglesoft/noddy/sgs/cpu/**'
+            exclude 'uk/co/jigglesoft/noddy/sgs/cpu/ops/**'
         }
     }
     test {
         java {
             //needed until we integrate these classes
-            exclude 'uk/co/jigglesoft/noddy/sgs/cpu/**'
+            exclude 'uk/co/jigglesoft/noddy/sgs/cpu/ops/**'
         }
     }
 }
