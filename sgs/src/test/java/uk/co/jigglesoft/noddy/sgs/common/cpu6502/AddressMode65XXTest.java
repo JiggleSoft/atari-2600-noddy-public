@@ -8,13 +8,13 @@ import static uk.co.jigglesoft.noddy.sgs.common.cpu6502.AddressMode6502.*;
 class AddressMode65XXTest
 {
     @Test
-    void testValues()
+    void values()
     {
         assertEquals(13, AddressMode6502.values().length);
     }
 
     @Test
-    void testGetOperandByteSize()
+    void getOperandByteSize()
     {
         //REVIEW: remove this - assertThrows(UnsupportedOperationException.class, () -> { INVALID_OPCODE.getOperandByteSize(); } );
         assertEquals(0, IMPLIED.getOperandByteSize());
