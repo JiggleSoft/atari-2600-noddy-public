@@ -33,7 +33,7 @@ class InstructionSet65XXTest
     {
         for (InstructionSet65XX cut : values)
         {
-            //length and underscore
+            //FIXME: order expects + length and underscore
             assertEquals(cut.name().substring(0, 3), cut.getMnemonic().name(), cut.toString());
             assertEquals(cut.name().substring(4, 7), cut.getAddressMode().getAbbreviation(), cut.toString());
         }
@@ -60,8 +60,6 @@ class InstructionSet65XXTest
     @Test
     void getAddressMode()
     {
-        final InstructionSet65XX[] values = InstructionSet65XX.values();
-        //FIXME: assertEquals(256, values.length);
         for (InstructionSet65XX cut : values)
         {
             assertEquals(cut.name().substring(4, 7), cut.getAddressMode().getAbbreviation(), cut.toString());
@@ -73,7 +71,9 @@ class InstructionSet65XXTest
     {
         for (InstructionSet65XX cut : values)
         {
-            cut.isIllegalInstruction();
+            boolean expected = false;
+            expected = (cut.name().substring(7, 8).equals("_")) || (cut.name().startsWith("ZZZ_"));
+            assertEquals(expected, cut.isIllegalInstruction(), cut.toString());
             //getMnemonic.is.....
         }
     }
@@ -101,7 +101,33 @@ class InstructionSet65XXTest
     {
         for (InstructionSet65XX cut : values)
         {
-            cut.getOperandByteSize();
+            final int operandByteSize = cut.getOperandByteSize();
+            int expected = -1;
+            switch (cut.getAddressMode())
+            {
+                case IMPLIED :
+                case ACCUMULATOR :
+                    expected = 0;
+                    break;
+                case IMMEDIATE :
+                case RELATIVE :
+                case ZERO_PAGE :
+                case ZERO_PAGE_INDEXED_X :
+                case ZERO_PAGE_INDEXED_Y :
+                case INDEXED_X_INDIRECT :
+                case INDIRECT_INDEXED_Y :
+                    expected = 1;
+                    break;
+                case ABSOLUTE :
+                case INDIRECT :
+                case ABSOLUTE_INDEXED_X :
+                case ABSOLUTE_INDEXED_Y :
+                    expected = 2;
+                    break;
+                default:
+                    fail("Unexpected Address Mode value for " + cut.toString());
+            }
+            assertEquals(expected, operandByteSize, cut.toString());
         }
     }
 }
