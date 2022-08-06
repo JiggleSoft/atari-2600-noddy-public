@@ -34,8 +34,8 @@ class InstructionSet65XXTest
         for (InstructionSet65XX cut : values)
         {
             //length and underscore
-            assertEquals(cut.name().substring(0, 3), cut.getMnemonic().name());
-            assertEquals(cut.name().substring(4, 7), cut.getAddressMode().getAbbreviation());
+            assertEquals(cut.name().substring(0, 3), cut.getMnemonic().name(), cut.toString());
+            assertEquals(cut.name().substring(4, 7), cut.getAddressMode().getAbbreviation(), cut.toString());
         }
     }
 
@@ -44,7 +44,7 @@ class InstructionSet65XXTest
     {
         for (InstructionSet65XX cut : values)
         {
-            assertEquals(cut.ordinal(), cut.getOpcode());
+            assertEquals(cut.ordinal(), cut.getOpcode(), cut.toString());
         }
     }
 
@@ -53,7 +53,7 @@ class InstructionSet65XXTest
     {
         for (InstructionSet65XX cut : values)
         {
-            assertEquals(cut.name().substring(0, 3), cut.getMnemonic().name());
+            assertEquals(cut.name().substring(0, 3), cut.getMnemonic().name(), cut.toString());
         }
     }
 
@@ -64,7 +64,7 @@ class InstructionSet65XXTest
         //FIXME: assertEquals(256, values.length);
         for (InstructionSet65XX cut : values)
         {
-            assertEquals(cut.name().substring(4, 7), cut.getAddressMode().getAbbreviation());
+            assertEquals(cut.name().substring(4, 7), cut.getAddressMode().getAbbreviation(), cut.toString());
         }
     }
 
@@ -92,7 +92,7 @@ class InstructionSet65XXTest
     {
         for (InstructionSet65XX cut : values)
         {
-            assertEquals(1, cut.getOpcodeByteSize());
+            assertEquals(1, cut.getOpcodeByteSize(), cut.toString());
         }
     }
 
