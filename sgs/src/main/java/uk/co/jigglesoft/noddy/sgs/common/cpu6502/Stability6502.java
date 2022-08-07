@@ -1,6 +1,6 @@
 package uk.co.jigglesoft.noddy.sgs.common.cpu6502;
 
-public enum OpCodeStability6502
+public enum Stability6502
 {
     /** These instructions are stable and have well understood regular behaviour. */
     STABLE,

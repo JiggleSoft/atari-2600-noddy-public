@@ -22,32 +22,32 @@ class CycleCount6502Test
         cut = null;
     }
 
-    @Test
-    void testEquals()
-    {
-        assertEquals(cut, cut);
-        assertEquals(new CycleCount6502(123, 456, 789), cut);
-        assertNotEquals(new CycleCount6502(234, 456, 789), null);
-        assertNotEquals(new CycleCount6502(234, 456, 789), cut);
-        assertNotEquals(new CycleCount6502(123, 567, 789), cut);
-        assertNotEquals(new CycleCount6502(123, 456, 890), cut);
-        //TODO: check descendent class with same values and different values.
-    }
-
-    @Test
-    void testHashCode()
-    {
-        assertEquals(cut.hashCode(), cut.hashCode());
-        assertEquals(new CycleCount6502(123, 456, 789).hashCode(), cut.hashCode());
-        assertNotEquals(new CycleCount6502(234, 456, 789).hashCode(), cut.hashCode());
-        assertNotEquals(new CycleCount6502(123, 567, 789).hashCode(), cut.hashCode());
-        assertNotEquals(new CycleCount6502(123, 456, 890).hashCode(), cut.hashCode());
-    }
-
+//    @Test
+//    void testEquals()
+//    {
+//        assertEquals(cut, cut);
+//        assertEquals(new CycleCount6502(123, 456, 789), cut);
+//        assertNotEquals(new CycleCount6502(234, 456, 789), null);
+//        assertNotEquals(new CycleCount6502(234, 456, 789), cut);
+//        assertNotEquals(new CycleCount6502(123, 567, 789), cut);
+//        assertNotEquals(new CycleCount6502(123, 456, 890), cut);
+//        //TODO: check descendent class with same values and different values.
+//    }
+//
+//    @Test
+//    void testHashCode()
+//    {
+//        assertEquals(cut.hashCode(), cut.hashCode());
+//        assertEquals(new CycleCount6502(123, 456, 789).hashCode(), cut.hashCode());
+//        assertNotEquals(new CycleCount6502(234, 456, 789).hashCode(), cut.hashCode());
+//        assertNotEquals(new CycleCount6502(123, 567, 789).hashCode(), cut.hashCode());
+//        assertNotEquals(new CycleCount6502(123, 456, 890).hashCode(), cut.hashCode());
+//    }
+//
     @Test
     void getMinimumCycleCount()
     {
-        assertEquals(123, cut.getMinimumCycleCount());
+        assertEquals(123, cut.getStandardCycleCount());
     }
 
     @Test

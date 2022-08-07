@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InstructionSet65XXTest
+class InstructionSet6502Test
 {
-    InstructionSet65XX[] values;
+    InstructionSet6502[] values;
 
     @BeforeEach
     void setUp()
     {
-        values = InstructionSet65XX.values();
+        values = InstructionSet6502.values();
     }
 
     @AfterEach
@@ -31,7 +31,7 @@ class InstructionSet65XXTest
     @Test
     void name()
     {
-        for (InstructionSet65XX cut : values)
+        for (InstructionSet6502 cut : values)
         {
             //FIXME: order expects + length and underscore
             assertEquals(cut.name().substring(0, 3), cut.getMnemonic().name(), cut.toString());
@@ -42,7 +42,7 @@ class InstructionSet65XXTest
     @Test
     void getOpcode()
     {
-        for (InstructionSet65XX cut : values)
+        for (InstructionSet6502 cut : values)
         {
             assertEquals(cut.ordinal(), cut.getOpcode(), cut.toString());
         }
@@ -51,7 +51,7 @@ class InstructionSet65XXTest
     @Test
     void getMnemonic()
     {
-        for (InstructionSet65XX cut : values)
+        for (InstructionSet6502 cut : values)
         {
             assertEquals(cut.name().substring(0, 3), cut.getMnemonic().name(), cut.toString());
         }
@@ -60,16 +60,47 @@ class InstructionSet65XXTest
     @Test
     void getAddressMode()
     {
-        for (InstructionSet65XX cut : values)
+        for (InstructionSet6502 cut : values)
         {
             assertEquals(cut.name().substring(4, 7), cut.getAddressMode().getAbbreviation(), cut.toString());
         }
     }
 
     @Test
+    void getCycleCount()
+    {
+        for (InstructionSet6502 cut : values)
+        {
+            final CycleCount6502 cycleCount = cut.getCycleCount();
+            assertNotNull(cycleCount);
+//            assertEquals(0, cycleCount.getMinimumCycleCount(), cut.toString());
+//            assertEquals(0, cycleCount.getPageCrossCycleCount(), cut.toString());
+//            assertEquals(0, cycleCount.getBranchCycleCount(), cut.toString());
+        }
+    }
+
+    @Test
+    void getOpcodeState()
+    {
+        for (InstructionSet6502 cut : values)
+        {
+            final OpcodeState6502 opcodeState = cut.getOpcodeState();
+
+            assertNotNull(opcodeState);
+//            assertEquals(0, opcodeState.(), cut.toString());
+//            assertEquals(0, opcodeState.getMinimumCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getMinimumCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getMinimumCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getMinimumCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getPageCrossCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getBranchCycleCount(), cut.toString());
+        }
+    }
+
+    @Test
     void isIllegalInstruction()
     {
-        for (InstructionSet65XX cut : values)
+        for (InstructionSet6502 cut : values)
         {
             boolean expected = false;
             expected = (cut.name().substring(7, 8).equals("_")) || (cut.name().startsWith("ZZZ_"));
@@ -81,7 +112,7 @@ class InstructionSet65XXTest
     @Test
     void getOpcodeStability()
     {
-        for (InstructionSet65XX cut : values)
+        for (InstructionSet6502 cut : values)
         {
             cut.getOpcodeStability();
         }
@@ -90,7 +121,7 @@ class InstructionSet65XXTest
     @Test
     void getOpcodeByteSize()
     {
-        for (InstructionSet65XX cut : values)
+        for (InstructionSet6502 cut : values)
         {
             assertEquals(1, cut.getOpcodeByteSize(), cut.toString());
         }
@@ -99,7 +130,7 @@ class InstructionSet65XXTest
     @Test
     void getOperandByteSize()
     {
-        for (InstructionSet65XX cut : values)
+        for (InstructionSet6502 cut : values)
         {
             final int operandByteSize = cut.getOperandByteSize();
             int expected = -1;

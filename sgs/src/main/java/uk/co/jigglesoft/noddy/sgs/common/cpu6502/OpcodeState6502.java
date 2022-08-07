@@ -12,6 +12,8 @@ public class OpcodeState6502
 //    /** . */
 //    private final StateSet6502 setState;
 //
+    // add undefined.
+    //
 //    /** . */
 //    private final StateSet6502 updatedState;
 //
