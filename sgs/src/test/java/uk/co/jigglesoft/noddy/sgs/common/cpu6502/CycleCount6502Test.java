@@ -45,7 +45,7 @@ class CycleCount6502Test
 //    }
 //
     @Test
-    void getMinimumCycleCount()
+    void getStandardCycleCount()
     {
         assertEquals(123, cut.getStandardCycleCount());
     }
@@ -65,6 +65,6 @@ class CycleCount6502Test
     @Test
     void testToString()
     {
-        assertEquals("CycleCount6502{minimumCycleCount=123, pageCrossCycleCount=456, branchCycleCount=789}", cut.toString());
+        assertEquals("CycleCount6502{standardCycleCount=123, pageCrossCycleCount=456, branchCycleCount=789}", cut.toString());
     }
 }

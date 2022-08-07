@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.plaf.nimbus.State;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InstructionSet6502Test
@@ -73,25 +75,25 @@ class InstructionSet6502Test
         {
             final CycleCount6502 cycleCount = cut.getCycleCount();
             assertNotNull(cycleCount);
-//            assertEquals(0, cycleCount.getMinimumCycleCount(), cut.toString());
+//            assertEquals(0, cycleCount.getStandardCycleCount(), cut.toString());
 //            assertEquals(0, cycleCount.getPageCrossCycleCount(), cut.toString());
 //            assertEquals(0, cycleCount.getBranchCycleCount(), cut.toString());
         }
     }
 
     @Test
-    void getOpcodeState()
+    void getStateAffect()
     {
         for (InstructionSet6502 cut : values)
         {
-            final OpcodeState6502 opcodeState = cut.getOpcodeState();
+            final StateAffect6502 stateAffect = cut.getStateAffect();
 
-            assertNotNull(opcodeState);
+            assertNotNull(stateAffect);
 //            assertEquals(0, opcodeState.(), cut.toString());
-//            assertEquals(0, opcodeState.getMinimumCycleCount(), cut.toString());
-//            assertEquals(0, opcodeState.getMinimumCycleCount(), cut.toString());
-//            assertEquals(0, opcodeState.getMinimumCycleCount(), cut.toString());
-//            assertEquals(0, opcodeState.getMinimumCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getStandardCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getStandardCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getStandardCycleCount(), cut.toString());
+//            assertEquals(0, opcodeState.getStandardCycleCount(), cut.toString());
 //            assertEquals(0, opcodeState.getPageCrossCycleCount(), cut.toString());
 //            assertEquals(0, opcodeState.getBranchCycleCount(), cut.toString());
         }

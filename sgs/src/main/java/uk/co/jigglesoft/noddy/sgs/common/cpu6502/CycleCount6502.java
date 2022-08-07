@@ -37,28 +37,6 @@ public class CycleCount6502
         this.branchCycleCount = branchCycleCount;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o)
-//        {
-//            return true;
-//        }
-//        if (o == null || getClass() != o.getClass())
-//        {
-//            return false;
-//        }
-//        final CycleCount6502 that = (CycleCount6502) o;
-//        return (this.minimumCycleCount == that.minimumCycleCount) &&
-//               (this.pageCrossCycleCount == that.pageCrossCycleCount) &&
-//               (this.branchCycleCount == that.branchCycleCount);
-//    }
-//
-//    @Override
-//    public int hashCode()
-//    {
-//        return Objects.hash(minimumCycleCount, pageCrossCycleCount, branchCycleCount);
-//    }
-//
     public int getStandardCycleCount()
     {
         return standardCycleCount;
@@ -77,7 +55,7 @@ public class CycleCount6502
     @Override
     public String toString() {
         return "CycleCount6502{" +
-                "minimumCycleCount=" + standardCycleCount +
+                "standardCycleCount=" + standardCycleCount +
                 ", pageCrossCycleCount=" + pageCrossCycleCount +
                 ", branchCycleCount=" + branchCycleCount +
                 '}';
