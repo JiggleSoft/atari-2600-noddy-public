@@ -16,7 +16,6 @@ class AddressMode65XXTest
     @Test
     void getOperandByteSize()
     {
-        //REVIEW: remove this - assertThrows(UnsupportedOperationException.class, () -> { INVALID_OPCODE.getOperandByteSize(); } );
         assertEquals(0, IMPLIED.getOperandByteSize());
         assertEquals(0, ACCUMULATOR.getOperandByteSize());
         assertEquals(1, IMMEDIATE.getOperandByteSize());
