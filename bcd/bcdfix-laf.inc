@@ -4,29 +4,48 @@
 
 
 
-BCDFIX_REGISTERS    MACRO
-m0
-m1
-m2
-m3
+BCDFIX_DATA_REGS    MACRO   ; num,siz
+        REPEAT  num
+m\cnt:  DS.B    siz
+        ENDREPEAT
             ENDM
 
 
+
 ; Load a math register with value or contents of another register.
-SBCDFIX_LDM  MACRO   ; reg,value|reg
+BCDFIX_LDM  MACRO   ; reg,value|reg
 
 
             ENDM
 
 
 ; Add to a math register a value or contents of another register.
-BCDFIX_ADD  MACRO
+BCDFIX_UADD  MACRO
+            CLC
+            REPEAT  siz
+            LDA     \1+siz-cnt
+            ADC     \2+siz-cnt
+            STA     \3+siz-cnt
+            ENDREPEAT
             ENDM
 
 
 ; Subtract from a math register a value or contents of another register.
 BCDFIX_SUB  MACRO
+            SEC
+            REPEAT  siz
+            LDA     \1+siz-cnt
+            SBC     \2+siz-cnt
+            STA     \3+siz-cnt
+            ENDREPEAT
             ENDM
+
+
+laod constant
+declare constant
+copy constant
+compare constant
+
 
 
 ;
