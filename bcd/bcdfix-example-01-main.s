@@ -154,6 +154,11 @@ endless_loop:
 
 .CODE
 
+    BCDFIX_CLR_FAST     m0
+
+    BCDFIX_CLR_INLINE     m0,X
+
+   ; BCDFIX_CLR     M0,X
 
 
 

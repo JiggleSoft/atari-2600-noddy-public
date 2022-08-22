@@ -109,3 +109,97 @@ m7:         .RES        BCDFIX_REG_SIZ
 ;            STA     \3+siz-cnt
 ;            ENDREPEAT
 ;            ENDM
+
+
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (fast)
+; Input:    M0-M7
+; Output:   A=0, Z=0, N=0
+;------------------------------------------------------------------------------
+.MACRO  BCDFIX_CLR_FAST     mreg
+            LDA     #$00
+            STA     mreg
+            STA     mreg+1
+        .IF BCDFIX_REG_SIZ > 2
+            STA     mreg+2
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 3
+            STA     mreg+3
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 4
+            STA     mreg+4
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 5
+            STA     mreg+5
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 6
+            STA     mreg+6
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 7
+            STA     mreg+7
+        .ENDIF
+.ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (inline)
+; Input:    M0-M7
+;           X or Y
+; Output:   A=0, X or Y = 0, Z=0, N=0
+;------------------------------------------------------------------------------
+.MACRO  BCDFIX_CLR_INLINE   mreg,ireg
+        .LOCAL      loop
+            LDA     #$00
+            LDX     #BCDFIX_REG_SIZ-1
+            ;FIXME: or Y
+loop:       STA     mreg,ireg
+            DEX
+            ;FIXME: or Y
+            BNE     loop
+.ENDMACRO
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (inline)
+; Input:    M0-M7
+;           X or Y
+; Output:   A=0, X or Y = 0, Z=0, N=0
+;------------------------------------------------------------------------------
+.MACRO      BCDFIX_CLR      mreg,ireg
+            .IF ireg = 'X' or 'x'
+            LDX     #>>mreg
+            JSR     bcdfix_clr_x
+            .ELSE IF Y y
+            LDY     #>>mreg
+            JSR     bcdfix_clr_y
+            .ELSE
+            .ERROR
+            .ENDIF
+.ENDMACRO
+
+
+
+bcdfix_clr_x:
+        ;.LOCAL      loop
+            LDA     #$00
+            LDX     #BCDFIX_REG_SIZ-1
+            ;FIXME: or Y
+loop:       ;STA     mreg,ireg
+            DEX
+            ;FIXME: or Y
+            BNE     loop
+            RTS
+
+
+
+
+bcdfix_clr_y:
+            RTS
+
+
