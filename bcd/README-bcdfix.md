@@ -71,86 +71,94 @@ Registers m0 and m1 (actually ZEROPAGE memory) will be defined.
 
 | Name | Input | Output | Description | Status |
 |------|-------|--------|-------------|--------|
-| CLR_FAST  | m0-m7 | A=0, Z=0, N=0 | CLeaR math register | COMPLETE |
+| MODE_INIT | | | Save current decimal mode. Set decimal mode. | TODO |
+| MODE_DONE | | | Restore previously saved decimal mode. | TODO |
+| | | | | |
+| DATA | | | | Set constant data. |
+| | | | | |
+| CLR_FAST  | m0-m7 | A=0, Z=0, N=0 | CLeaR math register | IN TESTING |
 | CLR_INLINE  | m0-m7, X or Y | Z=0,N=0 | CLeaR math register | TODO |
 | CLR  | m0-m7, X or Y | A=0, X or Y=0, Z=0,N=0 | CLeaR math register. Calls clr_x or clr_y | TODO |
 | | | | | |
 | LDM | | | LoaD Math register | TODO |
+| STM | | | STore Math register | TODO |
+| | | | | |
+| CONV_TO_ASCII | | | Convert to ASCII | TODO |
+| CONV_TO_BYTES | | | Convert to BYTE String (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*') | TODO |
+| CONV_FROM_ASCII | | | Convert from ASCII | TODO |
+| CONV_FROM_BYTES | | | Convert from BYTE String (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*') | TODO |
 | | | | | |
 | TST | m0-m7 | NZ | TeST math register against zero | TODO |
 | CMP | m0-m7,m0-m7 | Z=?,N=?,V=? | CoMPare math register | TODO |
 | | | | | |
-| BCDFIX_MODE_DECIMAL | | | Decimal mode on off save restore...|
-| BCDFIX_MODE_RESTORE | | | |
-| ||||
 | INCU | | | INCrement Unsigned | TODO |
 | INCS | | | INCrement Signed | TODO |
 | DECU | | | DECrement Unsigned | TODO |
 | DECS | | | DECrement Signed | TODO |
-| ||||
+| | | | | |
 | ADCU | | | ADd with Carry Unsigned | TODO |
 | ADCS | | | ADd with Carry Signed | TODO |
 | SBCU | | | SuBtract with Carry (borrow) Unsigned | TODO |
 | SBCS | | | SuBtract with Carry (borrow) Signed | TODO |
 | | | | | |
-| MULU | | | |
-| MULS | | | |
-| MULU2 | | | |
-| MULS2 | | | |
-| DIVU | | | |
-| DIVS | | | |
-| DIVMODU | | | |
-| DIVMODS | | | |
-| MOD | | | |
-| ||||
-| LSRU | | | | |
-| LSRS | | | | |
-| ASRU | | | | |
-| ASRS | | | | |
-| LSLU | | | | |
-| LSLS | | | | |
-| ASLU | | | | |
-| ASLS | | | | |
-| LSRU2 | | | | |
-| LSRS2 | | | | |
-| ASRU2 | | | | |
-| ASRS2 | | | | |
-| LSLU2 | | | | |
-| LSLS2 | | | | |
-| ASLU2 | | | | |
-| ASLS2 | | | | |
-| ||||
-| ABS ||||
-| CEIL ||||
-| FLOOR | | | | |
-| MIN | | | | |
-| MAX | | | | |
-| NEG | | | | |
-| RANDOM | | | | |
-| TRUNC  | | | | |
-| ROUND | | | | |
-| GET EXPONENT | | | | |
-| POW | | | | |
-| SQR | | | | |
-| SQRT | | | | |
-| CBRT | | | | |
-| ||||
-| LOG ||||
-| LOG10 ||||
-| ||||
-| HYPOT||||
-| ||||
-| ACOS ||||
-| ASIN ||||
-| ATAN ||||
-| ATAN2||||
-| COS ||||
-| COSH ||||
-| SIN||||
-| SINH ||||
-| TAN||||
-| TANH||||
-| ||||
+| MULU | | | | TODO |
+| MULS | | | | TODO |
+| MULU2 | | | | TODO |
+| MULS2 | | | | TODO |
+| DIVU | | | | TODO |
+| DIVS | | | | TODO |
+| DIVMODU | | | | TODO |
+| DIVMODS | | | | TODO |
+| MOD | | | | TODO |
+| | | | | |
+| LSRU | | | | TODO |
+| LSRS | | | | TODO |
+| ASRU | | | | TODO |
+| ASRS | | | | TODO |
+| LSLU | | | | TODO |
+| LSLS | | | | TODO |
+| ASLU | | | | TODO |
+| ASLS | | | | TODO |
+| LSRU2 | | | | TODO |
+| LSRS2 | | | | TODO |
+| ASRU2 | | | | TODO |
+| ASRS2 | | | | TODO |
+| LSLU2 | | | | TODO |
+| LSLS2 | | | | TODO |
+| ASLU2 | | | | TODO |
+| ASLS2 | | | | TODO |
+| | | | | |
+| ABS | | | | TODO |
+| CEIL | | | | TODO |
+| FLOOR | | | | TODO |
+| MIN | | | | TODO |
+| MAX | | | | TODO |
+| NEG | | | | TODO |
+| RANDOM | | | | FUTURE CANDIDATE |
+| TRUNC  | | | | TODO |
+| ROUND | | | | TODO |
+| GET EXPONENT | | | | NOT APPLICABLE? |
+| POW | | | | TODO |
+| SQR | | | | TODO |
+| SQRT | | | | FUTURE CANDIDATE |
+| CBRT | | | | FUTURE CANDIDATE |
+| | | | | |
+| LOG | | | | FUTURE CANDIDATE |
+| LOG10 | | | | FUTURE CANDIDATE |
+| | | | | |
+| HYPOT | | | | FUTURE CANDIDATE |
+| | | | | |
+| ACOS | | | | FUTURE CANDIDATE |
+| ASIN | | | | FUTURE CANDIDATE |
+| ATAN | | | | FUTURE CANDIDATE |
+| ATAN2 | | | | FUTURE CANDIDATE |
+| COS | | | | FUTURE CANDIDATE |
+| COSH | | | | FUTURE CANDIDATE |
+| SIN | | | | FUTURE CANDIDATE |
+| SINH | | | | FUTURE CANDIDATE |
+| TAN | | | | FUTURE CANDIDATE |
+| TANH | | | | FUTURE CANDIDATE |
+| | | | | |
 
 TODO: add limits + data funcs
 
