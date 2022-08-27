@@ -114,21 +114,44 @@ m7:         .RES        BCDFIX_REG_SIZ
 
 
 
-
-
+;TEMPLATE
+; Input:
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
 
 
 
 
 
 ;------------------------------------------------------------------------------
-; Save current decimal mode. Set decimal mode (inline)
+; Save current decimal mode. Enable decimal mode (inline).
+;
 ; Input:    None
-; Output:   A=Saved flags, D=1, SP-1
+; Working:  SP-=1 (saved SR)
+; Output:   D=1
+; Statistics:-
+;   Code: 2
+;   Data: 0
+;   RAM: 0
+;   ZP: 0
+;   Stack: 1
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
 ;------------------------------------------------------------------------------
 .MACRO      BCDFIX_MODE_INIT
-            TSA
-            PHA
+            PHP
             SED
 .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -136,16 +159,94 @@ m7:         .RES        BCDFIX_REG_SIZ
 
 
 ;------------------------------------------------------------------------------
-; Restore previously saved decimal mode (inline)
+; Restore previously saved decimal mode (inline).
+;
 ; Input:    None
-; Output:   A=Saved flags, SR=Saved flags.
+; Working:  SP+=1 (saved SR)
+; Output:   SR=Restored SR.
 ;------------------------------------------------------------------------------
 .MACRO      BCDFIX_MODE_DONE
-            PLA
-            TAS
+            PLP
 .ENDMACRO
 ;------------------------------------------------------------------------------
 
+
+
+;------------------------------------------------------------------------------
+; Reserve variable memory any address available.
+;
+; Input:-
+;   name    Label name for this variable allocation (optional).
+;   qty     Quantity of size allocations.
+;   siz     Size of allocation in bytes (optional; default=1).
+; Working:
+; Output:
+; Statistics:-
+;   Code: 2
+;   Data: 0
+;   RAM: 0
+;   ZP: 0
+;   Stack: 1
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+.MACRO      BCDFIX_VAR  name,qty,siz
+        .PUSHSEG
+        .BSS
+        .IFNBLANK name
+name:
+        .ENDIF
+        .REPEAT qty
+            .IFBLANK siz
+                .RES    1
+            .ELSE
+                .RES    siz
+            .ENDIF
+        .ENDREPEAT
+        .POPSEG
+.ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Reserve variable memory within zero page.
+;
+; Input:-
+;   name    Label name for this variable allocation (optional).
+;   qty     Quantity of size allocations.
+;   siz     Size of allocation in bytes (optional; default=1).
+; Working:
+; Output:
+; Statistics:-
+;   Code: 2
+;   Data: 0
+;   RAM: 0
+;   ZP: 0
+;   Stack: 1
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+.MACRO      BCDFIX_VAR_ZP  name,qty,siz
+        .PUSHSEG
+        .ZEROPAGE
+        .IFNBLANK name
+name:
+        .ENDIF
+        .REPEAT qty
+            .IFBLANK siz
+                .RES    1
+            .ELSE
+                .RES    siz
+            .ENDIF
+        .ENDREPEAT
+        .POPSEG
+.ENDMACRO
+;------------------------------------------------------------------------------
 
 
 
@@ -243,7 +344,7 @@ loop:       STA     mreg,ireg
 
 
 bcdfix_clr_x:
-        ;.LOCAL      loop
+        .SCOPE
             LDA     #$00
             LDX     #BCDFIX_REG_SIZ-1
             ;FIXME: or Y
@@ -251,6 +352,7 @@ loop:       ;STA     mreg,ireg
             DEX
             ;FIXME: or Y
             BNE     loop
+    .ENDSCOPE
             RTS
 
 
@@ -315,7 +417,7 @@ bcdfix_clr_y:
 ; Input:    FUTURE
 ; Output:   FUTURE
 ;------------------------------------------------------------------------------
-.MACRO      BCDFIX_CONV_FROM_ASCII
+.MACRO  BCDFIX_CONV_FROM_ASCII
             .ERROR  "FUTURE: NOT IMPLEMENTED!"
 .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -339,9 +441,93 @@ bcdfix_clr_y:
 ; Input:    m0-m7 REVIEW
 ; Output:   NZ REVIEW
 ;------------------------------------------------------------------------------
-.MACRO      BCDFIX_TST
-            .ERROR  "FUTURE: NOT IMPLEMENTED!"
+.MACRO      BCDFIX_TST_FAST mreg
+            LDA     #$00
+            ORA     mreg
+            ORA     mreg+1
+        .IF BCDFIX_REG_SIZ > 2
+            ORA     mreg+2
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 3
+            ORA     mreg+3
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 4
+            ORA     mreg+4
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 5
+            ORA     mreg+5
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 6
+            ORA     mreg+6
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 7
+            ORA     mreg+7
+        .ENDIF
 .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; TeST math register against zero
+; Input:    m0-m7 REVIEW
+; Output:   NZ REVIEW
+;------------------------------------------------------------------------------
+.MACRO  BCDFIX_TST_INLINE      mreg
+            LDA     #$00
+            LDX     #$00    ; or Y
+            ORA     (mreg),x
+            DEY
+            ORA     mreg+1
+        .IF BCDFIX_REG_SIZ > 2
+            ORA     mreg+2
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 3
+            ORA     mreg+3
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 4
+            ORA     mreg+4
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 5
+            ORA     mreg+5
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 6
+            ORA     mreg+6
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 7
+            ORA     mreg+7
+        .ENDIF
+.ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; TeST math register against zero
+; Input:    m0-m7 REVIEW
+; Output:   NZ REVIEW
+;------------------------------------------------------------------------------
+.MACRO  BCDFIX_TST      mreg
+            LDX     #mreg
+            JSR     bcdfix_tst
+.ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+bcdfix_tst:
+    .SCOPE
+            ;LDX     #mreg
+            LDY     #BCDFIX_REG_SIZ-1
+loop:       ORA     $00,X
+            INX
+            DEY
+            BPL     loop
+            CMP     #$00
+    .ENDSCOPE
+            RTS
 ;------------------------------------------------------------------------------
 
 
@@ -359,9 +545,55 @@ bcdfix_clr_y:
 
 
 ;------------------------------------------------------------------------------
+; INCrement Unsigned (unrolled, inline)
+; Input:    m0-m7
+; Output:   m0-m7
+;------------------------------------------------------------------------------
+.MACRO      BCDFIX_INCU_FAST
+            CLC ; REVIEW: should this be inc with carry? if so remove CLC.
+            LDA     m0+0
+            ADC     #$01
+            STA     m1+0
+            LDA     m0+1
+            ADC     $00
+            STA     m1+1
+            LDA     m0+1
+            ADC     $00
+            STA     m1+1
+            LDA     m0+1
+            ADC     $00
+            STA     m1+1
+            LDA     m0+1
+            ADC     $00
+            STA     m1+1
+
+        .IF BCDFIX_REG_SIZ > 2
+            STA     mreg+2
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 3
+            STA     mreg+3
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 4
+            STA     mreg+4
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 5
+            STA     mreg+5
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 6
+            STA     mreg+6
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 7
+            STA     mreg+7
+        .ENDIF
+.ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
 ; INCrement Unsigned
-; Input:    FUTURE
-; Output:   FUTURE
+; Input:    m0-m7
+; Output:   m0-m7
 ;------------------------------------------------------------------------------
 .MACRO      BCDFIX_INCU
             .ERROR  "FUTURE: NOT IMPLEMENTED!"

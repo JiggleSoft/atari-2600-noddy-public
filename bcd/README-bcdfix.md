@@ -69,11 +69,13 @@ Registers m0 and m1 (actually ZEROPAGE memory) will be defined.
 
 ### Macros
 
-| Name | Input | Output | Description | Status |
-|------|-------|--------|-------------|--------|
-| MODE_INIT | | | Save current decimal mode. Set decimal mode. | TODO |
-| MODE_DONE | | | Restore previously saved decimal mode. | TODO |
+| Name | Input | Working | Output | Description | Status |
+|------|-------|---------|--------|-------------|--------|
+| MODE_INIT | None | SR->STACK | D=1 | Save current decimal mode on the stack. Set decimal mode. (inline) | COMPLETED |
+| MODE_DONE | None | STACK->SR | SR=saved | Restore previously saved decimal mode from the stack. (inline) | COMPLETED |
 | | | | | |
+| VAR | name, qty, siz | | | Reserve variable memory any address available. | COMPLETED |
+| VAR_ZP | name, qty, siz | | | Reserve variable memory within zero page. | COMPLETED |
 | DATA | | | | Set constant data. |
 | | | | | |
 | CLR_FAST  | m0-m7 | A=0, Z=0, N=0 | CLeaR math register | IN TESTING |

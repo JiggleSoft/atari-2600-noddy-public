@@ -154,6 +154,21 @@ endless_loop:
 
 .CODE
 
+    BCDFIX_MODE_INIT
+
+    BCDFIX_VAR_ZP   ,2
+    BCDFIX_VAR_ZP   ,2,3
+    BCDFIX_VAR_ZP   zp001,2
+    BCDFIX_VAR_ZP   zp002,2,3
+
+    BCDFIX_VAR  ,2
+    BCDFIX_VAR  ,2,3
+    BCDFIX_VAR  mem01,2
+    BCDFIX_VAR  mem02,2,3
+
+
+    BCDFIX_MODE_DONE
+
     BCDFIX_CLR_FAST     m0
 
     BCDFIX_CLR_INLINE     m0,X
