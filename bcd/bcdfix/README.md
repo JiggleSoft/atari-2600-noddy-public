@@ -8,6 +8,27 @@ The library developed here but will become part of JiggleSofts Atari 2600 extra 
 Intitial required for an Atari 2600 video game that is in development.
 
 
+### Planned Releases
+
+| Version | Description | Status |
+|---------|-------------|--------|
+| 1.0     | Basic core functionality: configuration, registers, mode, variables, data, clear, load, store, test, compare, increment, decrement, addition, subtraction. | DEV | 
+| 1.1     | Additional core functionality: conversion to bytes and ascii, shifting, abs, ceil, floor, min, max, neg, trunc, round. | TODO |
+| 1.2     | Additional core functionality: multiplication, division, modulo. | TODO |
+| 1.3     | constants. | TODO |
+| 1.4     | powers, square, cube, exp. | TODO |
+| 1.5     | random. | TODO |
+| 2.0     | converstion from bytes and ascii. | TODO |
+| 3.0     | square root. | TODO |
+| 3.1     | cube root. | TODO |
+| 4.0     | logarithms | TODO |
+| 5.0     | angle conversions | TODO |
+| 5.1     | sine, cosine, tangent | TODO |
+| 5.2     | acos, asin, atan, atan2, cosh, sinh, tanh | TODO |
+
+*Note: Version 1.5 would provide enough functionality for the planned game.*
+
+
 ## Fixed Point Math Library.
 
 ### Data Types
@@ -69,135 +90,125 @@ Registers m0 and m1 (actually ZEROPAGE memory) will be defined.
 
 ### Macros
 
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| MODE_INIT | None | SR->STACK | D=1 | Save current decimal mode on the stack and enable decimal mode (inline). | COMPLETED |
-| MODE_DONE | None | STACK->SR | SR=Restored SR | Restore previously saved decimal mode from the stack (inline). | COMPLETED |
-| | | | | | |
-| VAR | name=label name (optional),<br />qty=quantity of variables,<br />siz=size of each variable in bytes (default=BCDFIX_REG_SIZ) | NA | BSS memory reserved. | Reserve variable memory at any address available. | COMPLETED |
-| VAR_ZP | name=label name (optional),<br />qty=quantity of variables,<br />siz=size of each variable in bytes (default=BCDFIX_REG_SIZ) | NA | BSS memory reserved. | Reserve variable memory within zero page. | COMPLETED |
-| | | | | | |
-| DATA | name=label name (optional),<br />val=BCD value in a string e.g. '9876543210' | NA | DATA memory allocated with value. | Set constant data. | IN DEVELOPMENT |
-| | | | | | |
-| CLR_FAST  | m0-m7 | A, Z, N, SR | ?A=0, Z=0, N=0 | CLeaR math register | IN TESTING |
-| CLR_INLINE  | m0-m7 | A, X, Y, Z, N, SR | ?Z=0,N=0 | CLeaR math register | TODO |
-| CLR  | m0-m7 | | A=0, X= or Y=0, Z=0,N=0 | ACLeaR math register. Calls clr_x or clr_y | TODO |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| LDM | | | | LoaD Math register | TODO |
-| STM | | | | STore Math register | TODO |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| CONV_TO_ASCII | | | | Convert to ASCII | TODO |
-| CONV_TO_BYTES | | | | Convert to BYTE String (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*') | TODO |
-| CONV_FROM_ASCII | | | | Convert from ASCII | TODO |
-| CONV_FROM_BYTES | | | | Convert from BYTE String (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*') | TODO |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| TST | m0-m7 | | NZ | TeST math register against zero | TODO |
-| CMP | m0-m7,m0-m7 | | Z=?,N=?,V=? | CoMPare math register | TODO |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| INCU | | | | INCrement Unsigned | TODO |
-| INCS | | | | INCrement Signed | TODO |
-| DECU | | | | DECrement Unsigned | TODO |
-| DECS | | | | DECrement Signed | TODO |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| ADCU | | | | ADd with Carry Unsigned | TODO |
-| ADCS | | | | ADd with Carry Signed | TODO |
-| SBCU | | | | SuBtract with Carry (borrow) Unsigned | TODO |
-| SBCS | | | | SuBtract with Carry (borrow) Signed | TODO |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| MULU | | | | | TODO |
-| MULS | | | | | TODO |
-| MULU2 | | | | | TODO |
-| MULS2 | | | | | TODO |
-| DIVU | | | | | TODO |
-| DIVS | | | | | TODO |
-| DIVMODU | | | | | TODO |
-| DIVMODS | | | | | TODO |
-| MOD | | | | | TODO |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| LSRU | | | | | TODO |
-| LSRS | | | | | TODO |
-| ASRU | | | | | TODO |
-| ASRS | | | | | TODO |
-| LSLU | | | | | TODO |
-| LSLS | | | | | TODO |
-| ASLU | | | | | TODO |
-| ASLS | | | | | TODO |
-| LSRU2 | | | | | TODO |
-| LSRS2 | | | | | TODO |
-| ASRU2 | | | | | TODO |
-| ASRS2 | | | | | TODO |
-| LSLU2 | | | | | TODO |
-| LSLS2 | | | | | TODO |
-| ASLU2 | | | | | TODO |
-| ASLS2 | | | | | TODO |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| ABS | | | | | TODO |
-| CEIL | | | | | TODO |
-| FLOOR | | | | | TODO |
-| MIN | | | | | TODO |
-| MAX | | | | | TODO |
-| NEG | | | | | TODO |
-| RANDOM | | | | | FUTURE CANDIDATE |
-| TRUNC  | | | | | TODO |
-| ROUND | | | | | TODO |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| GET EXPONENT | | | | | NOT APPLICABLE? |
-| POW | | | | | TODO |
-| SQR | | | | | TODO |
-| SQRT | | | | | FUTURE CANDIDATE |
-| CBRT | | | | | FUTURE CANDIDATE |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| LOG | | | | | FUTURE CANDIDATE |
-| LOG10 | | | | | FUTURE CANDIDATE |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| HYPOT | | | | | FUTURE CANDIDATE |
-| | | | | | |
-
-| Name | Input | Working | Output | Description | Status |
-|------|-------|---------|--------|-------------|--------|
-| ACOS | | | | | FUTURE CANDIDATE |
-| ASIN | | | | | FUTURE CANDIDATE |
-| ATAN | | | | | FUTURE CANDIDATE |
-| ATAN2 | | | | | FUTURE CANDIDATE |
-| COS | | | | | FUTURE CANDIDATE |
-| COSH | | | | | FUTURE CANDIDATE |
-| SIN | | | | | FUTURE CANDIDATE |
-| SINH | | | | | FUTURE CANDIDATE |
-| TAN | | | | | FUTURE CANDIDATE |
-| TANH | | | | | FUTURE CANDIDATE |
-| | | | | | |
+| Name | Input | Working | Output | Description | Version | Status |
+|------|-------|---------|--------|-------------|---------|--------|
+| MODE_INIT | None | SR->STACK | D=1 | Save current decimal mode on the stack and enable decimal mode (inline).  | 1.0 | DONE |
+| MODE_DONE | None | STACK->SR | SR=Restored SR | Restore previously saved decimal mode from the stack (inline). | 1.0 | DONE |
+| | | | | | | |
+| VAR | name=label name (optional),<br />qty=quantity of variables,<br />siz=size of each variable in bytes (default=BCDFIX_REG_SIZ) | NA | BSS memory reserved. | Reserve variable memory at any address available. | 1.0 | DONE |
+| VAR_ZP | name=label name (optional),<br />qty=quantity of variables,<br />siz=size of each variable in bytes (default=BCDFIX_REG_SIZ) | NA | BSS memory reserved. | Reserve variable memory within zero page. | 1.0 | DONE |
+| | | | | | | |
+| DATA | name=label name (optional),<br />val=BCD value in a string e.g. '9876543210' | NA | DATA memory allocated with value. | Set constant data. | 1.0 | DEV |
+| | | | | | | |
+| CLR_FAST  | m0-m7 | A, Z, N, SR | ?A=0, Z=0, N=0 | CLeaR math register | 1.0 | TEST |
+| CLR_INLINE  | m0-m7 | A, X, Y, Z, N, SR | ?Z=0,N=0 | CLeaR math register | 1.0 | TODO |
+| CLR  | m0-m7 | | A=0, X= or Y=0, Z=0,N=0 | ACLeaR math register. Calls clr_x or clr_y | 1.0 | TODO |
+| | | | | | | |
+| LDM | | | | LoaD Math register | 1.0 | TODO |
+| STM | | | | STore Math register | 1.0 | TODO |
+| | | | | | | |
+| CONV_TO_ASCII | | | | Convert to ASCII | 1.1 | TODO |
+| CONV_TO_BYTES | | | | Convert to BYTE String (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*') | 1.1 | TODO |
+| CONV_FROM_ASCII | | | | Convert from ASCII | 2.0 | TODO |
+| CONV_FROM_BYTES | | | | Convert from BYTE String (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*') | 2.0 | TODO |
+| | | | | | | |
+| TST | m0-m7 | | NZ | TeST math register against zero | 1.0 | TODO |
+| CMP | m0-m7,m0-m7 | | Z=?,N=?,V=? | CoMPare math register | 1.0 | TODO |
+| | | | | | | |
+| INCU_FAST | m0-m7 | | | INCrement Unsigned (fast) | 1.0 | TODO |
+| INCU      | m0-m7 | | | INCrement Unsigned        | 1.0 | TODO |
+| INCS_FAST | m0-m7 | | | INCrement Signed (fast)   | 1.0 | TODO |
+| INCS      | m0-m7 | | | INCrement Signed          | 1.0 | TODO |
+| DECU_FAST | m0-m7 | | | DECrement Unsigned (fast) | 1.0 | TODO |
+| DECU      | m0-m7 | | | DECrement Unsigned        | 1.0 | TODO |
+| DECS_FAST | m0-m7 | | | DECrement Signed (fast)   | 1.0 | TODO |
+| DECS      | m0-m7 | | | DECrement Signed          | 1.0 | TODO |
+| | | | | | | |
+| ADCU_FAST | | | | ADd with Carry Unsigned | 1.0 | TODO |
+| ADCU      | | | | ADd with Carry Unsigned | 1.0 | TODO |
+| ADCS_FAST | | | | ADd with Carry Signed | 1.0 | TODO |
+| ADCS      | | | | ADd with Carry Signed | 1.0 | TODO |
+| SBCU_FAST | | | | SuBtract with Carry (borrow) Unsigned | 1.0 | TODO |
+| SBCU      | | | | SuBtract with Carry (borrow) Unsigned | 1.0 | TODO |
+| SBCS_FAST | | | | SuBtract with Carry (borrow) Signed | 1.0 | TODO |
+| SBCS      | | | | SuBtract with Carry (borrow) Signed | 1.0 | TODO |
+| | | | | | | |
+| MULU    | | | | | 1.2 | TODO |
+| MULS    | | | | | 1.2 | TODO |
+| MULU2   | | | | | 1.2 | TODO |
+| MULS2   | | | | | 1.2 | TODO |
+| DIVU    | | | | | 1.2 | TODO |
+| DIVS    | | | | | 1.2 | TODO |
+| DIVMODU | | | | | 1.2 | TODO |
+| DIVMODS | | | | | 1.2 | TODO |
+| MOD     | | | | | 1.2 | TODO |
+| | | | | | | |
+| LSRU  | | | | | 1.1 | TODO |
+| LSRS  | | | | | 1.1 | TODO |
+| ASRU  | | | | | 1.1 | TODO |
+| ASRS  | | | | | 1.1 | TODO |
+| LSLU  | | | | | 1.1 | TODO |
+| LSLS  | | | | | 1.1 | TODO |
+| ASLU  | | | | | 1.1 | TODO |
+| ASLS  | | | | | 1.1 | TODO |
+| LSRU2 | | | | | 1.1 | TODO |
+| LSRS2 | | | | | 1.1 | TODO |
+| ASRU2 | | | | | 1.1 | TODO |
+| ASRS2 | | | | | 1.1 | TODO |
+| LSLU2 | | | | | 1.1 | TODO |
+| LSLS2 | | | | | 1.1 | TODO |
+| ASLU2 | | | | | 1.1 | TODO |
+| ASLS2 | | | | | 1.1 | TODO |
+| | | | | | | |
+| ABS    | | | | | 1.1 | TODO |
+| CEIL   | | | | | 1.1 | TODO |
+| FLOOR  | | | | | 1.1 | TODO |
+| MIN    | | | | | 1.1 | TODO |
+| MAX    | | | | | 1.1 | TODO |
+| NEG    | | | | | 1.1 | TODO |
+| RANDOM | | | | | 1.5 | TODO |
+| TRUNC  | | | | | 1.1 | TODO |
+| ROUND  | | | | | 1.1 | TODO |
+| | | | | | | |
+| GET EXPONENT | | | | | ?.? | NA?? |
+| POW  | | | | | 1.4 | TODO |
+| SQR  | | | | | 1.4 | TODO |
+| CUB  | | | | | 1.4 | TODO |
+| EXP  | | | | | 1.4 | TODO |
+| SQRT | | | | | 3.0 | TODO |
+| CBRT | | | | | 3.1 | TODO |
+| | | | | | | |
+| LOG   | | | | | 4.0 | TODO |
+| LOG10 | | | | | 4.0 | TODO |
+| | | | | | | |
+| HYPOT | | | | | ?.? | REVIEW |
+| | | | | | | |
+| ACOS  | | | | | 5.2  | TODO |
+| ASIN  | | | | | 5.2  | TODO |
+| ATAN  | | | | | 5.2  | TODO |
+| ATAN2 | | | | | 5.2  | TODO |
+| COS   | | | | | 5.1  | TODO|
+| COSH  | | | | | 5.2  | TODO |
+| SIN   | | | | | 5.1  | TODO|
+| SINH  | | | | | 5.2  | TODO |
+| TAN   | | | | | 5.1  | TODO |
+| TANH  | | | | | 5.2  | TODO |
+| | | | | | | |
+| RAD_TO_DEG  | | | | | 5.0 | TODO |
+| RAD_TO_BYTE | | | | | 5.0 | TODO |
+| RAD_TO_1K   | | | | | 5.0 | TODO |
+| DEG_TO_RAD  | | | | | 5.0 | TODO |
+| DEG_TO_BYTE | | | | | 5.0 | TODO |
+| DEG_TO_1K   | | | | | 5.0 | TODO |
+| BYTE_TO_RAD | | | | | 5.0 | TODO |
+| BYTE_TO_DEG | | | | | 5.0 | TODO |
+| BYTE_TO_1K  | | | | | 5.0 | TODO |
+| 1K_TO_RAD   | | | | | 5.0 | TODO |
+| 1K_TO_DEG   | | | | | 5.0 | TODO |
+| 1K_TO_BYTE  | | | | | 5.0 | TODO |
+| | | | | | | |
+| CONSTANTS | | | | TO BE DEFINED | 1.3 | TODO |
+| | | | | | | |
 
 TODO: add limits + data funcs
 

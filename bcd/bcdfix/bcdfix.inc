@@ -240,7 +240,7 @@ name:
 
 
 
-;| CLR_FAST  | m0-m7 | A=0, Z=0, N=0 | CLeaR math register | IN TESTING |
+;| CLR_FAST  | m0-m7 | A=0, Z=0, N=0 | CLeaR math register | TEST |
 ;| CLR_INLINE  | m0-m7, X or Y | Z=0,N=0 | CLeaR math register | TODO |
 ;| CLR  | m0-m7, X or Y | A=0, X or Y=0, Z=0,N=0 | CLeaR math register. Calls clr_x or clr_y | TODO |
 ;------------------------------------------------------------------------------
