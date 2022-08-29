@@ -147,7 +147,7 @@ endless_loop:
                 JMP             endless_loop
 
 
-                .INCLUDE        "bcdfix.inc"
+                .INCLUDE        "bcdfix/bcdfix.inc"
 
 
 

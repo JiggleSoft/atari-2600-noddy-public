@@ -86,22 +86,22 @@ ${BUILD_DIR}/secamx/${APP_NAME}-secamx.4k: build-init ${BUILD_DIR}/secamx/${APP_
 
 
 
-${BUILD_DIR}/ntsc/${APP_NAME}-main-ntsc.o: ${APP_NAME}-main.s bcdfix.inc
+${BUILD_DIR}/ntsc/${APP_NAME}-main-ntsc.o: ${APP_NAME}-main.s bcdfix/bcdfix.inc
 	$(CA65) -D NO_STELLA_REG_NAMES -D PLATFORM_NTSC -I ${ASM_COMMON_DIR}/asminc/ --cpu 6502X -t atari2600 -l ${BUILD_DIR}/ntsc/${APP_NAME}-main-ntsc.lst ${APP_NAME}-main.s -o ${BUILD_DIR}/ntsc/${APP_NAME}-main-ntsc.o
 
-${BUILD_DIR}/pal60/${APP_NAME}-main-pal60.o: ${APP_NAME}-main.s bcdfix.inc
+${BUILD_DIR}/pal60/${APP_NAME}-main-pal60.o: ${APP_NAME}-main.s bcdfix/bcdfix.inc
 	$(CA65) -D NO_STELLA_REG_NAMES -D PLATFORM_PAL60 -I ${ASM_COMMON_DIR}/asminc/ --cpu 6502X -t atari2600 -l ${BUILD_DIR}/pal60/${APP_NAME}-main-pal60.lst ${APP_NAME}-main.s -o ${BUILD_DIR}/pal60/${APP_NAME}-main-pal60.o
 
-${BUILD_DIR}/pal/${APP_NAME}-main-pal.o: ${APP_NAME}-main.s bcdfix.inc
+${BUILD_DIR}/pal/${APP_NAME}-main-pal.o: ${APP_NAME}-main.s bcdfix/bcdfix.inc
 	$(CA65) -D NO_STELLA_REG_NAMES -D PLATFORM_PAL -I ${ASM_COMMON_DIR}/asminc/ --cpu 6502X -t atari2600 -l ${BUILD_DIR}/pal/${APP_NAME}-main-pal.lst ${APP_NAME}-main.s -o ${BUILD_DIR}/pal/${APP_NAME}-main-pal.o
 
-${BUILD_DIR}/secam/${APP_NAME}-main-secam.o: ${APP_NAME}-main.s bcdfix.inc
+${BUILD_DIR}/secam/${APP_NAME}-main-secam.o: ${APP_NAME}-main.s bcdfix/bcdfix.inc
 	$(CA65) -D NO_STELLA_REG_NAMES -D PLATFORM_SECAM -I ${ASM_COMMON_DIR}/asminc/ --cpu 6502X -t atari2600 -l ${BUILD_DIR}/secam/${APP_NAME}-main-secam.lst ${APP_NAME}-main.s -o ${BUILD_DIR}/secam/${APP_NAME}-main-secam.o
 
-${BUILD_DIR}/palx/${APP_NAME}-main-palx.o: ${APP_NAME}-main.s bcdfix.inc
+${BUILD_DIR}/palx/${APP_NAME}-main-palx.o: ${APP_NAME}-main.s bcdfix/bcdfix.inc
 	$(CA65) -D NO_STELLA_REG_NAMES -D PLATFORM_PALX -I ${ASM_COMMON_DIR}/asminc/ --cpu 6502X -t atari2600 -l ${BUILD_DIR}/palx/${APP_NAME}-main-palx.lst ${APP_NAME}-main.s -o ${BUILD_DIR}/palx/${APP_NAME}-main-palx.o
 
-${BUILD_DIR}/secamx/${APP_NAME}-main-secamx.o: ${APP_NAME}-main.s bcdfix.inc
+${BUILD_DIR}/secamx/${APP_NAME}-main-secamx.o: ${APP_NAME}-main.s bcdfix/bcdfix.inc
 	$(CA65) -D NO_STELLA_REG_NAMES -D PLATFORM_SECAMX -I ${ASM_COMMON_DIR}/asminc/ --cpu 6502X -t atari2600 -l ${BUILD_DIR}/secamx/${APP_NAME}-main-secamx.lst ${APP_NAME}-main.s -o ${BUILD_DIR}/secamx/${APP_NAME}-main-secamx.o
 
 

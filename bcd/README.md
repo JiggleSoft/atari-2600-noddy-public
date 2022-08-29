@@ -6,15 +6,15 @@ This directory contains Binary Coded Decimal (BCD) routines for the 6502 family 
 Initially developed for the Atari 2600 video games console but applicable to any 65XX (with BCD / Decimal Flag support) powered console or computer.
 There are two libraries. One for Fixed Point and one for Floating Point.
 These are developed here but will become part of JiggleSofts Atari 2600 extra libraries.
-Intitial required for an Atari 2600 video game that is in development.
+Initially required for an Atari 2600 video game that is in development.
 
 
 ## Index
 
-| Filename  | Description |Documentation | Status |
-|-----------|-------------|--------------|--------|
-| bcdfix.i  | Binary Coded Decimal (BCD) Fixed Point Math Library. | [README-bcdfix.md](README-bcdfix.md) | In development |
-| bcdfp.i   | Binary Coded Decimal (BCD) Floating Point Math Library. | [README-bcdfp.md](README-bcdfp.md) | Vapourware |
+| Filename   | Description | Documentation | Status |
+|------------|-------------|---------------|--------|
+| bcdfix.inc | Binary Coded Decimal (BCD) Fixed Point Math Library.    | [README-bcdfix.md](bcdfix/README.md) | In development |
+| bcdfp.inc  | Binary Coded Decimal (BCD) Floating Point Math Library. | [README-bcdfp.md](bcdfp/README.md)   | Vapourware |
 
 
 ## Contact

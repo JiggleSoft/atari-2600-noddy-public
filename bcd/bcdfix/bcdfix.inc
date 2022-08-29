@@ -1,85 +1,392 @@
 ; Binary Coded Decimal (BCD) Fixed Point Math Functions.
 
-; Math registers can be unsigned, signed with length of 4 to 8 bytes.
+; Math registers can be unsigned, signed with length of 2 to 8 bytes unsigned, or 3 to 8 bytes signed.
 
 ; CONFIGURATION:-
-;   BCDFIX_REG_SIZ  - Size of each BCD math register in bytes (2-8; default=3).
-;   BCDFIX_REG_NUM  - Number of BCD math registers (2-8; default=2).
+;   BCDFIX_REG_SIZ  - Size of each BCD math register in bytes (2-8); default=3).
+;   BCDFIX_REG_QTY  - Quantity of BCD math registers (2-8; default=2).
 ;   BCDFIX_NO_REG   - If defined do not automatically create the registers (default=undefined).
 
 
-; Default
-.IFNDEF BCDFIX_REG_SIZ
-    .WARNING "BCDFIX_REG_SIZ default = 3"
-BCDFIX_REG_SIZ = 3
-.ENDIF
+;------------------------------------------------------------------------------
+; Configuration Defaults
+;------------------------------------------------------------------------------
+    ; Default register size if not set.
+    .IFNDEF BCDFIX_REG_SIZ
+        .WARNING "BCDFIX_REG_SIZ default = 3"
+        BCDFIX_REG_SIZ = 3
+    .ENDIF
 
-.IFNDEF BCDFIX_REG_NUM
-    .WARNING "BCDFIX_REG_NUM default = 2"
-BCDFIX_REG_NUM = 2
-.ENDIF
+    ; Default register quantity if not set.
+    .IFNDEF BCDFIX_REG_QTY
+        .WARNING "BCDFIX_REG_QTY default = 2"
+        BCDFIX_REG_QTY = 2
+    .ENDIF
+;------------------------------------------------------------------------------
 
 
-
-;
-.IFDEF BCDFIX_REG_SIZ
- .IFDEF BCDFIX_REG_NUM
-  .IFNDEF BCDFIX_NO_REG
+;------------------------------------------------------------------------------
+; Validate Configuration
+;------------------------------------------------------------------------------
+    ; Register size.
     .IF BCDFIX_REG_SIZ < 2
         .ERROR "BCDFIX_REG_SIZ < 2"
     .ENDIF
     .IF BCDFIX_REG_SIZ > 8
         .ERROR "BCDFIX_REG_SIZ > 8 !"
     .ENDIF
+
+    ; Register quantity.
+    .IF BCDFIX_REG_QTY < 2
+        .ERROR "BCDFIX_REG_QTY < 2"
+    .ENDIF
+    .IF BCDFIX_REG_QTY > 8
+        .ERROR "BCDFIX_REG_QTY > 8 !"
+    .ENDIF
+;------------------------------------------------------------------------------
+
+
+;------------------------------------------------------------------------------
+; Reserve zero page memory for registers.
+;------------------------------------------------------------------------------
+    .IFDEF BCDFIX_REG_SIZ
+      .IFDEF BCDFIX_REG_QTY
+        .IFNDEF BCDFIX_NO_REG
+          .IF BCDFIX_REG_SIZ < 2
+            .ERROR "BCDFIX_REG_SIZ < 2"
+          .ENDIF
+          .IF BCDFIX_REG_SIZ > 8
+            .ERROR "BCDFIX_REG_SIZ > 8 !"
+          .ENDIF
+          .PUSHSEG
+          .ZEROPAGE
+m0:
+M0:       .RES        BCDFIX_REG_SIZ
+m1:
+M1:       .RES        BCDFIX_REG_SIZ
+          .IF BCDFIX_REG_QTY > 2
+m2:
+M2:         .RES        BCDFIX_REG_SIZ
+          .ENDIF
+          .IF BCDFIX_REG_QTY > 3
+m3:
+M3:         .RES        BCDFIX_REG_SIZ
+          .ENDIF
+          .IF BCDFIX_REG_QTY > 4
+m4:
+M4:         .RES        BCDFIX_REG_SIZ
+          .ENDIF
+          .IF BCDFIX_REG_QTY > 5
+m5:
+M5:         .RES        BCDFIX_REG_SIZ
+          .ENDIF
+          .IF BCDFIX_REG_QTY > 6
+m6:
+M6:         .RES        BCDFIX_REG_SIZ
+          .ENDIF
+          .IF BCDFIX_REG_QTY > 7
+m7:
+M7:         .RES        BCDFIX_REG_SIZ
+          .ENDIF
+          .POPSEG
+        .ENDIF
+      .ENDIF
+    .ENDIF
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Save current decimal mode on the stack and enable decimal mode (inline).
+;
+; Input:    None
+; Working:  SR->STACK
+; Output:   D=1
+; Statistics:-
+;   Code:   2
+;   Stack:  1 (pushed)
+;   Cycles: 5 (3+2)
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_MODE_INIT
+            PHP
+            SED
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Restore previously saved decimal mode from the stack (inline).
+;
+; Input:    None
+; Working:  STACK->SR
+; Output:   SR=Restored SR.
+; Statistics:-
+;   Code:   1
+;   Stack:  1 (popped)
+;   Cycles: 4
+;------------------------------------------------------------------------------
+.MACRO      BCDFIX_MODE_DONE
+            PLP
+.ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Reserve variable memory at any address available.
+;
+; Input:-
+;   name    Label name for this variable allocation (optional).
+;   qty     Quantity of size allocations.
+;   siz     Size of allocation in bytes (optional; default=BCDFIX_REG_SIZ).
+; Working:  NA
+; Output:   BSS memory reserved.
+; Statistics:-
+;   RAM:    qty * siz
+;    or
+;   ZP:     qty * siz
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_VAR  name,qty,siz
+        .PUSHSEG
+        .BSS
+        .IFNBLANK name
+name:
+        .ENDIF
+        .REPEAT qty
+            .IFBLANK siz
+                .RES    BCDFIX_REG_SIZ
+            .ELSE
+                .RES    siz
+            .ENDIF
+        .ENDREPEAT
+        .POPSEG
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Reserve variable memory within zero page.
+;
+; Input:-
+;   name    Label name for this variable allocation (optional).
+;   qty     Quantity of size allocations.
+;   siz     Size of allocation in bytes (optional; default=BCDFIX_REG_SIZ).
+; Working:  NA
+; Output:   BSS memory reserved.
+; Statistics:-
+;   ZP:     qty * siz
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_VAR_ZP   name,qty,siz
         .PUSHSEG
         .ZEROPAGE
-m0:         .RES        BCDFIX_REG_SIZ
-m1:         .RES        BCDFIX_REG_SIZ
-        .IF BCDFIX_REG_NUM > 2
-m2:         .RES        BCDFIX_REG_SIZ
+        .IFNBLANK name
+name:
         .ENDIF
-        .IF BCDFIX_REG_NUM > 3
-m3:         .RES        BCDFIX_REG_SIZ
-        .ENDIF
-        .IF BCDFIX_REG_NUM > 4
-m4:         .RES        BCDFIX_REG_SIZ
-        .ENDIF
-        .IF BCDFIX_REG_NUM > 5
-m5:         .RES        BCDFIX_REG_SIZ
-        .ENDIF
-        .IF BCDFIX_REG_NUM > 6
-m6:         .RES        BCDFIX_REG_SIZ
-        .ENDIF
-        .IF BCDFIX_REG_NUM > 7
-m7:         .RES        BCDFIX_REG_SIZ
-        .ENDIF
+        .REPEAT qty
+            .IFBLANK siz
+                .RES    BCDFIX_REG_SIZ
+            .ELSE
+                .RES    siz
+            .ENDIF
+        .ENDREPEAT
         .POPSEG
-    .ENDIF
-  .ENDIF
-.ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
 
 
 
-.MACRO  BCDFIX_DATA_FIXME b0,b1,b2,b3,b4,b5,b6,b7
-.IF .PARAMCOUNT > BCDFIX_REG_SIZ
-.ERROR "CONSTANT DATA IS TOO LARGE"
-.ENDIF
-    .PUSHSEG
-    .DATA
-;    .BYTE $b0
-;    .BYTE $b1
-;    .BYTE $b2
-;    .BYTE $b3
-;    .BYTE $b4
-;    .BYTE $b5
-;    .BYTE $b6
-;    .BYTE $b7
-; .BYTE $99
-    .POPSEG
+;------------------------------------------------------------------------------
+; Set constant data.
+; Input:    Constant address label name,
+;           Constant data value.
+;name=label name (optional),<br />val=BCD value in a string e.g. '9876543210' or '-76543210'
+; Output:   ???
+;TEMPLATE
+; Input:
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DATA name,val
+        .PUSHSEG
+        .DATA
+        .IFNBLANK name
+name:
+        .ENDIF
+;FIXME: !!!!!!!!!!!!!
+            .BYTE   $12
+            .BYTE   $12
+            .BYTE   $12
+            .BYTE   $12
+            .BYTE   $12
+            .BYTE   $12
+            .BYTE   $12
+            .BYTE   $12
+        .POPSEG
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+
+;| CLR_FAST  | m0-m7 | A=0, Z=0, N=0 | CLeaR math register | IN TESTING |
+;| CLR_INLINE  | m0-m7, X or Y | Z=0,N=0 | CLeaR math register | TODO |
+;| CLR  | m0-m7, X or Y | A=0, X or Y=0, Z=0,N=0 | CLeaR math register. Calls clr_x or clr_y | TODO |
+;------------------------------------------------------------------------------
+; CLeaR math register (fast)
+; Input:    M0-M7
+; Output:   A=0, Z=0, N=0
+
+; Input:
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+.MACRO  BCDFIX_CLR_FAST     mreg
+            LDA     #$00
+            STA     mreg
+            STA     mreg+1
+        .IF BCDFIX_REG_SIZ > 2
+            STA     mreg+2
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 3
+            STA     mreg+3
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 4
+            STA     mreg+4
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 5
+            STA     mreg+5
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 6
+            STA     mreg+6
+        .ENDIF
+        .IF BCDFIX_REG_SIZ > 7
+            STA     mreg+7
+        .ENDIF
+.ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (inline)
+; Input:    FUTURE
+; Output:   FUTURE
+; Input:
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+
+;------------------------------------------------------------------------------
+.MACRO  BCDFIX_CLR_INLINE   mreg,ireg
+        .LOCAL      loop
+            LDA     #$00
+            LDX     #BCDFIX_REG_SIZ-1
+            ;FIXME: or Y
+loop:       STA     mreg,ireg
+            DEX
+            ;FIXME: or Y
+            BNE     loop
 .ENDMACRO
 
-;set constant data vars.
-;.DATA
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (inline)
+; Input:    FUTURE
+; Output:   FUTURE
+; Input:
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+.MACRO      BCDFIX_CLR      mreg,ireg
+            .IF ireg = 'X' or 'x'
+            LDX     #>>mreg
+            JSR     bcdfix_clr_x
+            .ELSE IF Y y
+            LDY     #>>mreg
+            JSR     bcdfix_clr_y
+            .ELSE
+            .ERROR
+            .ENDIF
+.ENDMACRO
+
+
+
+    .PUSHSEG
+    .CODE
+
+bcdfix_clr_x:
+        .SCOPE
+            LDA     #$00
+            LDX     #BCDFIX_REG_SIZ-1
+            ;FIXME: or Y
+loop:       ;STA     mreg,ireg
+            DEX
+            ;FIXME: or Y
+            BNE     loop
+    .ENDSCOPE
+            RTS
+
+
+
+
+bcdfix_clr_y:
+            RTS
+
+
+    .POPSEG
+
+
+
+
+
+
+
+
+
+
+
 
 ;load constant
 
@@ -133,233 +440,10 @@ m7:         .RES        BCDFIX_REG_SIZ
 
 
 
-;------------------------------------------------------------------------------
-; Save current decimal mode. Enable decimal mode (inline).
-;
-; Input:    None
-; Working:  SP-=1 (saved SR)
-; Output:   D=1
-; Statistics:-
-;   Code: 2
-;   Data: 0
-;   RAM: 0
-;   ZP: 0
-;   Stack: 1
-;   Cycles: 5 (3+2)
-;       Min:
-;       Avg:
-;       Max:
-;------------------------------------------------------------------------------
-.MACRO      BCDFIX_MODE_INIT
-            PHP
-            SED
-.ENDMACRO
-;------------------------------------------------------------------------------
-
-
-
-;------------------------------------------------------------------------------
-; Restore previously saved decimal mode (inline).
-;
-; Input:    None
-; Working:  SP+=1 (saved SR)
-; Output:   SR=Restored SR.
-;------------------------------------------------------------------------------
-.MACRO      BCDFIX_MODE_DONE
-            PLP
-.ENDMACRO
-;------------------------------------------------------------------------------
-
-
-
-;------------------------------------------------------------------------------
-; Reserve variable memory any address available.
-;
-; Input:-
-;   name    Label name for this variable allocation (optional).
-;   qty     Quantity of size allocations.
-;   siz     Size of allocation in bytes (optional; default=1).
-; Working:
-; Output:
-; Statistics:-
-;   Code: 2
-;   Data: 0
-;   RAM: 0
-;   ZP: 0
-;   Stack: 1
-;   Cycles: 5 (3+2)
-;       Min:
-;       Avg:
-;       Max:
-;------------------------------------------------------------------------------
-.MACRO      BCDFIX_VAR  name,qty,siz
-        .PUSHSEG
-        .BSS
-        .IFNBLANK name
-name:
-        .ENDIF
-        .REPEAT qty
-            .IFBLANK siz
-                .RES    1
-            .ELSE
-                .RES    siz
-            .ENDIF
-        .ENDREPEAT
-        .POPSEG
-.ENDMACRO
-;------------------------------------------------------------------------------
-
-
-
-;------------------------------------------------------------------------------
-; Reserve variable memory within zero page.
-;
-; Input:-
-;   name    Label name for this variable allocation (optional).
-;   qty     Quantity of size allocations.
-;   siz     Size of allocation in bytes (optional; default=1).
-; Working:
-; Output:
-; Statistics:-
-;   Code: 2
-;   Data: 0
-;   RAM: 0
-;   ZP: 0
-;   Stack: 1
-;   Cycles: 5 (3+2)
-;       Min:
-;       Avg:
-;       Max:
-;------------------------------------------------------------------------------
-.MACRO      BCDFIX_VAR_ZP  name,qty,siz
-        .PUSHSEG
-        .ZEROPAGE
-        .IFNBLANK name
-name:
-        .ENDIF
-        .REPEAT qty
-            .IFBLANK siz
-                .RES    1
-            .ELSE
-                .RES    siz
-            .ENDIF
-        .ENDREPEAT
-        .POPSEG
-.ENDMACRO
-;------------------------------------------------------------------------------
-
-
-
-;------------------------------------------------------------------------------
-; Set constant data.
-; Input:    Constant address label name,
-;           Constant data value.
-; Output:   ???
-;------------------------------------------------------------------------------
-.MACRO      BCDFIX_DATA
-;FIXME: !!!!!!!!!!!!!
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-.ENDMACRO
-;------------------------------------------------------------------------------
-
-
-
-;| CLR_FAST  | m0-m7 | A=0, Z=0, N=0 | CLeaR math register | IN TESTING |
-;| CLR_INLINE  | m0-m7, X or Y | Z=0,N=0 | CLeaR math register | TODO |
-;| CLR  | m0-m7, X or Y | A=0, X or Y=0, Z=0,N=0 | CLeaR math register. Calls clr_x or clr_y | TODO |
-;------------------------------------------------------------------------------
-; CLeaR math register (fast)
-; Input:    M0-M7
-; Output:   A=0, Z=0, N=0
-;------------------------------------------------------------------------------
-.MACRO  BCDFIX_CLR_FAST     mreg
-            LDA     #$00
-            STA     mreg
-            STA     mreg+1
-        .IF BCDFIX_REG_SIZ > 2
-            STA     mreg+2
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 3
-            STA     mreg+3
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 4
-            STA     mreg+4
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 5
-            STA     mreg+5
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 6
-            STA     mreg+6
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 7
-            STA     mreg+7
-        .ENDIF
-.ENDMACRO
-;------------------------------------------------------------------------------
-
-
-
-;------------------------------------------------------------------------------
-; CLeaR math register (inline)
-; Input:    FUTURE
-; Output:   FUTURE
-;------------------------------------------------------------------------------
-.MACRO  BCDFIX_CLR_INLINE   mreg,ireg
-        .LOCAL      loop
-            LDA     #$00
-            LDX     #BCDFIX_REG_SIZ-1
-            ;FIXME: or Y
-loop:       STA     mreg,ireg
-            DEX
-            ;FIXME: or Y
-            BNE     loop
-.ENDMACRO
-
-
-
-;------------------------------------------------------------------------------
-; CLeaR math register (inline)
-; Input:    FUTURE
-; Output:   FUTURE
-;------------------------------------------------------------------------------
-.MACRO      BCDFIX_CLR      mreg,ireg
-            .IF ireg = 'X' or 'x'
-            LDX     #>>mreg
-            JSR     bcdfix_clr_x
-            .ELSE IF Y y
-            LDY     #>>mreg
-            JSR     bcdfix_clr_y
-            .ELSE
-            .ERROR
-            .ENDIF
-.ENDMACRO
-
-
-
-bcdfix_clr_x:
-        .SCOPE
-            LDA     #$00
-            LDX     #BCDFIX_REG_SIZ-1
-            ;FIXME: or Y
-loop:       ;STA     mreg,ireg
-            DEX
-            ;FIXME: or Y
-            BNE     loop
-    .ENDSCOPE
-            RTS
 
 
 
 
-bcdfix_clr_y:
-            RTS
 
 
 
