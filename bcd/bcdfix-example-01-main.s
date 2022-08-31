@@ -36,11 +36,33 @@
 
                 .CODE
 
-    BCDFIX_REG_SIZ  = 8
+    BCDFIX_REG_SIZ  = 6
 
                 .INCLUDE        "bcdfix/bcdfix.inc"
 
-    BCDFIX_DATA constdata1,"123456"
+.WARNING "---000---"
+    BCDFIX_DATAU constdata0
+.WARNING "---001---"
+    BCDFIX_DATAU constdata1,""
+.WARNING "---002---"
+    BCDFIX_DATAU constdata2,"0"
+.WARNING "---003---"
+    BCDFIX_DATAU constdata3,"1"
+.WARNING "---004---"
+    BCDFIX_DATAU constdata4,"12"
+.WARNING "---005---"
+    BCDFIX_DATAU constdata5,"123"
+.WARNING "---006---"
+    BCDFIX_DATAU constdata6,"1234"
+.WARNING "---007---"
+    BCDFIX_DATAU constdata7,"12345"
+.WARNING "---008---"
+    BCDFIX_DATAU constdata8,"123456"
+.WARNING "---009---"
+    BCDFIX_DATAU constdata9,"1234567"
+.WARNING "---00A---"
+    BCDFIX_DATAU constdataA,"12345678"
+.WARNING "---00B---"
 
     BCDFIX_DECU_FAST m0
         BCDFIX_DECU_FAST m0
