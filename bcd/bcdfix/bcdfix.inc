@@ -1,12 +1,38 @@
-; Binary Coded Decimal (BCD) Fixed Point Math Functions.
-
+;==============================================================================
+; Title:        Binary Coded Decimal (BCD) Fixed Point Math Functions.
+; Filename:     bcdfix.inc
+; Platform:     Atari 2600
+; Language:     6507 Assembly Language (https://cc65.github.io/doc/ca65.html)
+; Author:       Justin Lane (atari2600@jigglesoft.co.uk)
+; Date:         2022-08-31 18:00
+; Version:      0.0.0
+;------------------------------------------------------------------------------
+; Copyright (c) 2022 Justin Lane
+;
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+;
+;     http://www.apache.org/licenses/LICENSE-2.0
+;
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+;------------------------------------------------------------------------------
 ; Math registers can be unsigned, signed with length of 2 to 8 bytes unsigned, or 3 to 8 bytes signed.
-
-; CONFIGURATION:-
+;
+; Configuration (to be set before this file is included):-
 ;   BCDFIX_REG_SIZ  - Size of each BCD math register in bytes (2-8); default=3).
 ;   BCDFIX_REG_QTY  - Quantity of BCD math registers (2-8; default=2).
 ;   BCDFIX_NO_REG   - If defined do not automatically create the registers (default=undefined).
+;------------------------------------------------------------------------------
 
+
+;------------------------------------------------------------------------------
+; CONFIGURATION
+;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
 ; Configuration Defaults
@@ -23,6 +49,7 @@
         BCDFIX_REG_QTY = 2
     .ENDIF
 ;------------------------------------------------------------------------------
+
 
 
 ;------------------------------------------------------------------------------
@@ -45,6 +72,11 @@
     .ENDIF
 ;------------------------------------------------------------------------------
 
+
+
+;------------------------------------------------------------------------------
+; REGISTERS
+;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
 ; Reserve zero page memory for registers.
@@ -97,6 +129,10 @@ M7:         .RES        BCDFIX_REG_SIZ
 
 
 ;------------------------------------------------------------------------------
+; DECIMAL MODE
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
 ; Save current decimal mode on the stack and enable decimal mode (inline).
 ;
 ; Input:    None
@@ -132,6 +168,10 @@ M7:         .RES        BCDFIX_REG_SIZ
 ;------------------------------------------------------------------------------
 
 
+
+;------------------------------------------------------------------------------
+; RESERVE MEMORY FOR VARIABLES
+;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
 ; Reserve variable memory at any address available.
@@ -198,6 +238,10 @@ name:
 
 
 ;------------------------------------------------------------------------------
+; DEFINE CONSTANT DATA
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
 ; Set constant data.
 ; Input:    Constant address label name,
 ;           Constant data value.
@@ -224,25 +268,69 @@ name:
         .IFNBLANK name
 name:
         .ENDIF
-;FIXME: !!!!!!!!!!!!!
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
-            .BYTE   $12
+        ;.PUSHCHARMAP
+ ;       .CHARMAP $30, $00
+ ;       .CHARMAP $31, $10
+ ;       .CHARMAP $32, $20
+ ;       .CHARMAP $33, $30
+ ;       .CHARMAP $34, $40
+ ;       .CHARMAP $35, $50
+ ;       .CHARMAP $36, $60
+ ;       .CHARMAP $37, $70
+ ;       .CHARMAP $38, $80
+ ;       .CHARMAP $39, $90
+;.WARNING "11111"
+         ;       ZZZZ = .STRAT(val, 0)
+        ;.WARNING .STRING(ZZZZ)
+        ;.WARNING .STRING(.STRAT(val, 0))
+        ;.WARNING "22222"
+        ;.CHARMAP $30, $0
+        ;.CHARMAP $31, $1
+        ;.CHARMAP $32, $2
+        ;.CHARMAP $33, $3
+        ;.CHARMAP $34, $4
+        ;.CHARMAP $35, $5
+        ;.CHARMAP $36, $6
+        ;.CHARMAP $37, $7
+        ;.CHARMAP $38, $8
+        ;.CHARMAP $39, $9
+        ;XXXX = .STRAT(val, 1)
+        ;.WARNING .STRING(XXXX)
+        ;.WARNING "33333"
+        ;.WARNING .STRING(.STRAT(val, 0)) .STRAT(val, 1)
+        ;.BYTE   ZZZZ
+        ;.BYTE XXXX
+        ;.WARNING .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
+        ;.BYTE .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
+        ;.WARNING .CONCAT(.STRING(.STRAT(val, 2)), .STRING(.STRAT(val, 3)))
+        ;.WARNING .CONCAT(.STRING(.STRAT(val, 4)), .STRING(.STRAT(val, 5)))
+        ;.WARNING "--------------"
+        ;ZZZZZZ = .CONCAT(.STRING(ZZZZ), .STRING(XXXX))
+        ;;.BYTE ZZZZZZ
+        ;.WARNING "--------------"
+        ;.WARNING .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
+        ;.WARNING "--------------"  + .STRAT(val, 1)
+.BYTE $88
+        .BYTE ((.STRAT(val, 0)-48)*16)+(.STRAT(val, 1)-48)
+        .BYTE ((.STRAT(val, 2)-48)*16)+(.STRAT(val, 3)-48)
+        .BYTE ((.STRAT(val, 4)-48)*16)+(.STRAT(val, 5)-48)
+.BYTE $FF
+        ;;;.BYTE .CONCAT(ZZZZ,XXXX)
+        ;.BYTE   .STRAT(val, 2).STRAT(val, 3)
+        ;.POPCHARMAP
         .POPSEG
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
+;------------------------------------------------------------------------------
+; CLEAR A MATH REGISTER
+;------------------------------------------------------------------------------
 
-;| CLR_FAST  | m0-m7 | A=0, Z=0, N=0 | CLeaR math register | TEST |
-;| CLR_INLINE  | m0-m7, X or Y | Z=0,N=0 | CLeaR math register | TODO |
-;| CLR  | m0-m7, X or Y | A=0, X or Y=0, Z=0,N=0 | CLeaR math register. Calls clr_x or clr_y | TODO |
+;| CLR_FAST  | reg = math register (m0 - m7) | A=0, Z=0, N=0 | CLeaR math register | TEST |
+;| CLR_INLINE  | reg = math register (m0 - m7), X or Y | Z=0,N=0 | CLeaR math register | TODO |
+;| CLR  | reg = math register (m0 - m7), X or Y | A=0, X or Y=0, Z=0,N=0 | CLeaR math register. Calls clr_x or clr_y | TODO |
 ;------------------------------------------------------------------------------
 ; CLeaR math register (fast)
 ; Input:    M0-M7
@@ -342,10 +430,10 @@ loop:       STA     mreg,ireg
 .MACRO      BCDFIX_CLR      mreg,ireg
             .IF ireg = 'X' or 'x'
             LDX     #>>mreg
-            JSR     bcdfix_clr_x
+  ;          JSR     bcdfix_clr_x
             .ELSE IF Y y
             LDY     #>>mreg
-            JSR     bcdfix_clr_y
+ ;           JSR     bcdfix_clr_y
             .ELSE
             .ERROR
             .ENDIF
@@ -353,36 +441,143 @@ loop:       STA     mreg,ireg
 
 
 
-    .PUSHSEG
-    .CODE
-
-bcdfix_clr_x:
-        .SCOPE
-            LDA     #$00
-            LDX     #BCDFIX_REG_SIZ-1
-            ;FIXME: or Y
-loop:       ;STA     mreg,ireg
-            DEX
-            ;FIXME: or Y
-            BNE     loop
-    .ENDSCOPE
-            RTS
-
-
-
-
-bcdfix_clr_y:
-            RTS
-
-
-    .POPSEG
-
-
+;    .PUSHSEG
+;    .CODE
+;
+;bcdfix_clr_x:
+;        .SCOPE
+;            LDA     #$00
+;            LDX     #BCDFIX_REG_SIZ-1
+;            ;FIXME: or Y
+;loop:       ;STA     mreg,ireg
+;            DEX
+;            ;FIXME: or Y
+;            BNE     loop
+;    .ENDSCOPE
+;            RTS
+;
+;
+;
+;
+;bcdfix_clr_y:
+;            RTS
+;
+;
+;    .POPSEG
 
 
 
 
 
+
+
+
+
+;------------------------------------------------------------------------------
+; LOAD, COPY, OR STORE A MATH REGISTER
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; COMPARE MATH REGISTER
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; INCREMENT OR DECREMENT A MATH REGISTER
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADDITION AND SUBTRACTION OF MATH REGISTERS
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ABS, CEIL, FLOOR, MIN, MAX, NEG, TRUNC, ROUND
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CONVERSION TO BYTES / ASCII.
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SHIFT MATH REGISTERS (MULTIPLY AND DIVIDE BY 10)
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; MULTIPLICATION, DIVISION, OR MODULO OF MATH REGISTERS
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CONSTANTS
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; POW, SQR, CUB, EXP
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; PSEUDO RANDOM NUMBER GENERATION
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CONVERSION FROM BYTES / ASCII.
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SQUARE ROOT
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CUBE ROOT
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+;  LOGARITHMS
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+;  ANGLE CONVERSION
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+;  SINE, COSINE, AND TANGENT
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; acos, asin, atan, atan2, cosh, sinh, tanh
+;------------------------------------------------------------------------------
 
 
 
@@ -522,7 +717,7 @@ bcdfix_clr_y:
 
 ;------------------------------------------------------------------------------
 ; TeST math register against zero
-; Input:    m0-m7 REVIEW
+; Input:    reg = math register (m0 - m7) REVIEW
 ; Output:   NZ REVIEW
 ;------------------------------------------------------------------------------
 .MACRO      BCDFIX_TST_FAST mreg
@@ -593,7 +788,7 @@ bcdfix_clr_y:
 ;------------------------------------------------------------------------------
 .MACRO  BCDFIX_TST      mreg
             LDX     #mreg
-            JSR     bcdfix_tst
+            ;JSR     bcdfix_tst
 .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -601,18 +796,18 @@ bcdfix_clr_y:
 
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
-bcdfix_tst:
-    .SCOPE
-            ;LDX     #mreg
-            LDY     #BCDFIX_REG_SIZ-1
-loop:       ORA     $00,X
-            INX
-            DEY
-            BPL     loop
-            CMP     #$00
-    .ENDSCOPE
-            RTS
-;------------------------------------------------------------------------------
+;bcdfix_tst:
+;    .SCOPE
+;            ;LDX     #mreg
+;            LDY     #BCDFIX_REG_SIZ-1
+;loop:       ORA     $00,X
+;            INX
+;            DEY
+;            BPL     loop
+;            CMP     #$00
+;    .ENDSCOPE
+;            RTS
+;;------------------------------------------------------------------------------
 
 
 
@@ -699,9 +894,52 @@ loop:       ORA     $00,X
 
 
 ;------------------------------------------------------------------------------
+; DECrement Unsigned (unrolled; inline)
+;
+; Input:    mreg = Math register to decrement.
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DECU_FAST    mreg
+        CLC
+        .REPEAT BCDFIX_REG_SIZ,counter
+            LDA     mreg+BCDFIX_REG_SIZ-counter-1
+            SBC     #$00
+            STA     mreg+BCDFIX_REG_SIZ-counter-1
+        .ENDREPEAT
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
 ; DECrement Unsigned
 ; Input:    FUTURE
 ; Output:   FUTURE
+;TEMPLATE
+; Input:
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
 ;------------------------------------------------------------------------------
 .MACRO      BCDFIX_DECU
             .ERROR  "FUTURE: NOT IMPLEMENTED!"

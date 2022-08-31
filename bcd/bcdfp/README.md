@@ -15,18 +15,19 @@ Intitial required for an Atari 2600 video game that is in development.
 ```
 Endian = Little Endian
 
-Length is pre-configured between 4 to 8 bytes.
+Length is configurable between 4 to 8 bytes.
 
-One (binary not BCD) byte is reserved for the signed exponent.
+One (binary not BCD) byte is reserved for the exponent and another for the sign.
 
 Example with configured length of 5 bytes.
 
-              Lower Memory <----------------> Higher Memory
-Byte              0        1        2        3        4
-Nybble Order    1   0    3   2    5   4    7   6    9   8
-BCD / Hex Value 1   0    3   2    5   4    7   6    0   0
+                          Lower Memory <----------------> Higher Memory
+Byte                          0        1        2        3        4
+Nybble Order                1   0    3   2    5   4    7   6    9   8
+Mantissa / Exponent / Sign  M   M    M   M    M   M    E   E    S   S
+BCD / Hex Value             5   9    4   1    3   1    8   0    0   0
 
-Decimal Value   3.1415926
+Decimal Value   3.14159
 
 TODO: check exponent value with decimal value above.
 ```
