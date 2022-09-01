@@ -490,8 +490,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_TST_FAST mreg
+        .ERROR "BCDFIX_TST_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -500,8 +500,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_TST_INLINE   mreg
+        .ERROR "BCDFIX_TST_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -510,8 +510,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_TST  mreg
+        .ERROR "BCDFIX_TST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -520,8 +520,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_CMP_FAST mreg,oper
+        .ERROR "BCDFIX_CMP_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -530,8 +530,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_CMP_INLINE   mreg,oper
+        .ERROR "BCDFIX_CMP_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -540,8 +540,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_CMP  mreg,oper
+        .ERROR "BCDFIX_CMP IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -554,8 +554,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_INCU_FAST    mreg
+        .ERROR "BCDFIX_INCU_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -564,8 +564,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_INCU_INLINE  mreg
+        .ERROR "BCDFIX_INCU_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -574,8 +574,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_INCU mreg
+        .ERROR "BCDFIX_INCU IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -584,8 +584,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_INCS_FAST    mreg
+        .ERROR "BCDFIX_INCS_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -594,8 +594,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_INCS_INLINE  mreg
+        .ERROR "BCDFIX_INCS_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -604,22 +604,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
-    .ENDMACRO
-;------------------------------------------------------------------------------
-
-
-
-;------------------------------------------------------------------------------
-; ADDITION AND SUBTRACTION OF MATH REGISTERS
-;------------------------------------------------------------------------------
-
-;------------------------------------------------------------------------------
-;
-;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_INCS mreg
+        .ERROR "BCDFIX_INCS IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -628,8 +614,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_DECU_FAST    mreg
+        .ERROR "BCDFIX_DECU_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -638,8 +624,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_DECU_INLINE  mreg
+        .ERROR "BCDFIX_DECU_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -648,8 +634,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_DECU mreg
+        .ERROR "BCDFIX_DECU IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -658,8 +644,8 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_DECS_FAST    mreg
+        .ERROR "BCDFIX_DECS_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -668,10 +654,23 @@ loop:       STA     mreg,ireg
 ;------------------------------------------------------------------------------
 ;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_XXX mreg_in,mreg_out
-        .ERROR "BCDFIX_XXX IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_DECS_INLINE  mreg
+        .ERROR "BCDFIX_DECS_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+;
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DECS mreg
+        .ERROR "BCDFIX_DECS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
 
 
 
