@@ -4,8 +4,8 @@
 ; Platform:     Atari 2600
 ; Language:     6507 Assembly Language (https://cc65.github.io/doc/ca65.html)
 ; Author:       Justin Lane (atari2600@jigglesoft.co.uk)
-; Date:         2022-08-31 18:00
-; Version:      0.0.0
+; Date:         2022-09-01 18:00
+; Version:      0.0.1
 ;------------------------------------------------------------------------------
 ; Copyright (c) 2022 Justin Lane
 ;
@@ -178,8 +178,8 @@ M7:         .RES        BCDFIX_REG_SIZ
 ;
 ; Input:-
 ;   name    Label name for this variable allocation (optional).
-;   qty     Quantity of size allocations.
-;   siz     Size of allocation in bytes (optional; default=BCDFIX_REG_SIZ).
+;   qty     Quantity of variables.
+;   siz     Size of each variable in bytes (optional; default=BCDFIX_REG_SIZ).
 ; Working:  NA
 ; Output:   BSS memory reserved.
 ; Statistics:-
@@ -211,8 +211,8 @@ name:
 ;
 ; Input:-
 ;   name    Label name for this variable allocation (optional).
-;   qty     Quantity of size allocations.
-;   siz     Size of allocation in bytes (optional; default=BCDFIX_REG_SIZ).
+;   qty     Quantity of variables.
+;   siz     Size of each variable in bytes (optional; default=BCDFIX_REG_SIZ).
 ; Working:  NA
 ; Output:   BSS memory reserved.
 ; Statistics:-
@@ -242,27 +242,25 @@ name:
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
-; Set constant data. FIXME
-; Input:    Constant address label name,
-;           Constant data value.
-;name=label name (optional),<br />val=BCD value in a string e.g. '9876543210' or '-76543210'
-; Output:   ???
-;TEMPLATE
-; Input:
-; Working:
-; Output:
+; DATA storage set wih Unsigned constant value.
+; Input:-
+;   name    Label name for this constant data (optional).
+;   val     BCD value as a string e.g. '9876543210'.
+; Working:  NA
+; Output:   Read-only data storage set with constant value.
 ; Statistics:-
 ;   Code:
 ;   Data:
 ;   RAM:
 ;   ZP:
 ;   Stack:
-;   Cycles: 5 (3+2)
+;   Cycles: ? (?+?)
 ;       Min:
 ;       Avg:
 ;       Max:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DATAU    name,val
+  .WARNING "BCDFIX_DATAU: NOT YET FULLY IMPLEMENTED!
         .PUSHSEG
         .DATA
         .IFNBLANK name
@@ -305,7 +303,22 @@ name:
 
 
 ;------------------------------------------------------------------------------
-; FIXME
+; DATA storage set wih Signed constant value.
+; Input:-
+;   name    Label name for this constant data (optional).
+;   val     BCD value as a string e.g. '-76543210'.
+; Working:  NA
+; Output:   Read-only data storage set with constant value.
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: ? (?+?)
+;       Min:
+;       Avg:
+;       Max:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DATAS    name,val
         .ERROR "TODO: BCDFIX_DATAS IS NOT YET IMPLEMENTED!"
@@ -318,56 +331,55 @@ name:
 ; CLEAR A MATH REGISTER
 ;------------------------------------------------------------------------------
 
-;| CLR_FAST  | reg = math register (m0 - m7) | A=0, Z=0, N=0 | CLeaR math register | TEST |
-;| CLR_INLINE  | reg = math register (m0 - m7), X or Y | Z=0,N=0 | CLeaR math register | TODO |
-;| CLR  | reg = math register (m0 - m7), X or Y | A=0, X or Y=0, Z=0,N=0 | CLeaR math register. Calls clr_x or clr_y | TODO |
 ;------------------------------------------------------------------------------
-; CLeaR math register (fast)
-; Input:    M0-M7
-; Output:   A=0, Z=0, N=0
-
-; Input:
-; Working:
-; Output:
+; CLeaR math register (fast).
+;
+; Input:    mreg = math register (m0 - m7)
+; Output:   A=$00, SR=?
+;
 ; Statistics:-
-;   Code:
-;   Data:
-;   RAM:
-;   ZP:
-;   Stack:
-;   Cycles: 5 (3+2)
-;       Min:
-;       Avg:
-;       Max:
+;   Code:   BCDFIX_REG_SIZ * 2 + 2 (2*2+2=6, 3*2+2=8, 4*2+2=10, 5*2+2=12,
+;                                   6*2+2=14, 7*2+2=16, 8*2+2=18)
+;   Cycles: BCDFIX_REG_SIZ * 3 + 2 (2*3+2=8, 3*3+2=11, 4*3+2=14, 5*3+2=17,
+;                                   6*3+2=20, 7*3+2=23, 8*3+2=26)
 ;------------------------------------------------------------------------------
-.MACRO  BCDFIX_CLR_FAST     mreg
+    .MACRO  BCDFIX_CLR_FAST mreg
             LDA     #$00
-            STA     mreg
-            STA     mreg+1
-        .IF BCDFIX_REG_SIZ > 2
-            STA     mreg+2
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 3
-            STA     mreg+3
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 4
-            STA     mreg+4
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 5
-            STA     mreg+5
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 6
-            STA     mreg+6
-        .ENDIF
-        .IF BCDFIX_REG_SIZ > 7
-            STA     mreg+7
-        .ENDIF
-.ENDMACRO
+        .REPEAT BCDFIX_REG_SIZ,index
+            STA     mreg+index
+        .ENDREPEAT
+    .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
+; CLeaR math register (inline).
+;
+; Input:    mreg = math register (m0 - m7)
+; Output:   A=$00, X=$FF, SR=?
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLR_FAST mreg
+        .LOCAL  loop
+            LDA     #$00
+            LDX     #BCDFIX_REG_SIZ-1
+loop:
+            STA     mreg,X
+            DEX
+            BPL     loop
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (inline).
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+
+
+| CLR_INLINE      | mreg = math register (m0 - m7) | REVIEW: A, X, Y, Z, N, SR, ?Z=0,N=0 |  | 1.0 | TODO |
 ; CLeaR math register (inline)
 ; Input:    FUTURE
 ; Output:   FUTURE
@@ -400,6 +412,8 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+| CLR             | mreg = math register (m0 - m7) | REVIEW: A=0, X= or Y=0, Z=0,N=0, CLeaR math register. Calls clr_x or clr_y | CLeaR math register (func).  | 1.0 | TODO |
+
 ; CLeaR math register (inline)
 ; Input:    FUTURE
 ; Output:   FUTURE
