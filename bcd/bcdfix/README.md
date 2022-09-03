@@ -8,7 +8,7 @@ The library developed here but will become part of JiggleSofts Atari 2600 extra 
 Intitial required for an Atari 2600 video game that is in development.
 
 
-### Planned Releases
+## Planned Releases
 
 | Version | Description | Status |
 |---------|-------------|--------|
@@ -81,9 +81,9 @@ Decimal Value   -76543210
 
 ```
 BCDFIX_REG_QTY = 2  ; (m0, m1)
-BCDFIX_REG_SIZ = 4  ; (4 bytes each m(n) register).
+BCDFIX_REG_SIZE = 4  ; (4 bytes each m(n) register).
 ;.DEFINE BCDFIX_NO_REG ; Let the include define the types.
-BCDFIX_REG_SIG = 0 ; 0 = Unsigned, 1 = Signed.
+BCDFIX_REG_SIGN = 0 ; 0 = Unsigned, 1 = Signed.
 
 .INCLUDE    "bcd/bcdfix.inc"
 ```
@@ -93,168 +93,71 @@ Registers m0 and m1 (actually ZEROPAGE memory) will be defined.
 
 ### Macros Summary
 
-| Name            | Parameters                      | Description                                                              | Version | Status |
-|-----------------|---------------------------------|--------------------------------------------------------------------------|---------|--------|
-| MODE_INIT       | None.                           | Save current decimal mode on the stack and enable decimal mode (inline). | 1.0     | DONE   |
-| MODE_DONE       | None.                           | Restore previously saved decimal mode from the stack (inline).           | 1.0     | DONE   |
-|                 |                                 |                                                                          |         |        |
-| VAR             | name = label name (optional),<br />qty = quantity of variables,<br />siz = size of each variable in bytes (optional; default = BCDFIX_REG_SIZ). | Reserve variable memory at any address available (BSS). | 1.0 | DONE |
-| VAR_ZP          | name = label name (optional),<br />qty = quantity of variables,<br />siz = size of each variable in bytes (optional; default = BCDFIX_REG_SIZ). | Reserve variable memory within zero page (BSS).         | 1.0 | DONE |
-|                 |                                 |                                                                          |         |        |
-| DATAU           | name = label name (optional),<br />val = BCD value as a string e.g. '9876543210'. | DATA storage set wih Unsigned constant value. | 1.0 | DEV |
-| DATAS           | name = label name (optional),<br />val = BCD value as a string e.g. '-76543210'.  | DATA storage set with Signed constant value.  | 1.0 | DEV |
-|                 |                                 |                                                                          |         |        |
-| CLR_FAST        | mreg = math register (m0 - m7). | CLeaR math register (fast).                                              | 1.0     | TEST   |
-| CLR_INLINE      | mreg = math register (m0 - m7). | CLeaR math register (inline).                                            | 1.0     | TODO   |
-| CLR             | mreg = math register (m0 - m7). | CLeaR math register (function).                                          | 1.0     | TODO   |
-|                 |                                 |                                                                          |         |        |
-| LDM             | | LoaD Math register | 1.0 | TODO |
-| STM             | | STore Math register | 1.0 | TODO |
-|                 |                                 |                                                                          |         |        |
-| CONV_TO_ASCII   | mreg = math register (m0-m7),<br />sptr = address of buffer to receive the ASCII string. | Convert math register to ASCII string. | 1.1 | TODO |
-| CONV_TO_BYTES   | mreg = math register (m0-m7),<br />sptr = address of buffer to receive the byte array. | Convert math register to byte array (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*'). | 1.1 | TODO |
-| CONV_FROM_ASCII | mreg = math register (m0-m7),<br />sptr = address of buffer to parse the ASCII string from. | Convert to math register from ASCII string. | 2.0 | TODO |
-| CONV_FROM_BYTES | mreg = math register (m0-m7),<br />sptr = address of buffer to parse the byte array from. | Convert to math register from byte array (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*'). | 2.0 | TODO |
-|                 |                                 |                                                                          |         |        |
-| TST_FAST        | mreg = math register (m0 - m7). | TeST math register against zero (fast).                                  | 1.0     | TODO   |
-| TST_INLINE      | mreg = math register (m0 - m7). | TeST math register against zero (inline).                                | 1.0     | TODO   |
-| TST             | mreg = math register (m0 - m7). | TeST math register against zero (function).                              | 1.0     | TODO   |
-| CMP_FAST        | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7) | CoMPare math register (fast).      | 1.0     | TODO   |
-| CMP_INLINE      | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7) | CoMPare math register (inline).    | 1.0     | TODO   |
-| CMP             | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7) | CoMPare math register (function).  | 1.0     | TODO   |
-|                 |                                 |                                                                          |         |        |
-| INCU_FAST       | mreg = math register (m0 - m7). | INCrement Unsigned (fast).                                               | 1.0     | TODO   |
-| INCU_INLINE     | mreg = math register (m0 - m7). | INCrement Unsigned (inline).                                             | 1.0     | TODO   |
-| INCU            | mreg = math register (m0 - m7). | INCrement Unsigned (function).                                           | 1.0     | TODO   |
-| INCS_FAST       | mreg = math register (m0 - m7). | INCrement Signed (fast).                                                 | 1.0     | TODO   |
-| INCS_INLINE     | mreg = math register (m0 - m7). | INCrement Signed (inline).                                               | 1.0     | TODO   |
-| INCS            | mreg = math register (m0 - m7). | INCrement Signed (function).                                             | 1.0     | TODO   |
-| DECU_FAST       | mreg = math register (m0 - m7). | DECrement Unsigned (fast).                                               | 1.0     | TODO   |
-| DECU_INLINE     | mreg = math register (m0 - m7). | DECrement Unsigned (inline).                                             | 1.0     | TODO   |
-| DECU            | mreg = math register (m0 - m7). | DECrement Unsigned (function).                                           | 1.0     | TODO   |
-| DECS_FAST       | mreg = math register (m0 - m7). | DECrement Signed (fast).                                                 | 1.0     | TODO   |
-| DECS_INLINE     | mreg = math register (m0 - m7). | DECrement Signed (inline).                                               | 1.0     | TODO   |
-| DECS            | mreg = math register (m0 - m7). | DECrement Signed (function).                                             | 1.0     | TODO   |
-|                 |                                 |                                                                          |         |        |
-| ADCU_FAST       | mreg1 = math register (m0 - m7) addend 1,<br />mreg2 = math register (m0 - m7) addend 2,<br />mregs = math register (m0 - m7) sum. | ADd with Carry Unsigned (fast). | 1.0 | TODO |
-| ADCU_INLINE     | mreg1 = math register (m0 - m7) addend 1,<br />mreg2 = math register (m0 - m7) addend 2,<br />mregs = math register (m0 - m7) sum. | ADd with Carry Unsigned (inline). | 1.0 | TODO |
-| ADCU            | mreg1 = math register (m0 - m7) addend 1,<br />mreg2 = math register (m0 - m7) addend 2,<br />mregs = math register (m0 - m7) sum. | ADd with Carry Unsigned (function). | 1.0 | TODO |
-| ADCS_FAST       | mreg1 = math register (m0 - m7) addend 1,<br />mreg2 = math register (m0 - m7) addend 2,<br />mregs = math register (m0 - m7) sum. | ADd with Carry Signed (fast). | 1.0 | TODO |
-| ADCS_INLINE     | mreg1 = math register (m0 - m7) addend 1,<br />mreg2 = math register (m0 - m7) addend 2,<br />mregs = math register (m0 - m7) sum. | ADd with Carry Signed (inline). | 1.0 | TODO |
-| ADCS            | mreg1 = math register (m0 - m7) addend 1,<br />mreg2 = math register (m0 - m7) addend 2,<br />mregs = math register (m0 - m7) sum. | ADd with Carry Signed (function). | 1.0 | TODO |
-| SBCU_FAST       | mregm = math register (m0 - m7) minuend,<br />mregs = math register (m0 - m7) subtrahend,<br />mregd = math register (m0 - m7) difference. | SuBtract with Carry Unsigned (fast). | 1.0 | TODO |
-| SBCU_INLINE     | mregm = math register (m0 - m7) minuend,<br />mregs = math register (m0 - m7) subtrahend,<br />mregd = math register (m0 - m7) difference. | SuBtract with Carry Unsigned (inline). | 1.0 | TODO |
-| SBCU            | mregm = math register (m0 - m7) minuend,<br />mregs = math register (m0 - m7) subtrahend,<br />mregd = math register (m0 - m7) difference. | SuBtract with Carry Unsigned (function). | 1.0 | TODO |
-| SBCS_FAST       | mregm = math register (m0 - m7) minuend,<br />mregs = math register (m0 - m7) subtrahend,<br />mregd = math register (m0 - m7) difference. | SuBtract with Carry Signed (fast). | 1.0 | TODO |
-| SBCS_INLINE     | mregm = math register (m0 - m7) minuend,<br />mregs = math register (m0 - m7) subtrahend,<br />mregd = math register (m0 - m7) difference. | SuBtract with Carry Signed (inline). | 1.0 | TODO |
-| SBCS            | mregm = math register (m0 - m7) minuend,<br />mregs = math register (m0 - m7) subtrahend,<br />mregd = math register (m0 - m7) difference. | SuBtract with Carry Signed (function). | 1.0 | TODO |
-|                 |                                |                                                                          |         |        |
-| MULU_FAST       | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregp = math register (m0 - m7) product. | MULtipy Unsigned (fast). | 1.2 | TODO |
-| MULU_INLINE     | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregp = math register (m0 - m7) product. | MULtipy Unsigned (inline). | 1.2 | TODO |
-| MULU            | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregp = math register (m0 - m7) product. | MULtipy Unsigned (function). | 1.2 | TODO |
-| MULS_FAST       | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregp = math register (m0 - m7) product. | MULtipy Signed (fast). | 1.2 | TODO |
-| MULS_INLINE     | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregp = math register (m0 - m7) product. | MULtipy Signed (inline). | 1.2 | TODO |
-| MULS            | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregp = math register (m0 - m7) product. | MULtipy Signed (function). | 1.2 | TODO |
-| MULU2_FAST      | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregph = math register (m0 - m7) product (high),<br />mregpl = math register (m0 - m7) product (low). | MULtipy Unsigned with high and low result (fast). | 1.2 | TODO |
-| MULU2_INLINE    | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregph = math register (m0 - m7) product (high),<br />mregpl = math register (m0 - m7) product (low). | MULtipy Unsigned with high and low result (inline).| 1.2 | TODO |
-| MULU2           | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregph = math register (m0 - m7) product (high),<br />mregpl = math register (m0 - m7) product (low). | MULtipy Unsigned with high and low result (function).| 1.2 | TODO |
-| MULS2_FAST      | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregph = math register (m0 - m7) product (high),<br />mregpl = math register (m0 - m7) product (low). | MULtipy Signed with high and low result (fast).| 1.2 | TODO |
-| MULS2_INLINE    | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregph = math register (m0 - m7) product (high),<br />mregpl = math register (m0 - m7) product (low). | MULtipy Signed with high and low result (inline).| 1.2 | TODO |
-| MULS2           | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregph = math register (m0 - m7) product (high),<br />mregpl = math register (m0 - m7) product (low). | MULtipy Signed with high and low result (function). | 1.2 | TODO |
-| DIVU_FAST       | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient. | DIVide Unsigned (fast). | 1.2 | TODO |
-| DIVU_INLINE     | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient. | DIVide Unsigned (inline). | 1.2 | TODO |
-| DIVU            | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient. | DIVide Unsigned (function). | 1.2 | TODO |
-| DIVS_FAST       | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient. | DIVide Signed (fast). | 1.2 | TODO |
-| DIVS_INLINE     | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient. | DIVide Signed (inline). | 1.2 | TODO |
-| DIVS            | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient. | DIVide Signed (function). | 1.2 | TODO |
-| DIVMODU_FAST    | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient,<br />mregr = math register (m0 - m7) remainder. | DIVide with MODulo Unsigned (fast). | 1.2 | TODO |
-| DIVMODU_INLINE  | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient,<br />mregr = math register (m0 - m7) remainder. | DIVide with MODulo Unsigned (inline). | 1.2 | TODO |
-| DIVMODU         | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient,<br />mregr = math register (m0 - m7) remainder. | DIVide with MODulo Unsigned (function). | 1.2 | TODO |
-| DIVMODS_FAST    | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient,<br />mregr = math register (m0 - m7) remainder. | DIVide with MODulo Signed (fast). | 1.2 | TODO |
-| DIVMODS_INLINE  | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient,<br />mregr = math register (m0 - m7) remainder. | DIVide with MODulo Signed (inline). | 1.2 | TODO |
-| DIVMODS         | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient,<br />mregr = math register (m0 - m7) remainder. | DIVide with MODulo Signed (function). | 1.2 | TODO |
-| MODU_FAST       | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregr = math register (m0 - m7) remainder. | MODulo Unsigned (fast). | 1.2 | TODO |
-| MODU_INLINE     | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregr = math register (m0 - m7) remainder. | MODulo Unsigned (inline). | 1.2 | TODO |
-| MODU            | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregr = math register (m0 - m7) remainder. | MODulo Unsigned (function). | 1.2 | TODO |
-| MODS_FAST       | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregr = math register (m0 - m7) remainder. | MODulo Signed (fast). | 1.2 | TODO |
-| MODS_INLINE     | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregr = math register (m0 - m7) remainder. | MODulo Signed (inline). | 1.2 | TODO |
-| MODS            | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregr = math register (m0 - m7) remainder. | MODulo Signed (function). | 1.2 | TODO |
-|                 |                                |                                                                          |         |        |
-| LSRU_FAST       | mreg = math register (m0 - m7). | Logical Shift Right Unsigned (fast). | 1.1 | TODO |
-| LSRU_INLINE     | mreg = math register (m0 - m7). | Logical Shift Right Unsigned (inline). | 1.1 | TODO |
-| LSRU            | mreg = math register (m0 - m7). | Logical Shift Right Unsigned (function). | 1.1 | TODO |
-| LSRS_FAST       | mreg = math register (m0 - m7). | Logical Shift Right Signed (fast). | 1.1 | TODO |
-| LSRS_INLINE     | mreg = math register (m0 - m7). | Logical Shift Right Signed (inline). | 1.1 | TODO |
-| LSRS            | mreg = math register (m0 - m7). | Logical Shift Right Signed (function). | 1.1 | TODO |
-| ASRU_FAST       | mreg = math register (m0 - m7). | Arithmetic Shift Right Unsigned (fast). | 1.1 | TODO |
-| ASRU_INLINE     | mreg = math register (m0 - m7). | Arithmetic Shift Right Unsigned (inline). | 1.1 | TODO |
-| ASRU            | mreg = math register (m0 - m7). | Arithmetic Shift Right Unsigned (function). | 1.1 | TODO |
-| ASRS_FAST       | mreg = math register (m0 - m7). | Arithmetic Shift Right Signed (fast). | 1.1 | TODO |
-| ASRS_INLINE     | mreg = math register (m0 - m7). | Arithmetic Shift Right Signed (inline). | 1.1 | TODO |
-| ASRS            | mreg = math register (m0 - m7). | Arithmetic Shift Right Signed (function). | 1.1 | TODO |
-| LSLU_FAST       | mreg = math register (m0 - m7). | Logical Shift Left Unsigned (fast). | 1.1 | TODO |
-| LSLU_INLINE     | mreg = math register (m0 - m7). | Logical Shift Left Unsigned (inline). | 1.1 | TODO |
-| LSLU            | mreg = math register (m0 - m7). | Logical Shift Left Unsigned (function). | 1.1 | TODO |
-| LSLS_FAST       | mreg = math register (m0 - m7). | Logical Shift Left Signed (fast). | 1.1 | TODO |
-| LSLS_INLINE     | mreg = math register (m0 - m7). | Logical Shift Left Signed (inline). | 1.1 | TODO |
-| LSLS            | mreg = math register (m0 - m7). | Logical Shift Left Signed (function). | 1.1 | TODO |
-| ASLU_FAST       | mreg = math register (m0 - m7). | Arithmetic Shift Left Unsigned (fast). | 1.1 | TODO |
-| ASLU_INLINE     | mreg = math register (m0 - m7). | Arithmetic Shift Left Unsigned (inline). | 1.1 | TODO |
-| ASLU            | mreg = math register (m0 - m7). | Arithmetic Shift Left Unsigned (function). | 1.1 | TODO |
-| ASLS_FAST       | mreg = math register (m0 - m7). | Arithmetic Shift Left Signed (fast). | 1.1 | TODO |
-| ASLS_INLINE     | mreg = math register (m0 - m7). | Arithmetic Shift Left Signed (inline). | 1.1 | TODO |
-| ASLS            | mreg = math register (m0 - m7). | Arithmetic Shift Left Signed (function). | 1.1 | TODO |
-| LSRU2_FAST      | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Right Unsigned high and low (fast). | 1.1 | TODO |
-| LSRU2_INLINE    | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Right Unsigned high and low (inline). | 1.1 | TODO |
-| LSRU2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Right Unsigned high and low (function). | 1.1 | TODO |
-| LSRS2_FAST      | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Right Signed high and low (fast). | 1.1 | TODO |
-| LSRS2_INLINE    | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Right Signed high and low (inline). | 1.1 | TODO |
-| LSRS2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Right Signed high and low (function). | 1.1 | TODO |
-| ASRU2_FAST      | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Right Unsigned high and low (fast). | 1.1 | TODO |
-| ASRU2_INLINE    | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Right Unsigned high and low (inline). | 1.1 | TODO |
-| ASRU2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Right Unsigned high and low (function). | 1.1 | TODO |
-| ASRS2_FAST      | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Right Signed high and low (fast). | 1.1 | TODO |
-| ASRS2_INLINE    | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Right Signed high and low (inline). | 1.1 | TODO |
-| ASRS2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Right Signed high and low (function). | 1.1 | TODO |
-| LSLU2_FAST      | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Left Unsigned high and low (fast). | 1.1 | TODO |
-| LSLU2_INLINE    | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Left Unsigned high and low (inline). | 1.1 | TODO |
-| LSLU2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Left Unsigned high and low (function). | 1.1 | TODO |
-| LSLS2_FAST      | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Left Signed high and low (fast). | 1.1 | TODO |
-| LSLS2_INLINE    | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Left Signed high and low (inline). | 1.1 | TODO |
-| LSLS2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Left Signed high and low (function). | 1.1 | TODO |
-| ASLU2_FAST      | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Left Unsigned high and low (fast). | 1.1 | TODO |
-| ASLU2_INLINE    | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Left Unsigned high and low (inline). | 1.1 | TODO |
-| ASLU2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Left Unsigned high and low (function). | 1.1 | TODO |
-| ASLS2_FAST      | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Left Signed high and low (fast). | 1.1 | TODO |
-| ASLS2_INLINE    | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Left Signed high and low (inline). | 1.1 | TODO |
-| ASLS2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Left Signed high and low (function). | 1.1 | TODO |
-|                 |                                |                                                                          |         |        |
-| ABS_FAST        | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| ABS_INLINE      | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| ABS             | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| CEIL_FAST       | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| CEIL_INLINE     | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| CEIL   | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| FLOOR_FAST  |m reg = math register (m0 - m7). | | 1.1 | TODO |
-| FLOOR_INLINE  | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| FLOOR  | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| MIN_FAST    | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | | 1.1 | TODO |
-| MIN_INLINE    | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | | 1.1 | TODO |
-| MIN    | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | | 1.1 | TODO |
-| MAX_FAST    | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | | 1.1 | TODO |
-| MAX_INLINE    | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | | 1.1 | TODO |
-| MAX    | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | | 1.1 | TODO |
-| NEG_FAST    | | | 1.1 | TODO |
-| NEG_INLINE    | | | 1.1 | TODO |
-| NEG    | mreg = math register (m0 - m7). | | 1.1 | TODO |
-| RANDOM | REVIEW | | 1.5 | TODO |
-| TRUNC_FAST      | mreg = math register (m0 - m7). | review TRUNCate to integer  (fast). | 1.1 | TODO |
-| TRUNC_INLINE    | mreg = math register (m0 - m7). | review TRUNCate to integer (aka floor) (fast). | 1.1 | TODO |
-| TRUNC           | mreg = math register (m0 - m7). | review TRUNCate to integer (aka floor) (fast).| 1.1 | TODO |
-| ROUND_FAST      | mreg = math register (m0 - m7). | review ROUND to nearest integer (aka floor) (fast).| 1.1 | TODO |
-| ROUND_INLINE    | mreg = math register (m0 - m7). | review | 1.1 | TODO |
-| ROUND           | mreg = math register (m0 - m7). | review | 1.1 | TODO |
-|                 |                                |                                                                          |         |        |
+| Name             | Parameters                      | Description                                                              | Version | Status |
+|------------------|---------------------------------|--------------------------------------------------------------------------|---------|--------|
+| LIB_INIT         | None.                           | Initialise the library. Save current arithmetic mode on the stack. Set arithmetic mode to decimal. | 1.0 | TODO |
+| LIB_DONE         | None.                           | Uninitialise the library. Restore previously saved arithmetic mode from the stack.                 | 1.0 | TODO |
+|                  |                                 |                                                                          |                       |         |        |
+| MODE_BIN         | None.                           | Set arithmetic mode to binary.                                           | 1.0     | TODO   |
+| MODE_DEC         | None.                           | Set arithmetic mode to decimal.                                          | 1.0     | TODO   |
+| MODE_SAVE        | None.                           | Save current decimal mode on the stack.                                  | 1.0     | TODO   |
+| MODE_REST        | None.                           | Restore decimal mode from the stack.                                     | 1.0     | TODO   |
+|                  |                                 |                                                                          |         |        |
+| VAR              | name = label name (optional),<br />qty = quantity of variables,<br />siz = size of each variable in bytes (optional; default = BCDFIX_REG_SIZ). | Reserve variable memory at any address available (BSS). | 1.0 | TODO |
+| VAR_ZP           | name = label name (optional),<br />qty = quantity of variables,<br />siz = size of each variable in bytes (optional; default = BCDFIX_REG_SIZ). | Reserve variable memory within zero page (BSS).         | 1.0 | TODO |
+|                  |                                 |                                                                          |         |        |
+| DATA[U&#124;S]   | name = label name (optional),<br />val = BCD value as a string e.g. '9876543210' (signed/unsigned) or '-76543210' (signed). | DATA storage set wih constant value. | 1.0 | DEV |
+|                  |                                 |                                                                          |         |        |
+| CLR[U&#124;S]    | mreg = math register (m0 - m7). | CLeaR math register.                                                     | 1.0     | DEV    |
+| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+| STM[U&#124;S]    | REVIEW                          | STore Math register                                                      | 1.0     | TODO   |
+|                  |                                 |                                                                          |         |        |
+| TO_ASC[U&#124;S] | mreg = math register (m0-m7),<br />sptr = address of buffer to receive the ASCII string. | Convert math register to ASCII string. | FIXME | 1.1 | TODO |
+| TO_BYT[U&#124;S] | mreg = math register (m0-m7),<br />sptr = address of buffer to receive the byte array. | Convert math register to byte array (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*'). | FIXME | 1.1 | TODO |
+| FR_ASC[U&#124;S] | mreg = math register (m0-m7),<br />sptr = address of buffer to parse the ASCII string from. | Convert to math register from ASCII string. | FIXME | 2.0 | TODO |
+| FR_BYT[U&#124;S] | mreg = math register (m0-m7),<br />sptr = address of buffer to parse the byte array from. | Convert to math register from byte array (0-9='0'..'9', A='.' B='-' C='+'  D='£' E='$' F='*'). | FIXME | 2.0 | TODO |
+|                  |                                 |                                                                          |         |        |
+| TST              | mreg = math register (m0 - m7). | TeST math register against zero.                                         | 1.0     | TODO   |
+| CMP[U&#124;S]    | mreg1 = math register (m0 - m7),<br />&lt;mreg2 = math register (m0 - m7) &#124;<br />bcd = BCD string&gt; | CoMPare math register Unsigned.    | 1.0     | TODO   |
+|                  |                                 |                                                                          |         |        |
+| INC[U&#124;S]    | mreg = math register (m0 - m7). | INCrement.                                                               | 1.0     | TODO   |
+| DEC[U&#124;S]    | mreg = math register (m0 - m7). | DECrement.                                                               | 1.0     | TODO   |
+|                  |                                 |                                                                          |         |        |
+| ADC[U&#124;S]    | mreg1 = math register (m0 - m7) addend 1,<br />mreg2 = math register (m0 - m7) addend 2,<br />mregs = math register (m0 - m7) sum.         | ADd with Carry.     | 1.0 | TODO |
+| SBC[U&#124;S]    | mregm = math register (m0 - m7) minuend,<br />mregs = math register (m0 - m7) subtrahend,<br />mregd = math register (m0 - m7) difference. | SuBtract with Carry | 1.0 | TODO |
+|                  |                                 |                                                                          |         |        |
+| MUL[U&#124;S]    | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregp = math register (m0 - m7) product. | MULtipy Unsigned. | FAST,INLINE,FUNC | 1.2 | TODO |
+| MULS[U&#124;S]   | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregp = math register (m0 - m7) product. | MULtipy Signed.   | FAST,INLINE,FUNC | 1.2 | TODO |
+| MULS2[U&#124;S]  | mreg1 = math register (m0 - m7) multiplicand,<br />mreg2 = math register (m0 - m7) multiplier,<br />mregph = math register (m0 - m7) product (high),<br />mregpl = math register (m0 - m7) product (low). | MULtipy Signed with high and low result.   | FAST,INLINE,FUNC | 1.2 | TODO |
+| DIV[U&#124;S]    | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient. | DIVide Unsigned. | FAST,INLINE,FUNC | 1.2 | TODO |
+| DIVMOD[U&#124;S] | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregq = math register (m0 - m7) quotient,<br />mregr = math register (m0 - m7) remainder. | DIVide with MODulo Unsigned. | FAST,INLINE,FUNC | 1.2 | TODO |
+| MODU[U&#124;S]   | mreg1 = math register (m0 - m7) dividend,<br />mreg2 = math register (m0 - m7) divisor,<br />mregr = math register (m0 - m7) remainder. | MODulo Unsigned. | FAST,INLINE,FUNC | 1.2 | TODO |
+|                  |                                 |                                                                          |         |        |
+| LSRU            | mreg = math register (m0 - m7). | Logical Shift Right Unsigned.                                            | 1.1     | TODO   |
+| ASRU            | mreg = math register (m0 - m7). | Arithmetic Shift Right Unsigned.                                         | 1.1     | TODO   |
+| LSLU            | mreg = math register (m0 - m7). | Logical Shift Left Unsigned.                                             | 1.1     | TODO   |
+| ASLU            | mreg = math register (m0 - m7). | Arithmetic Shift Left Unsigned.                                          | 1.1     | TODO   |
+| LSRU2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Right Unsigned high and low.   | 1.1     | TODO   |
+| ASRU2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Right Unsigned high and low. | 1.1     | TODO   |
+| LSLU2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Logical Shift Left Unsigned high and low.    | 1.1     | TODO   |
+| ASLU2           | mregh = math register (m0 - m7) (high),<br />mregl = math register (m0 - m7) (low). | Arithmetic Shift Left Unsigned high and low. | 1.1     | TODO   |
+|                  |                                 |                                                                          |         |        |
+| ABS             | mreg = math register (m0 - m7). | ABSolute signed.                                                         | FAST,FUNC             | 1.1     | TODO   |
+| CEILU           | mreg = math register (m0 - m7). |                                                                          | 1.1     | TODO   |
+| CEILS           | mreg = math register (m0 - m7). |                                                                          | 1.1     | TODO   |
+| FLOORU          | mreg = math register (m0 - m7). |                                                                          | 1.1     | TODO   |
+| FLOORS          | mreg = math register (m0 - m7). |                                                                          | 1.1     | TODO   |
+| MINU            | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | MINimum value Unsigned. | FAST,FUNC | 1.1 | TODO |
+| MINS            | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | MINimum value Signed.   | FAST,FUNC | 1.1 | TODO |
+| MAXU            | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | MAXimum value Unsigned. | FAST,FUNC | 1.1 | TODO |
+| MAXS            | mreg1 = math register (m0 - m7),<br />mreg2 = math register (m0 - m7). | MAXimum value Signed.   | FAST,FUNC | 1.1 | TODO |
+| NEG             | mreg = math register (m0 - m7). | NEGate signed.                                                           | 1.1     | TODO   |
+| RANDOM          | REVIEW | | 1.5 | TODO |
+| TRUNCU          | mreg = math register (m0 - m7). | review TRUNCate to integer (fast). | | 1.1 | TODO |
+| TRUNCS          | mreg = math register (m0 - m7). | review TRUNCate to integer (fast). | | 1.1 | TODO |
+| ROUNDU          | mreg = math register (m0 - m7). | review | | 1.1 | TODO |
+| ROUNDS          | mreg = math register (m0 - m7). | review | | 1.1 | TODO |
+|                  |                                 |                                                                          |         |        |
 | GET EXPONENT | | | ?.? | NA?? |
 | POW  | | | 1.4 | TODO |
 | SQR  | | | 1.4 | TODO |
@@ -262,22 +165,22 @@ Registers m0 and m1 (actually ZEROPAGE memory) will be defined.
 | EXP  | | | 1.4 | TODO |
 | SQRT | | | 3.0 | TODO |
 | CBRT | | | 3.1 | TODO |
-|                 |                                |                                                                          |         |        |
+|                  |                                 |                                                                          |         |        |
 | BCD_TO_BINU | | | 1.6 | TODO |
 | BIN_TO_BCDU | | | 1.6 | TODO |
 | BCD_TO_BINS | | | 1.6 | TODO |
 | BIN_TO_BCDS | | | 1.6 | TODO |
-|                 |                                |                                                                          |         |        |
+|                  |                                 |                                                                          |         |        |
 | BCD_TO_BINU | | | 1.7 | TODO |
 | BIN_TO_BCDU | | | 1.7 | TODO |
 | BCD_TO_BINS | | | 1.7 | TODO |
 | BIN_TO_BCDS | | | 1.7 | TODO |
-|                 |                                |                                                                          |         |        |
+|                  |                                 |                                                                          |         |        |
 | LOG   | | | 4.0 | TODO |
 | LOG10 | | | 4.0 | TODO |
-|                 |                                |                                                                          |         |        |
+|                  |                                 |                                                                          |         |        |
 | HYPOT | | | | ?.? | REVIEW |
-|                 |                                |                                                                          |         |        |
+|                  |                                 |                                                                          |         |        |
 | ACOS  | | | 5.2  | TODO |
 | ASIN  | | | 5.2  | TODO |
 | ATAN  | | | 5.2  | TODO |
@@ -288,7 +191,7 @@ Registers m0 and m1 (actually ZEROPAGE memory) will be defined.
 | SINH  | | | 5.2  | TODO |
 | TAN   | | | 5.1  | TODO |
 | TANH  | | | 5.2  | TODO |
-|                 |                                |                                                                          |         |        |
+|                  |                                 |                                                                          |         |        |
 | RAD_TO_DEG  | | | 5.0 | TODO |
 | RAD_TO_BYTE | | | 5.0 | TODO |
 | RAD_TO_1K   | | | 5.0 | TODO |
@@ -301,9 +204,9 @@ Registers m0 and m1 (actually ZEROPAGE memory) will be defined.
 | 1K_TO_RAD   | | | 5.0 | TODO |
 | 1K_TO_DEG   | | | 5.0 | TODO |
 | 1K_TO_BYTE  | | | 5.0 | TODO |
-|                 |                                |                                                                          |         |        |
+|                  |                                 |                                                                          |         |        |
 | CONSTANTS | | TO BE DEFINED | 1.3 | TODO |
-|                 |                                |                                                                          |         |        |
+|                 |                                 |                                                                          |         |        |
 
 TODO: add limits + data funcs
 
