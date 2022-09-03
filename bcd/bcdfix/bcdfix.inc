@@ -24,9 +24,10 @@
 ; Math registers can be unsigned, signed with length of 2 to 8 bytes unsigned, or 3 to 8 bytes signed.
 ;
 ; Configuration (to be set before this file is included):-
-;   BCDFIX_REG_SIZ  - Size of each BCD math register in bytes (2-8); default=3).
+;   BCDFIX_REG_SIZE - Size of each BCD math register in bytes (2-8); default=3).
 ;   BCDFIX_REG_QTY  - Quantity of BCD math registers (2-8; default=2).
 ;   BCDFIX_NO_REG   - If defined do not automatically create the registers (default=undefined).
+;   BCDFIX_REG_SIGN - Default sign for non-suffixed sign supported macros and functions (Undefined/0=Unsigned,1=Signed).
 ;------------------------------------------------------------------------------
 
 
@@ -38,15 +39,21 @@
 ; Configuration Defaults
 ;------------------------------------------------------------------------------
     ; Default register size if not set.
-    .IFNDEF BCDFIX_REG_SIZ
-        .WARNING "BCDFIX_REG_SIZ default = 3"
-        BCDFIX_REG_SIZ = 3
+    .IFNDEF BCDFIX_REG_SIZE
+        .WARNING "BCDFIX_REG_SIZE default = 3"
+        BCDFIX_REG_SIZE = 3
     .ENDIF
 
     ; Default register quantity if not set.
     .IFNDEF BCDFIX_REG_QTY
         .WARNING "BCDFIX_REG_QTY default = 2"
         BCDFIX_REG_QTY = 2
+    .ENDIF
+
+    ; Default register sign if not set.
+    .IFNDEF BCDFIX_REG_SIGN
+        .WARNING "BCDFIX_REG_SIGN default = 0 (unsigned)"
+        BCDFIX_REG_SIGN = 0
     .ENDIF
 ;------------------------------------------------------------------------------
 
@@ -56,11 +63,11 @@
 ; Validate Configuration
 ;------------------------------------------------------------------------------
     ; Register size.
-    .IF BCDFIX_REG_SIZ < 2
-        .ERROR "BCDFIX_REG_SIZ < 2"
+    .IF BCDFIX_REG_SIZE < 2
+        .ERROR "BCDFIX_REG_SIZE < 2"
     .ENDIF
-    .IF BCDFIX_REG_SIZ > 8
-        .ERROR "BCDFIX_REG_SIZ > 8 !"
+    .IF BCDFIX_REG_SIZE > 8
+        .ERROR "BCDFIX_REG_SIZE > 8"
     .ENDIF
 
     ; Register quantity.
@@ -68,7 +75,15 @@
         .ERROR "BCDFIX_REG_QTY < 2"
     .ENDIF
     .IF BCDFIX_REG_QTY > 8
-        .ERROR "BCDFIX_REG_QTY > 8 !"
+        .ERROR "BCDFIX_REG_QTY > 8"
+    .ENDIF
+
+    ; Register sign.
+    .IF BCDFIX_REG_SIGN < 0
+        .ERROR "BCDFIX_REG_SIGN < 0"
+    .ENDIF
+    .IF BCDFIX_REG_SIGN > 1
+        .ERROR "BCDFIX_REG_SIGN > 1"
     .ENDIF
 ;------------------------------------------------------------------------------
 
@@ -81,14 +96,14 @@
 ;------------------------------------------------------------------------------
 ; Reserve zero page memory for registers.
 ;------------------------------------------------------------------------------
-    .IFDEF BCDFIX_REG_SIZ
+    .IFDEF BCDFIX_REG_SIZE
       .IFDEF BCDFIX_REG_QTY
         .IFNDEF BCDFIX_NO_REG
-          .IF BCDFIX_REG_SIZ < 2
-            .ERROR "BCDFIX_REG_SIZ < 2"
+          .IF BCDFIX_REG_SIZE < 2
+            .ERROR "BCDFIX_REG_SIZE < 2"
           .ENDIF
-          .IF BCDFIX_REG_SIZ > 8
-            .ERROR "BCDFIX_REG_SIZ > 8 !"
+          .IF BCDFIX_REG_SIZE > 8
+            .ERROR "BCDFIX_REG_SIZE > 8 !"
           .ENDIF
           .PUSHSEG
           .ZEROPAGE
@@ -129,75 +144,102 @@ M7:         .RES        BCDFIX_REG_SIZ
 
 
 ;------------------------------------------------------------------------------
-; DECIMAL MODE
+; LIBRARY INITIALISATION.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
-; Save current decimal mode on the stack and enable decimal mode (inline).
+; Initialise the library.
 ;
-; Input:    None
-; Working:  SR->STACK
-; Output:   D=1
-; Statistics:-
-;   Code:   2
-;   Stack:  1 (pushed)
-;   Cycles: 5 (3+2)
+; Push current arithmetic mode on to the stack.
+; Set arithmetic mode to decimal.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_MODE_INIT
-            PHP
-            SED
+            BCDFIX_MODE_PUSH
+            BCDFIX_MODE_DEC
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
-; Restore previously saved decimal mode from the stack (inline).
+; Uninitialise the library.
 ;
-; Input:    None
-; Working:  STACK->SR
-; Output:   SR=Restored SR.
-; Statistics:-
-;   Code:   1
-;   Stack:  1 (popped)
-;   Cycles: 4
+; Pop a previously saved arithmetic mode off of the stack
 ;------------------------------------------------------------------------------
 .MACRO      BCDFIX_MODE_DONE
-            PLP
+            BCDFIX_MODE_POP
 .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
-; RESERVE MEMORY FOR VARIABLES
+; ARITHMETIC MODE
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
-; Reserve variable memory at any address available.
-;
-; Input:-
-;   name    Label name for this variable allocation (optional).
-;   qty     Quantity of variables.
-;   siz     Size of each variable in bytes (optional; default=BCDFIX_REG_SIZ).
-; Working:  NA
-; Output:   BSS memory reserved.
-; Statistics:-
-;   RAM:    qty * siz
-;    or
-;   ZP:     qty * siz
+; Set arithmetic mode to binary.
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_VAR  name,qty,siz
+    .MACRO  BCDFIX_MODE_BIN
+        CLD
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Set arithmetic mode to decimal.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_MODE_DEC
+        SED
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Push the current decimal mode on to the stack.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_MODE_PUSH
+        PHP
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Pop a previously saved arithmetic mode off of the stack.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_MODE_PUSH
+        PLP
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; VARIABLE MEMORY RESERVATION
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+; VARiable memory reservation at any address available (BSS).
+;
+; Parameters:-
+;   name    Label name (optional),
+;   qty     Quantity of variables,
+;   size    Size of each variable in bytes (optional; default=BCDFIX_REG_SIZE).
+;------------------------------------------------------------------------------
+    .MACRO  VAR  name,qty,size
         .PUSHSEG
         .BSS
         .IFNBLANK name
 name:
         .ENDIF
         .REPEAT qty
-            .IFBLANK siz
-                .RES    BCDFIX_REG_SIZ
+            .IFBLANK size
+                .RES    BCDFIX_REG_SIZE
             .ELSE
-                .RES    siz
+                .RES    size
             .ENDIF
         .ENDREPEAT
         .POPSEG
@@ -207,28 +249,24 @@ name:
 
 
 ;------------------------------------------------------------------------------
-; Reserve variable memory within zero page.
+; VARiable memory reservation within zero page (BSS).
 ;
-; Input:-
-;   name    Label name for this variable allocation (optional).
-;   qty     Quantity of variables.
-;   siz     Size of each variable in bytes (optional; default=BCDFIX_REG_SIZ).
-; Working:  NA
-; Output:   BSS memory reserved.
-; Statistics:-
-;   ZP:     qty * siz
+; Parameters:-
+;   name    Label name (optional),
+;   qty     Quantity of variables,
+;   size    Size of each variable in bytes (optional; default=BCDFIX_REG_SIZE).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_VAR_ZP   name,qty,siz
+    .MACRO  VAR_ZP  name,qty,size
         .PUSHSEG
         .ZEROPAGE
         .IFNBLANK name
 name:
         .ENDIF
         .REPEAT qty
-            .IFBLANK siz
-                .RES    BCDFIX_REG_SIZ
+            .IFBLANK size
+                .RES    BCDFIX_REG_SIZE
             .ELSE
-                .RES    siz
+                .RES    size
             .ENDIF
         .ENDREPEAT
         .POPSEG
@@ -238,92 +276,58 @@ name:
 
 
 ;------------------------------------------------------------------------------
-; DEFINE CONSTANT DATA
+; DATA CONSTANT DEFINITION
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
-; DATA storage set wih Unsigned constant value.
-; Input:-
-;   name    Label name for this constant data (optional).
-;   val     BCD value as a string e.g. '9876543210'.
-; Working:  NA
-; Output:   Read-only data storage set with constant value.
-; Statistics:-
-;   Code:
-;   Data:
-;   RAM:
-;   ZP:
-;   Stack:
-;   Cycles: ? (?+?)
-;       Min:
-;       Avg:
-;       Max:
+; DATA Unsigned storage set with a constant value.
+;
+; Parameters:-
+;   name    Label name (optional),
+;   val     BCD value as a string e.g. '9876543210' (unsigned).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DATAU    name,val
-  .WARNING "BCDFIX_DATAU: NOT YET FULLY IMPLEMENTED!
-        .PUSHSEG
-        .DATA
-        .IFNBLANK name
-name:
-        .ENDIF
-        .IF .BLANK(val)
-            .ERROR "BCDFIX_DATU val is empty!"
-        .ELSEIF .STRLEN(val) > BCDFIX_REG_SIZ
-            .ERROR "BCDFIX_DATU val is too long!"
-        .ELSE
-
-        ;XXXX = .STRAT(val, 1)
-        ;.WARNING .STRING(XXXX)
-        ;.WARNING "33333"
-        ;.WARNING .STRING(.STRAT(val, 0)) .STRAT(val, 1)
-        ;.BYTE   ZZZZ
-        ;.BYTE XXXX
-        ;.WARNING .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
-        ;.BYTE .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
-        ;.WARNING .CONCAT(.STRING(.STRAT(val, 2)), .STRING(.STRAT(val, 3)))
-        ;.WARNING .CONCAT(.STRING(.STRAT(val, 4)), .STRING(.STRAT(val, 5)))
-        ;.WARNING "--------------"
-        ;ZZZZZZ = .CONCAT(.STRING(ZZZZ), .STRING(XXXX))
-        ;;.BYTE ZZZZZZ
-        ;.WARNING "--------------"
-        ;.WARNING .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
-        ;.WARNING "--------------"  + .STRAT(val, 1)
-.BYTE $88
-        .BYTE ((.STRAT(val, 0)-48)*16)+(.STRAT(val, 1)-48)
-        .BYTE ((.STRAT(val, 2)-48)*16)+(.STRAT(val, 3)-48)
-        .BYTE ((.STRAT(val, 4)-48)*16)+(.STRAT(val, 5)-48)
-.BYTE $FF
-        ;;;.BYTE .CONCAT(ZZZZ,XXXX)
-        ;.BYTE   .STRAT(val, 2).STRAT(val, 3)
-        ;.POPCHARMAP
-        .ENDIF
+        .ERROR "TODO: BCDFIX_DATAU IS NOT YET IMPLEMENTED!"
+| DATA[U&#124;S]   | name = label name (optional),<br />val = BCD value as a string e.g. '9876543210' (signed/unsigned) or '-76543210' (signed). | DATA storage set wih constant value. | 1.0 | DEV |
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
-; DATA storage set wih Signed constant value.
-; Input:-
-;   name    Label name for this constant data (optional).
-;   val     BCD value as a string e.g. '-76543210'.
-; Working:  NA
-; Output:   Read-only data storage set with constant value.
-; Statistics:-
-;   Code:
-;   Data:
-;   RAM:
-;   ZP:
-;   Stack:
-;   Cycles: ? (?+?)
-;       Min:
-;       Avg:
-;       Max:
+; DATA Signed storage set with a constant value.
+;
+; Parameters:-
+;   name    Label name (optional),
+;   val     BCD value as a string e.g. '9876543210' or '-76543210' (signed).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DATAS    name,val
         .ERROR "TODO: BCDFIX_DATAS IS NOT YET IMPLEMENTED!"
+| DATA[U&#124;S]   | name = label name (optional),<br />val = BCD value as a string e.g. '9876543210' (signed/unsigned) or '-76543210' (signed). | DATA storage set wih constant value. | 1.0 | DEV |
     .ENDMACRO
 ;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; DATA storage set with a constant value.
+;
+; Parameters:-
+;   name    Label name (optional),
+;   val     BCD value as a string e.g. '9876543210' (signed/unsigned)
+;           or '-76543210' (signed).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DATA name,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_DATAU    name,val
+        .ELSE
+            BCDFIX_DATAS    name,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
 
 
 
@@ -338,9 +342,9 @@ name:
 ; Output:   A=$00, SR=?
 ;
 ; Statistics:-
-;   Code:   BCDFIX_REG_SIZ * 2 + 2 (2*2+2=6, 3*2+2=8, 4*2+2=10, 5*2+2=12,
+;   Code:   BCDFIX_REG_SIZE * 2 + 2 (2*2+2=6, 3*2+2=8, 4*2+2=10, 5*2+2=12,
 ;                                   6*2+2=14, 7*2+2=16, 8*2+2=18)
-;   Cycles: BCDFIX_REG_SIZ * 3 + 2 (2*3+2=8, 3*3+2=11, 4*3+2=14, 5*3+2=17,
+;   Cycles: BCDFIX_REG_SIZE * 3 + 2 (2*3+2=8, 3*3+2=11, 4*3+2=14, 5*3+2=17,
 ;                                   6*3+2=20, 7*3+2=23, 8*3+2=26)
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_CLR_FAST mreg
@@ -1232,7 +1236,7 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
-;  ARCSINE, ARCCOSINE. AND ARCTANGENT
+;  SINE, ARCCOSINE. AND ARCTANGENT
 ;------------------------------------------------------------------------------
 
 ; TODO
@@ -1463,22 +1467,22 @@ loop:       STA     mreg,ireg
             LDA     #$00
             ORA     mreg
             ORA     mreg+1
-        .IF BCDFIX_REG_SIZ > 2
+        .IF BCDFIX_REG_SIZE > 2
             ORA     mreg+2
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 3
+        .IF BCDFIX_REG_SIZE > 3
             ORA     mreg+3
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 4
+        .IF BCDFIX_REG_SIZE > 4
             ORA     mreg+4
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 5
+        .IF BCDFIX_REG_SIZE > 5
             ORA     mreg+5
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 6
+        .IF BCDFIX_REG_SIZE > 6
             ORA     mreg+6
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 7
+        .IF BCDFIX_REG_SIZE > 7
             ORA     mreg+7
         .ENDIF
 .ENDMACRO
@@ -1497,22 +1501,22 @@ loop:       STA     mreg,ireg
             ORA     (mreg),x
             DEY
             ORA     mreg+1
-        .IF BCDFIX_REG_SIZ > 2
+        .IF BCDFIX_REG_SIZE > 2
             ORA     mreg+2
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 3
+        .IF BCDFIX_REG_SIZE > 3
             ORA     mreg+3
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 4
+        .IF BCDFIX_REG_SIZE > 4
             ORA     mreg+4
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 5
+        .IF BCDFIX_REG_SIZE > 5
             ORA     mreg+5
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 6
+        .IF BCDFIX_REG_SIZE > 6
             ORA     mreg+6
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 7
+        .IF BCDFIX_REG_SIZE > 7
             ORA     mreg+7
         .ENDIF
 .ENDMACRO
@@ -1585,22 +1589,22 @@ loop:       STA     mreg,ireg
             ADC     $00
             STA     m1+1
 
-        .IF BCDFIX_REG_SIZ > 2
+        .IF BCDFIX_REG_SIZE > 2
             STA     mreg+2
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 3
+        .IF BCDFIX_REG_SIZE > 3
             STA     mreg+3
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 4
+        .IF BCDFIX_REG_SIZE > 4
             STA     mreg+4
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 5
+        .IF BCDFIX_REG_SIZE > 5
             STA     mreg+5
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 6
+        .IF BCDFIX_REG_SIZE > 6
             STA     mreg+6
         .ENDIF
-        .IF BCDFIX_REG_SIZ > 7
+        .IF BCDFIX_REG_SIZE > 7
             STA     mreg+7
         .ENDIF
 .ENDMACRO
@@ -2313,4 +2317,101 @@ loop:       STA     mreg,ireg
             .ERROR  "FUTURE: NOT IMPLEMENTED!"
 .ENDMACRO
 ;------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+;------------------------------------------------------------------------------
+; DATA storage set wih Unsigned constant value.
+; Input:-
+;   name    Label name for this constant data (optional).
+;   val     BCD value as a string e.g. '9876543210'.
+; Working:  NA
+; Output:   Read-only data storage set with constant value.
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: ? (?+?)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DATAU    name,val
+  .WARNING "BCDFIX_DATAU: NOT YET FULLY IMPLEMENTED!
+        .PUSHSEG
+        .DATA
+        .IFNBLANK name
+name:
+        .ENDIF
+        .IF .BLANK(val)
+            .ERROR "BCDFIX_DATU val is empty!"
+        .ELSEIF .STRLEN(val) > BCDFIX_REG_SIZ
+            .ERROR "BCDFIX_DATU val is too long!"
+        .ELSE
+
+        ;XXXX = .STRAT(val, 1)
+        ;.WARNING .STRING(XXXX)
+        ;.WARNING "33333"
+        ;.WARNING .STRING(.STRAT(val, 0)) .STRAT(val, 1)
+        ;.BYTE   ZZZZ
+        ;.BYTE XXXX
+        ;.WARNING .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
+        ;.BYTE .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
+        ;.WARNING .CONCAT(.STRING(.STRAT(val, 2)), .STRING(.STRAT(val, 3)))
+        ;.WARNING .CONCAT(.STRING(.STRAT(val, 4)), .STRING(.STRAT(val, 5)))
+        ;.WARNING "--------------"
+        ;ZZZZZZ = .CONCAT(.STRING(ZZZZ), .STRING(XXXX))
+        ;;.BYTE ZZZZZZ
+        ;.WARNING "--------------"
+        ;.WARNING .CONCAT(.STRING(.STRAT(val, 0)), .STRING(.STRAT(val, 1)))
+        ;.WARNING "--------------"  + .STRAT(val, 1)
+.BYTE $88
+        .BYTE ((.STRAT(val, 0)-48)*16)+(.STRAT(val, 1)-48)
+        .BYTE ((.STRAT(val, 2)-48)*16)+(.STRAT(val, 3)-48)
+        .BYTE ((.STRAT(val, 4)-48)*16)+(.STRAT(val, 5)-48)
+.BYTE $FF
+        ;;;.BYTE .CONCAT(ZZZZ,XXXX)
+        ;.BYTE   .STRAT(val, 2).STRAT(val, 3)
+        ;.POPCHARMAP
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; DATA storage set wih Signed constant value.
+; Input:-
+;   name    Label name for this constant data (optional).
+;   val     BCD value as a string e.g. '-76543210'.
+; Working:  NA
+; Output:   Read-only data storage set with constant value.
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: ? (?+?)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DATAS    name,val
+        .ERROR "TODO: BCDFIX_DATAS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
 
