@@ -4,8 +4,8 @@
 ; Platform:     Atari 2600
 ; Language:     6507 Assembly Language (https://cc65.github.io/doc/ca65.html)
 ; Author:       Justin Lane (atari2600@jigglesoft.co.uk)
-; Date:         2022-09-01 18:00
-; Version:      0.0.1
+; Date:         2022-09-04 12:57
+; Version:      0.0.3
 ;------------------------------------------------------------------------------
 ; Copyright (c) 2022 Justin Lane
 ;
@@ -32,11 +32,11 @@
 
 
 ;------------------------------------------------------------------------------
-; CONFIGURATION
+; CONFIGURATION.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
-; Configuration Defaults
+; Configuration Defaults.
 ;------------------------------------------------------------------------------
     ; Default register size if not set.
     .IFNDEF BCDFIX_REG_SIZE
@@ -60,7 +60,7 @@
 
 
 ;------------------------------------------------------------------------------
-; Validate Configuration
+; Validate Configuration.
 ;------------------------------------------------------------------------------
     ; Register size.
     .IF BCDFIX_REG_SIZE < 2
@@ -90,7 +90,7 @@
 
 
 ;------------------------------------------------------------------------------
-; REGISTERS
+; REGISTERS.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ M7:         .RES        BCDFIX_REG_SIZ
 
 
 ;------------------------------------------------------------------------------
-; ARITHMETIC MODE
+; ARITHMETIC MODE.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
@@ -218,7 +218,7 @@ M7:         .RES        BCDFIX_REG_SIZ
 
 
 ;------------------------------------------------------------------------------
-; VARIABLE MEMORY RESERVATION
+; VARIABLE MEMORY RESERVATION.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
@@ -276,7 +276,7 @@ name:
 
 
 ;------------------------------------------------------------------------------
-; DATA CONSTANT DEFINITION
+; DATA CONSTANT DEFINITION.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
@@ -288,7 +288,6 @@ name:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DATAU    name,val
         .ERROR "TODO: BCDFIX_DATAU IS NOT YET IMPLEMENTED!"
-| DATA[U&#124;S]   | name = label name (optional),<br />val = BCD value as a string e.g. '9876543210' (signed/unsigned) or '-76543210' (signed). | DATA storage set wih constant value. | 1.0 | DEV |
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -303,7 +302,6 @@ name:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DATAS    name,val
         .ERROR "TODO: BCDFIX_DATAS IS NOT YET IMPLEMENTED!"
-| DATA[U&#124;S]   | name = label name (optional),<br />val = BCD value as a string e.g. '9876543210' (signed/unsigned) or '-76543210' (signed). | DATA storage set wih constant value. | 1.0 | DEV |
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -328,30 +326,100 @@ name:
 
 
 
+;------------------------------------------------------------------------------
+; CLEAR A MATH REGISTER.
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+; CLeaR Unsigned math register (fast).
+;
+; Parameters:-
+;   mreg    Math register to be cleared.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLRU_FAST    mreg
+        .ERROR "TODO: BCDFIX_CLRU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
-; CLEAR A MATH REGISTER
+; CLeaR Unsigned math register (inline).
+;
+; Parameters:-
+;   mreg    Math register to be cleared.
 ;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLRU_INLINE  mreg
+        .ERROR "TODO: BCDFIX_CLRU_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR Unsigned math register (function).
+;
+; Parameters:-
+;   mreg    Math register to be cleared.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLRU mreg
+        .ERROR "TODO: BCDFIX_CLRU IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR Signed math register (fast).
+;
+; Parameters:-
+;   mreg    Math register to be cleared.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLRS_FAST    mreg
+        .ERROR "TODO: BCDFIX_CLRS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR Signed math register (inline).
+;
+; Parameters:-
+;   mreg    Math register to be cleared.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLRS_INLINE  mreg
+        .ERROR "TODO: BCDFIX_CLRS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR Signed math register (function).
+;
+; Parameters:-
+;   mreg    Math register to be cleared.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLRS mreg
+        .ERROR "TODO: BCDFIX_CLRS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
 
 ;------------------------------------------------------------------------------
 ; CLeaR math register (fast).
 ;
-; Input:    mreg = math register (m0 - m7)
-; Output:   A=$00, SR=?
-;
-; Statistics:-
-;   Code:   BCDFIX_REG_SIZE * 2 + 2 (2*2+2=6, 3*2+2=8, 4*2+2=10, 5*2+2=12,
-;                                   6*2+2=14, 7*2+2=16, 8*2+2=18)
-;   Cycles: BCDFIX_REG_SIZE * 3 + 2 (2*3+2=8, 3*3+2=11, 4*3+2=14, 5*3+2=17,
-;                                   6*3+2=20, 7*3+2=23, 8*3+2=26)
+; Parameters:-
+;   mreg    Math register to be cleared.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_CLR_FAST mreg
-            LDA     #$00
-        .REPEAT BCDFIX_REG_SIZ,index
-            STA     mreg+index
-        .ENDREPEAT
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_CLRU_FAST    mreg
+        .ELSE
+            BCDFIX_CLRS_FAST    mreg
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -360,141 +428,232 @@ name:
 ;------------------------------------------------------------------------------
 ; CLeaR math register (inline).
 ;
-; Input:    mreg = math register (m0 - m7)
-; Output:   A=$00, X=$FF, SR=?
+; Parameters:-
+;   mreg    Math register to be cleared.
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_CLR_FAST mreg
-        .LOCAL  loop
-            LDA     #$00
-            LDX     #BCDFIX_REG_SIZ-1
-loop:
-            STA     mreg,X
-            DEX
-            BPL     loop
+    .MACRO  BCDFIX_CLR_INLINE   mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_CLRU_INLINE  mreg
+        .ELSE
+            BCDFIX_CLRS_INLINE  mreg
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
-; CLeaR math register (inline).
-;------------------------------------------------------------------------------
-
-;------------------------------------------------------------------------------
-
-
-| CLR_INLINE      | mreg = math register (m0 - m7) | REVIEW: A, X, Y, Z, N, SR, ?Z=0,N=0 |  | 1.0 | TODO |
-; CLeaR math register (inline)
-; Input:    FUTURE
-; Output:   FUTURE
-; Input:
-; Working:
-; Output:
-; Statistics:-
-;   Code:
-;   Data:
-;   RAM:
-;   ZP:
-;   Stack:
-;   Cycles: 5 (3+2)
-;       Min:
-;       Avg:
-;       Max:
-
-;------------------------------------------------------------------------------
-.MACRO  BCDFIX_CLR_INLINE   mreg,ireg
-        .LOCAL      loop
-            LDA     #$00
-            LDX     #BCDFIX_REG_SIZ-1
-            ;FIXME: or Y
-loop:       STA     mreg,ireg
-            DEX
-            ;FIXME: or Y
-            BNE     loop
-.ENDMACRO
-
-
-
-;------------------------------------------------------------------------------
-| CLR             | mreg = math register (m0 - m7) | REVIEW: A=0, X= or Y=0, Z=0,N=0, CLeaR math register. Calls clr_x or clr_y | CLeaR math register (func).  | 1.0 | TODO |
-
-; CLeaR math register (inline)
-; Input:    FUTURE
-; Output:   FUTURE
-; Input:
-; Working:
-; Output:
-; Statistics:-
-;   Code:
-;   Data:
-;   RAM:
-;   ZP:
-;   Stack:
-;   Cycles: 5 (3+2)
-;       Min:
-;       Avg:
-;       Max:
-;------------------------------------------------------------------------------
-.MACRO      BCDFIX_CLR      mreg,ireg
-            .IF ireg = 'X' or 'x'
-            LDX     #>>mreg
-  ;          JSR     bcdfix_clr_x
-            .ELSE IF Y y
-            LDY     #>>mreg
- ;           JSR     bcdfix_clr_y
-            .ELSE
-            .ERROR
-            .ENDIF
-.ENDMACRO
-
-
-
-;    .PUSHSEG
-;    .CODE
+; CLeaR math register (function).
 ;
-;bcdfix_clr_x:
-;        .SCOPE
-;            LDA     #$00
-;            LDX     #BCDFIX_REG_SIZ-1
-;            ;FIXME: or Y
-;loop:       ;STA     mreg,ireg
-;            DEX
-;            ;FIXME: or Y
-;            BNE     loop
-;    .ENDSCOPE
-;            RTS
-;
-;
-;
-;
-;bcdfix_clr_y:
-;            RTS
-;
-;
-;    .POPSEG
-
-
-
-
-
-
-
-
-
+; Parameters:-
+;   mreg    Math register to be cleared.
 ;------------------------------------------------------------------------------
-; LOAD, COPY, OR STORE A MATH REGISTER
+    .MACRO  BCDFIX_CLR  mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_CLRU mreg
+        .ELSE
+            BCDFIX_CLRS mreg
+        .ENDIF
+    .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
-; COMPARE MATH REGISTER
+; LOAD, COPY, OR STORE A MATH REGISTER.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
-;
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_TST_FAST mreg
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+;| STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; COMPARE MATH REGISTER.
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+; TeST Unsigned math register against zero (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_TSTU_FAST    mreg
+        .ERROR "BCDFIX_TSTU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; TeST Unsigned math register against zero (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_TSTU_INLINE  mreg
+        .ERROR "BCDFIX_TSTU_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; TeST Unsigned math register against zero (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_TSTU mreg
+        .ERROR "BCDFIX_TSTU IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; TeST Signed math register against zero (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_TSTS_FAST    mreg
         .ERROR "BCDFIX_TST_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -502,61 +661,229 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; TeST Signed math register against zero (inline).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_TSTS_INLINE  mreg
+        .ERROR "BCDFIX_TSTS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; TeST Signed math register against zero (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_TSTS mreg
+        .ERROR "BCDFIX_TSTS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; TeST math register against zero (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_TST_FAST mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_TSTU_FAST    mreg
+        .ELSE
+            BCDFIX_TSTS_FAST    mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; TeST Signed math register against zero (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_TST_INLINE   mreg
-        .ERROR "BCDFIX_TST_INLINE IS NOT YET IMPLEMENTED!"
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_TSTU_INLINE  mreg
+        .ELSE
+            BCDFIX_TSTS_INLINE  mreg
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
+; TeST Signed math register against zero (function).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_TST  mreg
-        .ERROR "BCDFIX_TST IS NOT YET IMPLEMENTED!"
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_TSTU mreg
+        .ELSE
+            BCDFIX_TSTS mreg
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
+; CoMPare Unsigned math register against value (fast).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_CMP_FAST mreg,oper
-        .ERROR "BCDFIX_CMP_FAST IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_CMPU_FAST    mreg,val
+        .ERROR "BCDFIX_CMPU_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
+; CoMPare Unsigned math register against value  (inline).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_CMP_INLINE   mreg,oper
-        .ERROR "BCDFIX_CMP_INLINE IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_CMPU_INLINE  mreg,val
+        .ERROR "BCDFIX_CMPU_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
+; CoMPare Unsigned math register against value  (function).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_CMP  mreg,oper
-        .ERROR "BCDFIX_CMP IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_CMPU mreg,val
+        .ERROR "BCDFIX_CMPU IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
 
 
 ;------------------------------------------------------------------------------
-; INCREMENT OR DECREMENT A MATH REGISTER
+; CoMPare Signed math register against value  (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CMPS_FAST    mreg,val
+        .ERROR "BCDFIX_CMPS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CoMPare Signed math register against value  (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CMPS_INLINE  mreg,val
+        .ERROR "BCDFIX_CMPS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CoMPare Signed math register against value  (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CMPS mreg,val
+        .ERROR "BCDFIX_CMPS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CoMPare math register against value  (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CMP_FAST mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_CMPU_FAST    mreg,val
+        .ELSE
+            BCDFIX_CMPS_FAST    mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CoMPare math register against value  (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CMP_INLINE   mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_CMPU_INLINE  mreg,oper
+        .ELSE
+            BCDFIX_CMPS_INLINE  mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CoMPare math register against value  (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CMP  mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_CMPU mreg,val
+        .ELSE
+            BCDFIX_CMPS mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; INCREMENT OR DECREMENT A MATH REGISTER.
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
+; INCrement Unsigned math register (fast).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_INCU_FAST    mreg
         .ERROR "BCDFIX_INCU_FAST IS NOT YET IMPLEMENTED!"
@@ -566,7 +893,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; INCrement Unsigned math register (inline).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_INCU_INLINE  mreg
         .ERROR "BCDFIX_INCU_INLINE IS NOT YET IMPLEMENTED!"
@@ -576,7 +906,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; INCrement Unsigned math register (function).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_INCU mreg
         .ERROR "BCDFIX_INCU IS NOT YET IMPLEMENTED!"
@@ -586,7 +919,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; INCrement Signed math register (fast).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_INCS_FAST    mreg
         .ERROR "BCDFIX_INCS_FAST IS NOT YET IMPLEMENTED!"
@@ -596,7 +932,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; INCrement Signed math register (inline).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_INCS_INLINE  mreg
         .ERROR "BCDFIX_INCS_INLINE IS NOT YET IMPLEMENTED!"
@@ -606,7 +945,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; INCrement Signed math register (function).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_INCS mreg
         .ERROR "BCDFIX_INCS IS NOT YET IMPLEMENTED!"
@@ -616,7 +958,62 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; INCrement math register (fast).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_INC_FAST mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_INCU_FAST    mreg
+        .ELSE
+            BCDFIX_INCS_FAST    mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; INCrement math register (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_INC_INLINE   mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_INCU_INLINE  mreg
+        .ELSE
+            BCDFIX_INCS_INLINE  mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; INCrement math register (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_INC  mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_INCU mreg
+        .ELSE
+            BCDFIX_INCS mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; DECrement Unsigned math register (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DECU_FAST    mreg
         .ERROR "BCDFIX_DECU_FAST IS NOT YET IMPLEMENTED!"
@@ -626,7 +1023,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; DECrement Unsigned math register (inline).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DECU_INLINE  mreg
         .ERROR "BCDFIX_DECU_INLINE IS NOT YET IMPLEMENTED!"
@@ -636,7 +1036,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; DECrement Unsigned math register (function).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DECU mreg
         .ERROR "BCDFIX_DECU IS NOT YET IMPLEMENTED!"
@@ -646,7 +1049,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; DECrement Signed math register (fast).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DECS_FAST    mreg
         .ERROR "BCDFIX_DECS_FAST IS NOT YET IMPLEMENTED!"
@@ -656,7 +1062,10 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; DECrement Signed math register (inline).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DECS_INLINE  mreg
         .ERROR "BCDFIX_DECS_INLINE IS NOT YET IMPLEMENTED!"
@@ -666,12 +1075,352 @@ loop:       STA     mreg,ireg
 
 
 ;------------------------------------------------------------------------------
+; DECrement Signed math register (function).
 ;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_DECS mreg
         .ERROR "BCDFIX_DECS IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; DECrement math register (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DEC_FAST mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_DECU_FAST    mreg
+        .ELSE
+            BCDFIX_DECS_FAST    mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; DECrement math register (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DEC_INLINE   mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_DECU_INLINE  mreg
+        .ELSE
+            BCDFIX_DECS_INLINE  mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; DECrement math register (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_DEC  mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_DECU mreg
+        .ELSE
+            BCDFIX_DECS mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADDITION OR SUBTRACTION OF A MATH REGISTER.
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+; ADd with Carry Unsigned math register (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADCU_FAST    mreg,val
+        .ERROR "BCDFIX_ADCU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADd with Carry Unsigned math register (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADCU_INLINE  mreg,val
+        .ERROR "BCDFIX_ADCU_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADd with Carry Unsigned math register (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADCU mreg,val
+        .ERROR "BCDFIX_ADCU IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADd with Carry Signed math register (fast).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADCS_FAST    mreg,val
+        .ERROR "BCDFIX_ADCS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADd with Carry Signed math register (inline).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADCS_INLINE  mreg,val
+        .ERROR "BCDFIX_ADCS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADd with Carry Signed math register (function).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADCS mreg,val
+        .ERROR "BCDFIX_ADCS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADd with Carry math register (fast).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADC_FAST mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ADCU_FAST    mreg,val
+        .ELSE
+            BCDFIX_ADCS_FAST    mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADd with Carry math register (inline).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADC_INLINE   mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ADCU_INLINE  mreg,val
+        .ELSE
+            BCDFIX_ADCS_INLINE  mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; ADd with Carry math register (function).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ADC  mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ADCU mreg,val
+        .ELSE
+            BCDFIX_ADCS mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry Unsigned math register (fast).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBCU_FAST    mreg,val
+        .ERROR "BCDFIX_SBCU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry Unsigned math register (inline).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBCU_INLINE  mreg,val
+        .ERROR "BCDFIX_SBCU_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry Unsigned math register (function).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBCU mreg,val
+        .ERROR "BCDFIX_SBCU IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry Signed math register (fast).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBCS_FAST    mreg,val
+        .ERROR "BCDFIX_SBCS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry Signed math register (inline).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBCS_INLINE  mreg,val
+        .ERROR "BCDFIX_SBCS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry Signed math register (function).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBCS mreg,val
+        .ERROR "BCDFIX_SBCS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry math register (fast).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBC_FAST mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_SBCU_FAST    mreg,val
+        .ELSE
+            BCDFIX_SBCS_FAST    mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry math register (inline).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBC_INLINE   mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_SBCU_INLINE  mreg,val
+        .ELSE
+            BCDFIX_SBCS_INLINE  mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; SuBtract with Carry math register (function).
+;
+; Parameters:-
+;   mreg,val    Math register (m0 - m7).
+;   val     Math register (m0 - m7), BCD string, or address.
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SBC  mreg,val
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_SBCU mreg,val
+        .ELSE
+            BCDFIX_SBCS mreg,val
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
@@ -2411,6 +3160,155 @@ name:
         .ERROR "TODO: BCDFIX_DATAS IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (fast).
+;
+; Input:    mreg = math register (m0 - m7)
+; Output:   A=$00, SR=?
+;
+; Statistics:-
+;   Code:   BCDFIX_REG_SIZE * 2 + 2 (2*2+2=6, 3*2+2=8, 4*2+2=10, 5*2+2=12,
+;                                   6*2+2=14, 7*2+2=16, 8*2+2=18)
+;   Cycles: BCDFIX_REG_SIZE * 3 + 2 (2*3+2=8, 3*3+2=11, 4*3+2=14, 5*3+2=17,
+;                                   6*3+2=20, 7*3+2=23, 8*3+2=26)
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLR_FAST mreg
+            LDA     #$00
+        .REPEAT BCDFIX_REG_SIZ,index
+            STA     mreg+index
+        .ENDREPEAT
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (inline).
+;
+; Input:    mreg = math register (m0 - m7)
+; Output:   A=$00, X=$FF, SR=?
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_CLR_FAST mreg
+        .LOCAL  loop
+            LDA     #$00
+            LDX     #BCDFIX_REG_SIZ-1
+loop:
+            STA     mreg,X
+            DEX
+            BPL     loop
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; CLeaR math register (inline).
+;------------------------------------------------------------------------------
+
+;------------------------------------------------------------------------------
+
+
+| CLR_INLINE      | mreg = math register (m0 - m7) | REVIEW: A, X, Y, Z, N, SR, ?Z=0,N=0 |  | 1.0 | TODO |
+; CLeaR math register (inline)
+; Input:    FUTURE
+; Output:   FUTURE
+; Input:
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+
+;------------------------------------------------------------------------------
+.MACRO  BCDFIX_CLR_INLINE   mreg,ireg
+        .LOCAL      loop
+            LDA     #$00
+            LDX     #BCDFIX_REG_SIZ-1
+            ;FIXME: or Y
+loop:       STA     mreg,ireg
+            DEX
+            ;FIXME: or Y
+            BNE     loop
+.ENDMACRO
+
+
+
+;------------------------------------------------------------------------------
+| CLR             | mreg = math register (m0 - m7) | REVIEW: A=0, X= or Y=0, Z=0,N=0, CLeaR math register. Calls clr_x or clr_y | CLeaR math register (func).  | 1.0 | TODO |
+
+; CLeaR math register (inline)
+; Input:    FUTURE
+; Output:   FUTURE
+; Input:
+; Working:
+; Output:
+; Statistics:-
+;   Code:
+;   Data:
+;   RAM:
+;   ZP:
+;   Stack:
+;   Cycles: 5 (3+2)
+;       Min:
+;       Avg:
+;       Max:
+;------------------------------------------------------------------------------
+.MACRO      BCDFIX_CLR      mreg,ireg
+            .IF ireg = 'X' or 'x'
+            LDX     #>>mreg
+  ;          JSR     bcdfix_clr_x
+            .ELSE IF Y y
+            LDY     #>>mreg
+ ;           JSR     bcdfix_clr_y
+            .ELSE
+            .ERROR
+            .ENDIF
+.ENDMACRO
+
+
+
+;    .PUSHSEG
+;    .CODE
+;
+;bcdfix_clr_x:
+;        .SCOPE
+;            LDA     #$00
+;            LDX     #BCDFIX_REG_SIZ-1
+;            ;FIXME: or Y
+;loop:       ;STA     mreg,ireg
+;            DEX
+;            ;FIXME: or Y
+;            BNE     loop
+;    .ENDSCOPE
+;            RTS
+;
+;
+;
+;
+;bcdfix_clr_y:
+;            RTS
+;
+;
+;    .POPSEG
 
 
 

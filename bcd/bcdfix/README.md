@@ -110,7 +110,9 @@ Registers m0 and m1 (actually ZEROPAGE memory) will be defined.
 | DATA[U&#124;S]   | name = label name (optional),<br />val = BCD value as a string e.g. '9876543210' (signed/unsigned) or '-76543210' (signed). | DATA storage set with a constant value. | 1.0 | DEV |
 |                  |                                 |                                                                          |         |        |
 | CLR[U&#124;S]    | mreg = math register (m0 - m7). | CLeaR math register.                                                     | 1.0     | DEV    |
+|                  |                                 |                                                                          |         |        |
 | LDM[U&#124;S]    | mreg = math register (m0 - m7),<br />BCD value as a string e.g. '987654321' FIXME                         | LoaD Math register                                                       | 1.0     | TODO   |
+| CPM[U&#124;S]    | REVIEW                          | CoPy Math register to math register.                                     | 1.0     | TODO   |
 | STM[U&#124;S]    | REVIEW                          | STore Math register.                                                     | 1.0     | TODO   |
 |                  |                                 |                                                                          |         |        |
 | TST              | mreg = math register (m0 - m7). | TeST math register against zero.                                         | 1.0     | TODO   |
