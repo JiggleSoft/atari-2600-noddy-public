@@ -1423,10 +1423,6 @@ name:
 ; SHIFT MATH REGISTER: MULTIPLICATION AND DIVISION BY 10.
 ;------------------------------------------------------------------------------
 
-
-
-
-
 ;------------------------------------------------------------------------------
 ; Arithmetic Shift Left Unsigned (fast).
 ;
@@ -2036,9 +2032,9 @@ name:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ASL2_FAST    mregh,mregl
         .IF BCDFIX_REG_SIGN = 0
-            BCDFIX_ASL2U_FAST   mreg,mregl
+            BCDFIX_ASL2U_FAST   mregh,mregl
         .ELSE
-            BCDFIX_ASL2S_FAST   mreg,mregl
+            BCDFIX_ASL2S_FAST   mregh,mregl
         .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -2054,9 +2050,9 @@ name:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ASL2_INLINE  mregh,mregl
         .IF BCDFIX_REG_SIGN = 0
-            BCDFIX_ASL2U_INLINE mreg,mregl
+            BCDFIX_ASL2U_INLINE mregh,mregl
         .ELSE
-            BCDFIX_ASL2S_INLINE mreg,mregl
+            BCDFIX_ASL2S_INLINE mregh,mregl
         .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -2072,9 +2068,9 @@ name:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ASL2 mregh,mregl
         .IF BCDFIX_REG_SIGN = 0
-            BCDFIX_ASL2U    mreg,mregl
+            BCDFIX_ASL2U    mregh,mregl
         .ELSE
-            BCDFIX_ASL2S    mreg,mregl
+            BCDFIX_ASL2S    mregh,mregl
         .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -2089,7 +2085,7 @@ name:
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ASR2U_FAST   mregh,mregl
-        .ERROR "BCDFIX_ASRU_FAST IS NOT YET IMPLEMENTED!"
+        .ERROR "BCDFIX_ASR2U_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2174,9 +2170,9 @@ name:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ASR2_FAST    mregh,mregl
         .IF BCDFIX_REG_SIGN = 0
-            BCDFIX_ASR2U_FAST   mreg,mregl
+            BCDFIX_ASR2U_FAST   mregh,mregl
         .ELSE
-            BCDFIX_ASR2S_FAST   mreg,mregl
+            BCDFIX_ASR2S_FAST   mregh,mregl
         .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -2192,9 +2188,9 @@ name:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ASR2_INLINE  mregh,mregl
         .IF BCDFIX_REG_SIGN = 0
-            BCDFIX_ASR2U_INLINE mreg,mregl
+            BCDFIX_ASR2U_INLINE mregh,mregl
         .ELSE
-            BCDFIX_ASR2S_INLINE mreg,mregl
+            BCDFIX_ASR2S_INLINE mregh,mregl
         .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -2210,24 +2206,12 @@ name:
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ASR2 mregh,mregl
         .IF BCDFIX_REG_SIGN = 0
-            BCDFIX_ASR2U    mreg,mregl
+            BCDFIX_ASR2U    mregh,mregl
         .ELSE
-            BCDFIX_ASR2S    mreg,mregl
+            BCDFIX_ASR2S    mregh,mregl
         .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
-
-
-
-
-
-
-
-zzzzzzz
-
-
-
-
 
 
 
@@ -2238,8 +2222,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_FAST    mreg
-        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2U_FAST   mregh,mregl
+        .ERROR "BCDFIX_LSL2U_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2252,8 +2236,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_INLINE  mreg
-        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2U_INLINE mregh,mregl
+        .ERROR "BCDFIX_LSL2U_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2266,8 +2250,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS mregh,mregl
-        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2U    mregh,mregl
+        .ERROR "BCDFIX_LSL2U IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2280,8 +2264,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_FAST    mreg
-        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2S_FAST   mregh,mregl
+        .ERROR "BCDFIX_LSL2S_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2294,8 +2278,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_INLINE  mreg
-        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2S_INLINE mregh,mregl
+        .ERROR "BCDFIX_LSL2S_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2308,8 +2292,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS mregh,mregl
-        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2S    mregh,mregl
+        .ERROR "BCDFIX_LSL2S IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2322,8 +2306,12 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_FAST    mreg
-        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2_FAST    mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSL2U_FAST   mregh,mregl
+        .ELSE
+            BCDFIX_LSL2S_FAST   mregh,mregl
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2336,8 +2324,12 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_INLINE  mreg
-        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2_INLINE  mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSL2U_INLINE mregh,mregl
+        .ELSE
+            BCDFIX_LSL2S_INLINE mregh,mregl
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2350,12 +2342,14 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS mregh,mregl
-        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSL2 mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSL2U    mregh,mregl
+        .ELSE
+            BCDFIX_LSL2S    mregh,mregl
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
-
-
 
 
 
@@ -2366,8 +2360,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_FAST    mreg
-        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSR2U_FAST   mregh,mregl
+        .ERROR "BCDFIX_LSR2U_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2380,8 +2374,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_INLINE  mreg
-        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSR2U_INLINE mregh,mregl
+        .ERROR "BCDFIX_LSR2U_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2394,8 +2388,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS mregh,mregl
-        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSR2U    mregh,mregl
+        .ERROR "BCDFIX_LSR2U IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2408,8 +2402,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_FAST    mreg
-        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSR2S_FAST   mregh,mregl
+        .ERROR "BCDFIX_LSR2S_FAST IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2422,7 +2416,7 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_INLINE  mreg
+    .MACRO  BCDFIX_LSR2S_INLINE mregh,mregl
         .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
@@ -2436,8 +2430,8 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS mregh,mregl
-        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSR2S    mregh,mregl
+        .ERROR "BCDFIX_LSR2S IS NOT YET IMPLEMENTED!"
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2450,8 +2444,12 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_FAST    mreg
-        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSR2_FAST    mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSR2U_FAST   mregh,mregl
+        .ELSE
+            BCDFIX_LSR2S_FAST   mregh,mregl
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2464,8 +2462,12 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS_INLINE  mreg
-        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSR2_INLINE  mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSR2U_INLINE mregh,mregl
+        .ELSE
+            BCDFIX_LSR2S_INLINE mregh,mregl
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
 
@@ -2478,26 +2480,14 @@ zzzzzzz
 ;   mregh   Math register high (m0 - m7).
 ;   mregl   Math register low (m0 - m7).
 ;------------------------------------------------------------------------------
-    .MACRO  BCDFIX_SSSS mregh,mregl
-        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .MACRO  BCDFIX_LSR2 mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSR2U    mregh,mregl
+        .ELSE
+            BCDFIX_LSR2S    mregh,mregl
+        .ENDIF
     .ENDMACRO
 ;------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-zzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-
-
-
-
 
 
 
