@@ -4,8 +4,8 @@
 ; Platform:     Atari 2600
 ; Language:     6507 Assembly Language (https://cc65.github.io/doc/ca65.html)
 ; Author:       Justin Lane (atari2600@jigglesoft.co.uk)
-; Date:         2022-09-04 12:57
-; Version:      0.0.3
+; Date:         2022-09-04 22:04
+; Version:      0.0.4
 ;------------------------------------------------------------------------------
 ; Copyright (c) 2022 Justin Lane
 ;
@@ -1189,7 +1189,7 @@ name:
 ; ADd with Carry Signed math register (fast).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ADCS_FAST    mreg,val
@@ -1203,7 +1203,7 @@ name:
 ; ADd with Carry Signed math register (inline).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ADCS_INLINE  mreg,val
@@ -1217,7 +1217,7 @@ name:
 ; ADd with Carry Signed math register (function).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ADCS mreg,val
@@ -1231,7 +1231,7 @@ name:
 ; ADd with Carry math register (fast).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ADC_FAST mreg,val
@@ -1249,7 +1249,7 @@ name:
 ; ADd with Carry math register (inline).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ADC_INLINE   mreg,val
@@ -1267,7 +1267,7 @@ name:
 ; ADd with Carry math register (function).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_ADC  mreg,val
@@ -1285,7 +1285,7 @@ name:
 ; SuBtract with Carry Unsigned math register (fast).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBCU_FAST    mreg,val
@@ -1299,7 +1299,7 @@ name:
 ; SuBtract with Carry Unsigned math register (inline).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBCU_INLINE  mreg,val
@@ -1313,7 +1313,7 @@ name:
 ; SuBtract with Carry Unsigned math register (function).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBCU mreg,val
@@ -1327,7 +1327,7 @@ name:
 ; SuBtract with Carry Signed math register (fast).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBCS_FAST    mreg,val
@@ -1341,7 +1341,7 @@ name:
 ; SuBtract with Carry Signed math register (inline).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBCS_INLINE  mreg,val
@@ -1355,7 +1355,7 @@ name:
 ; SuBtract with Carry Signed math register (function).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBCS mreg,val
@@ -1369,7 +1369,7 @@ name:
 ; SuBtract with Carry math register (fast).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBC_FAST mreg,val
@@ -1387,7 +1387,7 @@ name:
 ; SuBtract with Carry math register (inline).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBC_INLINE   mreg,val
@@ -1405,7 +1405,7 @@ name:
 ; SuBtract with Carry math register (function).
 ;
 ; Parameters:-
-;   mreg,val    Math register (m0 - m7).
+;   mreg    Math register (m0 - m7).
 ;   val     Math register (m0 - m7), BCD string, or address.
 ;------------------------------------------------------------------------------
     .MACRO  BCDFIX_SBC  mreg,val
@@ -1419,6 +1419,1081 @@ name:
 
 
 
+;------------------------------------------------------------------------------
+; SHIFT MATH REGISTER: MULTIPLICATION AND DIVISION BY 10.
+;------------------------------------------------------------------------------
+
+
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Unsigned (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASLU_FAST    mreg
+        .ERROR "BCDFIX_ASLU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Unsigned (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASLU_INLINE  mreg
+        .ERROR "BCDFIX_ASLU_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Unsigned (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASLU mreg
+        .ERROR "BCDFIX_ASLU IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Signed (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASLS_FAST    mreg
+        .ERROR "BCDFIX_ASLS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Signed (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASLS_INLINE  mreg
+        .ERROR "BCDFIX_ASLS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Signed (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASLS mreg
+        .ERROR "BCDFIX_ASLS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL_FAST mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASLU_FAST    mreg
+        .ELSE
+            BCDFIX_ASLS_FAST    mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL_INLINE   mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASLU_INLINE  mreg
+        .ELSE
+            BCDFIX_ASLS_INLINE  mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL  mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASLU mreg
+        .ELSE
+            BCDFIX_ASLS mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Unsigned (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASRU_FAST    mreg
+        .ERROR "BCDFIX_ASRU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Unsigned (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASRU_INLINE  mreg
+        .ERROR "BCDFIX_ASRU_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Unsigned (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASRU mreg
+        .ERROR "BCDFIX_ASRU IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Signed (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASRS_FAST    mreg
+        .ERROR "BCDFIX_ASRS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Signed (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASRS_INLINE  mreg
+        .ERROR "BCDFIX_ASRS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Signed (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASRS mreg
+        .ERROR "BCDFIX_ASRS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR_FAST mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASRU_FAST    mreg
+        .ELSE
+            BCDFIX_ASRS_FAST    mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR_INLINE   mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASRU_INLINE  mreg
+        .ELSE
+            BCDFIX_ASRS_INLINE  mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR  mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASRU mreg
+        .ELSE
+            BCDFIX_ASRS mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Unsigned (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSLU_FAST    mreg
+        .ERROR "BCDFIX_LSLU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Unsigned (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSLU_INLINE  mreg
+        .ERROR "BCDFIX_LSLU_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Unsigned (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSLU mreg
+        .ERROR "BCDFIX_LSLU IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Signed (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSLS_FAST    mreg
+        .ERROR "BCDFIX_LSLS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Signed (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSLS_INLINE  mreg
+        .ERROR "BCDFIX_LSLS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Signed (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSLS mreg
+        .ERROR "BCDFIX_LSLS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSL_FAST mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSLU_FAST    mreg
+        .ELSE
+            BCDFIX_LSLS_FAST    mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSL_INLINE   mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSLU_INLINE  mreg
+        .ELSE
+            BCDFIX_LSLS_INLINE  mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSL  mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSLU mreg
+        .ELSE
+            BCDFIX_LSLS mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Unsigned (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSRU_FAST    mreg
+        .ERROR "BCDFIX_LSRU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Unsigned (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSRU_INLINE  mreg
+        .ERROR "BCDFIX_LSRU_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Unsigned (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSRU mreg
+        .ERROR "BCDFIX_LSRU IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Signed (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSRS_FAST    mreg
+        .ERROR "BCDFIX_LSRS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Signed (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSRS_INLINE  mreg
+        .ERROR "BCDFIX_LSRS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Signed (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSRS mreg
+        .ERROR "BCDFIX_LSRS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right (fast).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSR_FAST mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSRU_FAST    mreg
+        .ELSE
+            BCDFIX_LSRS_FAST    mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right (inline).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSR_INLINE   mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSRU_INLINE  mreg
+        .ELSE
+            BCDFIX_LSRS_INLINE  mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right (function).
+;
+; Parameters:-
+;   mreg    Math register (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_LSR  mreg
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_LSRU mreg
+        .ELSE
+            BCDFIX_LSRS mreg
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Unsigned high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2U_FAST   mregh,mregl
+        .ERROR "BCDFIX_ASL2U_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Unsigned high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2U_INLINE mregh,mregl
+        .ERROR "BCDFIX_ASL2U_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Unsigned high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2U    mregh,mregl
+        .ERROR "BCDFIX_ASL2U IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Signed high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2S_FAST   mregh,mregl
+        .ERROR "BCDFIX_ASL2S_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Signed high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2S_INLINE mregh,mregl
+        .ERROR "BCDFIX_ASL2S_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left Signed high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2S    mregh,mregl
+        .ERROR "BCDFIX_ASL2S IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2_FAST    mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASL2U_FAST   mreg,mregl
+        .ELSE
+            BCDFIX_ASL2S_FAST   mreg,mregl
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2_INLINE  mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASL2U_INLINE mreg,mregl
+        .ELSE
+            BCDFIX_ASL2S_INLINE mreg,mregl
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Left high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASL2 mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASL2U    mreg,mregl
+        .ELSE
+            BCDFIX_ASL2S    mreg,mregl
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Unsigned high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2U_FAST   mregh,mregl
+        .ERROR "BCDFIX_ASRU_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Unsigned high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2U_INLINE mregh,mregl
+        .ERROR "BCDFIX_ASR2U_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Unsigned high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2U    mregh,mregl
+        .ERROR "BCDFIX_ASR2U IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Signed high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2S_FAST   mregh,mregl
+        .ERROR "BCDFIX_ASR2S_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Signed high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2S_INLINE mregh,mregl
+        .ERROR "BCDFIX_ASR2S_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right Signed high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2S mregh,mregl
+        .ERROR "BCDFIX_ASR2S IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2_FAST    mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASR2U_FAST   mreg,mregl
+        .ELSE
+            BCDFIX_ASR2S_FAST   mreg,mregl
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2_INLINE  mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASR2U_INLINE mreg,mregl
+        .ELSE
+            BCDFIX_ASR2S_INLINE mreg,mregl
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Arithmetic Shift Right high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_ASR2 mregh,mregl
+        .IF BCDFIX_REG_SIGN = 0
+            BCDFIX_ASR2U    mreg,mregl
+        .ELSE
+            BCDFIX_ASR2S    mreg,mregl
+        .ENDIF
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+
+
+
+
+zzzzzzz
+
+
+
+
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Unsigned high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_FAST    mreg
+        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Unsigned high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_INLINE  mreg
+        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Unsigned high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS mregh,mregl
+        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Signed high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_FAST    mreg
+        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Signed high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_INLINE  mreg
+        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left Signed high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS mregh,mregl
+        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_FAST    mreg
+        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_INLINE  mreg
+        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Left high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS mregh,mregl
+        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Unsigned high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_FAST    mreg
+        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Unsigned high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_INLINE  mreg
+        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Unsigned high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS mregh,mregl
+        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Signed high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_FAST    mreg
+        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Signed high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_INLINE  mreg
+        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right Signed high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS mregh,mregl
+        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right high and low (fast).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_FAST    mreg
+        .ERROR "BCDFIX_SSSS_FAST IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right high and low (inline).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS_INLINE  mreg
+        .ERROR "BCDFIX_SSSS_INLINE IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+;------------------------------------------------------------------------------
+; Logical Shift Right high and low (function).
+;
+; Parameters:-
+;   mregh   Math register high (m0 - m7).
+;   mregl   Math register low (m0 - m7).
+;------------------------------------------------------------------------------
+    .MACRO  BCDFIX_SSSS mregh,mregl
+        .ERROR "BCDFIX_SSSS IS NOT YET IMPLEMENTED!"
+    .ENDMACRO
+;------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 
 
 

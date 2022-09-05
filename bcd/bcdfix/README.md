@@ -292,16 +292,6 @@ It is expected that the relevant macros will be used to call the functions.
 | SBCS_FAST | | | SuBtract with Carry (borrow) Signed (fast) | 1.0 | TODO |
 | SBCS      | | | SuBtract with Carry (borrow) Signed | 1.0 | TODO |
 | | | | | | |
-| MULU    | | | | 1.2 | TODO |
-| MULS    | | | | 1.2 | TODO |
-| MULU2   | | | | 1.2 | TODO |
-| MULS2   | | | | 1.2 | TODO |
-| DIVU    | | | | 1.2 | TODO |
-| DIVS    | | | | 1.2 | TODO |
-| DIVMODU | | | | 1.2 | TODO |
-| DIVMODS | | | | 1.2 | TODO |
-| MOD     | | | | 1.2 | TODO |
-| | | | | | |
 | LSRU  | | | | 1.1 | TODO |
 | LSRS  | | | | 1.1 | TODO |
 | ASRU  | | | | 1.1 | TODO |
@@ -328,6 +318,16 @@ It is expected that the relevant macros will be used to call the functions.
 | RANDOM | | | | 1.5 | TODO |
 | TRUNC  | | | | 1.1 | TODO |
 | ROUND  | | | | 1.1 | TODO |
+| | | | | | |
+| MULU    | | | | 1.2 | TODO |
+| MULS    | | | | 1.2 | TODO |
+| MULU2   | | | | 1.2 | TODO |
+| MULS2   | | | | 1.2 | TODO |
+| DIVU    | | | | 1.2 | TODO |
+| DIVS    | | | | 1.2 | TODO |
+| DIVMODU | | | | 1.2 | TODO |
+| DIVMODS | | | | 1.2 | TODO |
+| MOD     | | | | 1.2 | TODO |
 | | | | | | |
 | GET EXPONENT | | | | ?.? | NA?? |
 | POW  | | | | 1.4 | TODO |
