@@ -2,9 +2,10 @@
 
 ## Index
 
-| Directory | Description |
-|-----------|-------------|
-| div15     | Divide value between 0 and 159 by 15 and return the result and the modulo (remainder). Enhanced some code examples to now to support nearly the full 0-254 range. Also a version that only does the division by 15 and passes the value and result in the A register for comparison to existing implementations. The code found in the DivisionRoutines(rev2).asm linked from here https://atariage.com/forums/blogs/entry/10805-unsigned-integer-division-routines/ will do the full range. My routine unfortunately does not do the extra addition found in the link via ADC of the carry bit if the original value was odd. Thanks to Omegamatrix for some great general purpose routines. My routine does meets my original goal but was proven to not be as general purpose as I had hoped. |
+| Directory     | Description |
+|---------------|-------------|
+| div15         | Divide value between 0 and 159 by 15 and return the result and the modulo (remainder). Enhanced some code examples to now to support nearly the full 0-254 range. Also a version that only does the division by 15 and passes the value and result in the A register for comparison to existing implementations. The code found in the DivisionRoutines(rev2).asm linked from here https://atariage.com/forums/blogs/entry/10805-unsigned-integer-division-routines/ will do the full range. My routine unfortunately does not do the extra addition found in the link via ADC of the carry bit if the original value was odd. Thanks to Omegamatrix for some great general purpose routines. My routine does meets my original goal but was proven to not be as general purpose as I had hoped. |
+| apple-palette | Apple palette constants include file for Atari 2600 NTSC/PAL/SECAM TV standards. |
 
 
 ## Contact
@@ -16,7 +17,10 @@ Justin Lane (atari2600@jigglesoft.co.uk)
 
 Copyright (c) 2022 Justin Lane
 
-Licensed under the MIT license
+Licensed under the MIT license unless otherwise stated.
 
 See the LICENSE file.
+
+The only other license in use is the Apache License, Version 2.0.
+See http://www.apache.org/licenses/LICENSE-2.0
 
