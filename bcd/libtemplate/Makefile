@@ -34,7 +34,7 @@ default:
 # BUILD
 #------------------------------------------------------------------------------
 
-build: build-ntsc build-pal60 build-pal build-secam build-palx build-secamx
+build: build-lib build-test
 	@
 
 build-ntsc: ${BUILD_DIR}/ntsc/${APP_NAME}-ntsc.4k
@@ -107,54 +107,27 @@ ${BUILD_DIR}/secamx/${APP_NAME}-main-secamx.o: ${APP_NAME}-main.s bcdfix
 
 
 #------------------------------------------------------------------------------
-# RUN
+# TEST
 #------------------------------------------------------------------------------
 
-run: run-ntsc run-pal60 run-pal run-secam run-palx run-secamx
+test: test-1
 	@
 
-run-ntsc: build-ntsc
-	$(STELLA) -format NTSC ${BUILD_DIR}/ntsc/${APP_NAME}-ntsc.4k
+test-1: build-lib
+	$(SIM65)  ${BUILD_DIR}/test/${LIB_NAME}-test-1.bin
 
-run-pal60: build-pal60
-	$(STELLA) -format PAL ${BUILD_DIR}/pal60/${APP_NAME}-pal60.4k
-
-run-pal: build-pal
-	$(STELLA) -format PAL ${BUILD_DIR}/pal/${APP_NAME}-pal.4k
-
-run-secam: build-secam
-	$(STELLA) -format SECAM ${BUILD_DIR}/secam/${APP_NAME}-secam.4k
-
-run-palx: build-palx
-	$(STELLA) -format PAL ${BUILD_DIR}/palx/${APP_NAME}-palx.4k
-
-run-secamx: build-secamx
-	$(STELLA) -format SECAM ${BUILD_DIR}/secamx/${APP_NAME}-secamx.4k
 
 
 #------------------------------------------------------------------------------
 # CLEAN
 #------------------------------------------------------------------------------
 
-clean: clean-ntsc clean-pal60 clean-pal clean-secam  clean-palx clean-secamx
+clean: clean-lib clean-test
 	$(RM) -r ${BUILD_DIR}
 
-clean-ntsc:
-	$(RM) -r ${BUILD_DIR}/ntsc
+clean-lib:
+	$(RM) -r ${BUILD_DIR}/main
 
-clean-pal60:
-	$(RM) -r ${BUILD_DIR}/pal60
-
-clean-pal:
-	$(RM) -r ${BUILD_DIR}/pal
-
-clean-secam:
-	$(RM) -r ${BUILD_DIR}/secam
-
-clean-palx:
-	$(RM) -r ${BUILD_DIR}/palx
-
-clean-secamx:
-	$(RM) -r ${BUILD_DIR}/secamx
-
+clean-test:
+	$(RM) -r ${BUILD_DIR}/test
 

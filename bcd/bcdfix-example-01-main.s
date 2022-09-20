@@ -33,11 +33,15 @@
                 CPU_CONFIG_VECTOR       cold_start
 
 ;------------------------------------------------------------------------------
-
+.BSS
+fredz: .RES 16
                 .CODE
+.EXPORT fredz
+;.IMPORT fredz
 
     BCDFIX_REG_SIZ  = 6
 
+                .INCLUDE        "bcdfix/bcdfix-i.inc"
                 .INCLUDE        "bcdfix/bcdfix.inc"
 
 .WARNING "---000---"

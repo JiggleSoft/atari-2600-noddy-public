@@ -24,10 +24,17 @@ Intitial required for an Atari 2600 video game that is in development.
 | 3.0     | square root. | TODO |
 | 3.1     | cube root. | TODO |
 | 4.0     | logarithms | TODO |
-| 5.0     | angle conversions | TODO |
-| 5.1     | sine, cosine, tangent | TODO |
-| 5.2     | acos, asin, atan, atan2, cosh, sinh, tanh | TODO |
-| 5.3+    | Other transcendental functions. | TODO |
+| 5.0     | Trigonometry - Constants. | FUTURE |
+| 5.1     | Trigonometry - Angle Conversions. | FUTURE |
+| 5.2     | Trigonometry - Sine, Cosine, Tangent. | FUTURE |
+| 5.3     | Trigonometry - Arcsine, Arccosine, Arctangent. | FUTURE |
+| 5.4     | Trigonometry - Cosecant, Secant, Cotangent. | FUTURE |
+| 5.5     | Trigonometry - Arccosecant, Arcsecant, Arccotangent. | FUTURE |
+| 5.6     | Sub-Title:    Trigonometry - Hyperbolic Sine, Hyperbolic Cosine, Hyperbolic Tangent. | FUTURE |
+| 5.7     | Trigonometry - Area Hyperbolic Sine, Area Hyperbolic Cosine, Area Hyperbolic Tangent. | FUTURE |
+| 5.8     | Trigonometry - Hyperbolic Cosecant, Hyperbolic Secant, Hyperbolic Cotangent. | FUTURE |
+| 5.9     | Trigonometry - Area Hyperbolic Cosecant, Area Hyperbolic Secant, Area Hyperbolic Cotangent. | FUTURE |
+| 5.10    | Trigonometry - Tan2, Arctan2. | FUTURE |
 
 *Note: Version 1.5 would provide enough functionality for the planned game.*
 
